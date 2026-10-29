@@ -1,0 +1,3 @@
+[submodule "nanovi"]
+	path = nanovi
+	url = https://github.com/microbialds/NanoVI.git

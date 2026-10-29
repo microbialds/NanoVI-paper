@@ -9,7 +9,8 @@ Three ONT 16S cohorts, four arms each:
   emu_same_sam  Emu 3.6.2 on nanovi_emudb's alignments (BAM -> SAM), the same alignments
 
 Data and runs live under <bench>/../phase9 (D11); the pipeline runs from a copy of the
-repository at the commit under test (src/, written by `prepare`). Steps:
+NanoVI checkout (nanovi/ or NANOVI_REPO) at the commit under test (src/, written by
+`prepare`). Steps:
 
     python benchmarks/clinical.py prepare  <cohort>   # subsample, samplesheet, src/
     python benchmarks/clinical.py nanovi   <cohort> <gtdb|emudb>
@@ -25,7 +26,7 @@ from pathlib import Path
 import pandas as pd
 
 import harness
-from common import BENCH, DOCS_DATA, REPO, write_tsv  # first: puts bin/ on sys.path
+from common import BENCH, DOCS_DATA, NANOVI, write_tsv  # first: puts bin/ on sys.path
 from build_gtdb_db import normalize_gtdb_name
 from comparators import EMU_DBS, run_emu
 from names import TAXDUMP_NAMES, gtdb_split, load as load_crosswalk, to_gtdb
@@ -82,14 +83,14 @@ def run_dir(cohort, arm):
 
 def prepare(cohort):
     src = CLIN / "src"
-    head = subprocess.run(["git", "-C", str(REPO), "rev-parse", "HEAD"], capture_output=True, text=True,
+    head = subprocess.run(["git", "-C", str(NANOVI), "rev-parse", "HEAD"], capture_output=True, text=True,
                           check=True).stdout.strip()
     if not (src / "COMMIT").exists():
         # extract beside src/ and move it in place, so a failed archive leaves no half-filled src/
         tmp = CLIN / "src.partial"
         subprocess.run(["rm", "-rf", str(tmp)], check=True)
         tmp.mkdir(parents=True)
-        subprocess.run(f"git -C {REPO} archive HEAD | tar -x -C {tmp}", shell=True, check=True)
+        subprocess.run(f"git -C {NANOVI} archive HEAD | tar -x -C {tmp}", shell=True, check=True)
         (tmp / "COMMIT").write_text(head + "\n")
         subprocess.run(["rm", "-rf", str(src)], check=True)
         tmp.rename(src)

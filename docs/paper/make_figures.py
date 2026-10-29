@@ -5,8 +5,8 @@ Every plotted value is read from a table in docs/benchmarks/data/ (columns are
 described in docs/benchmarks/methods_2026.md). The only constants drawn are
 reference marks: the nominal 0.95 coverage, zero error and the y = x diagonal.
 
-    python docs/paper/make_figures.py --out internal_docs/manuscript/figures
-    python docs/paper/make_figures.py --out internal_docs/manuscript/figures --only fig3
+    python docs/paper/make_figures.py --out figures
+    python docs/paper/make_figures.py --out figures --only fig3
 
 For each figure it writes <name>.pdf, <name>.svg, <name>.png (600 dpi) and
 <name>_data.tsv (the plotted rows, with the source file of each row).
@@ -853,7 +853,7 @@ FIGURES = {
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--out", default=str(REPO / "internal_docs" / "manuscript" / "figures"),
+    ap.add_argument("--out", default=str(REPO / "figures"),
                     help="output folder (default: %(default)s)")
     ap.add_argument("--only", nargs="+", metavar="FIG",
                     help="figures to draw, by full name or prefix (fig3, fig3_zymo_composition)")
