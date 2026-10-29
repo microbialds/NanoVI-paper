@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+message: "These are the benchmark scripts, results and figure code of the NanoVI manuscript. If you use them, please cite the preprint below and NanoVI."
+title: "NanoVI-paper: benchmark and manuscript material for NanoVI"
+abstract: "Scripts, result tables and figure code behind the NanoVI manuscript: the 2026 methods benchmark on simulated and real 16S mock communities, the comparison with Emu, EPI2ME wf-16s, Kraken2 + Bracken and NanoCLUST, and the clinical rerun on three ONT 16S cohorts."
+type: software
+authors:
+  - family-names: Curiqueo
+    given-names: Carolina
+  - family-names: Fuentes-Santander
+    given-names: Francisco
+  - family-names: Ugalde
+    given-names: Juan A.
+    email: juan@ugalde.bio
+repository-code: "https://github.com/microbialds/NanoVI-paper"
+license: MIT
+keywords:
+  - 16S rRNA
+  - Oxford Nanopore
+  - benchmark
+  - metagenomics
+preferred-citation:
+  type: article
+  title: "NanoVI: a Bayesian variational inference Nextflow pipeline for species-level taxonomic classification from full-length 16S rRNA Nanopore reads"
+  authors:
+    - family-names: Curiqueo
+      given-names: Carolina
+    - family-names: Fuentes-Santander
+      given-names: Francisco
+    - family-names: Ugalde
+      given-names: Juan A.
+  journal: "bioRxiv"
+  year: 2026
+  month: 3
+  doi: "10.64898/2026.03.07.710315"
+  url: "https://www.biorxiv.org/content/10.64898/2026.03.07.710315v1"
+references:
+  - type: software
+    title: "NanoVI"
+    version: "1.1.0"
+    date-released: "2026-10-29"
+    authors:
+      - family-names: Curiqueo
+        given-names: Carolina
+      - family-names: Fuentes-Santander
+        given-names: Francisco
+      - family-names: Ugalde
+        given-names: Juan A.
+    repository-code: "https://github.com/microbialds/NanoVI"
+    url: "https://github.com/microbialds/NanoVI/releases/tag/v1.1.0"
+    license: MIT

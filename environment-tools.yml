@@ -1,0 +1,11 @@
+# Command-line tools the benchmark runs on the host: read simulation (simulate.py),
+# clustering (build_variants.py, VSEARCH) and subsampling of the real reads (seqkit).
+# Lock file phase7a/env_tools.lock.txt beside the data.
+name: nanovi-paper-tools
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - badread=0.4.2
+  - vsearch=2.32.0
+  - seqkit=2.14.0

@@ -1,0 +1,4 @@
+# make_figures.py output (default --out)
+/figures/
+__pycache__/
+*.pyc

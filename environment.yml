@@ -1,0 +1,17 @@
+# Host-side Python for the benchmark scripts, the manuscript figures and NanoVI's
+# bin/ modules they import (pins as in nanovi/containers/requirements.txt).
+# The environment the results were produced with: phase7a/env_py, lock file
+# phase7a/env_py.lock.txt beside the data.
+name: nanovi-paper
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.11
+  - matplotlib-base=3.11.2
+  - pandas=3.0.6
+  - numpy=2.4.6
+  - scipy=1.17.1
+  - pysam=0.24.1
+  - biopython=1.88
+  - numba=0.68.0
