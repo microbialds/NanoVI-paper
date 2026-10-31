@@ -18,7 +18,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from common import BENCH, read_taxonomy
+from common import BENCH, CROSS_RULES, PHASE13, read_taxonomy
 
 # Tax ID of the unknown-taxon prototype in the Phase 7a estimates (bin/ at 34d0411;
 # the prototype was removed afterwards, D22)
@@ -190,3 +190,82 @@ def real_metrics(est, sample, n_reads):
         out.update(compare_real(est, truth, n_reads, level))
     out["unknown_abundance"] = est.get(UNKNOWN, 0.0)
     return out
+
+
+# ─── Phase 13: cross-genus rules (F56) ──────────────────────────────────────
+
+@lru_cache(maxsize=None)
+def emptied_tax_ids(db):
+    """Tax IDs that a Phase 13 database's rule left with no sequence (c995 of a cleaned build: its source's)."""
+    rule = db[len("c995_"):] if db.startswith("c995_") else db
+    if rule not in CROSS_RULES:
+        return frozenset()
+    t = pd.read_csv(PHASE13 / "db" / f"merged_{rule}" / "cross_genus_emptied.tsv", sep="\t")
+    return frozenset(t["tax_id"].astype(int))
+
+
+@lru_cache(maxsize=None)
+def cross_genus_species():
+    """Species of the exact database that carry a sequence also found in another genus."""
+    t = pd.read_csv(PHASE13 / "db" / "merged_keep" / "cross_genus_identical.tsv", sep="\t", dtype=str)
+    return frozenset(sp for names in t["species"] for sp in names.split(";"))
+
+
+def cross_fp(est, expected):
+    """False-positive species (reported, not in expected) that carry a cross-genus sequence in exact."""
+    carriers = cross_genus_species()
+    fp = {k: v for k, v in est.items() if v > 0 and k not in expected and k != UNKNOWN}
+    total = sum(v for k, v in est.items() if k != UNKNOWN)
+    on = {k: v for k, v in fp.items() if k in carriers}
+    return {"fp_cross_carrier_count": len(on), "fp_cross_carrier_abundance": sum(on.values()) / total if total else 0.0}
+
+
+def responsibilities(bam, est_json):
+    """read -> {tax ID: share} at the final abundances: exp(score) x abundance over the reported candidates.
+
+    The same split as clade_exclusion.read_destinations; a read none of whose candidates was
+    reported maps to {} (below detection). Reads with no scored alignment are absent.
+    """
+    import numpy as np
+    from likelihood import score_reads
+    pi = {int(k): v for k, v in json.loads(Path(est_json).read_text())["abundance"].items()}
+    out = {}
+    for read, (tids, scores) in score_reads(str(bam))[0].items():
+        cand = [(t, sc) for t, sc in zip(tids, scores) if pi.get(t, 0) > 0]
+        if not cand:
+            out[read] = {}
+            continue
+        w = np.array([sc for _, sc in cand]) + np.log([pi[t] for t, _ in cand])
+        w = np.exp(w - w.max())
+        w /= w.sum()
+        out[read] = dict(zip((t for t, _ in cand), w))
+    return out
+
+
+def emptied_destinations(base_bam, base_est, bam, est, emptied, expected, db_dir):
+    """Where the reads go that the base database put on species the rule left with no sequence.
+
+    base is the database the rule was applied to (exact, or c995 for c995 of a cleaned build).
+    A read counts with the share it gave those species in the base run. In the cleaned
+    database each such read goes to expected species (in the truth), other species, below
+    detection (no reported candidate) or unassigned (no scored alignment).
+    """
+    tax = taxonomy(str(db_dir))
+    base = responsibilities(base_bam, base_est) if emptied else {}
+    moved = {r: sum(p for t, p in d.items() if t in emptied) for r, d in base.items()}
+    moved = {r: w for r, w in moved.items() if w > 0}
+    dest = dict.fromkeys(["expected", "other", "below_detection", "unassigned"], 0.0)
+    if moved:
+        cleaned = responsibilities(bam, est)
+        for r, w in moved.items():
+            d = cleaned.get(r)
+            if d is None:
+                dest["unassigned"] += w
+            elif not d:
+                dest["below_detection"] += w
+            else:
+                for t, p in d.items():
+                    dest["expected" if tax.loc[t, "species"] in expected else "other"] += w * p
+    total = sum(moved.values())
+    return {"emptied_species_reads": total,
+            **{f"emptied_reads_to_{k}": (v / total if total else float("nan")) for k, v in dest.items()}}

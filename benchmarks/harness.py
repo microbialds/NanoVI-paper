@@ -9,7 +9,10 @@ The commands are those of the pipeline's modules, with the pipeline's containers
   LIKELIHOOD    bin/read_likelihood.py
   RUN_VI        bin/estimate_abundance.py
 The Python steps run in the benchmark environment, which has the image's package
-versions (containers/requirements.txt). Every output is written under a temporary
+versions (containers/requirements.txt). Version '2.31+1.24' is the pipeline since
+Phase 7b (D30): minimap2 2.31 piped into samtools 1.24 in the 'alignment' label's
+image, with fastplong 0.7.0 (Phase 13 runs this way); its alignments also write
+<output>.cpu, the user and system CPU seconds of minimap2 and samtools. Every output is written under a temporary
 name (tmp_ prefix) and renamed when complete, so an interrupted run never leaves a partial file behind,
 and a step whose output exists is skipped. Each step writes <output>.time with its
 wall time in seconds.
@@ -24,7 +27,7 @@ import sys
 import time
 from pathlib import Path
 
-from common import BENCH, BIN
+from common import BENCH, BIN, PHASE13, PHASE7B_CONFIRM, cross_db_dir
 
 PYTHON = os.environ.get("BENCH_PYTHON", sys.executable)
 FASTPLONG_IMAGE = {
@@ -36,7 +39,11 @@ ALIGN_IMAGE = {
     "2.24": "quay.io/biocontainers/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:365b17b986c1a60c1b82c6066a9345f38317b763-0",
     # minimap2 2.31 alone (D16 arm); samtools from the 2.24 image converts its SAM
     "2.31": "quay.io/biocontainers/minimap2:2.31--h118bc1c_0",
+    # minimap2 2.31 + samtools 1.24, the pipeline's 'alignment' label since Phase 7b (D30)
+    "2.31+1.24": "quay.io/biocontainers/mulled-v2-66534bcbb7031a148b13e2ad42583020b9cd25c4:ad4c240457048f1d3cc0bd8c8fa39bf27d222eb7-0",
 }
+# Versions whose image has samtools, so minimap2 pipes into it as in the pipeline
+PIPED = {"2.24", "2.31+1.24"}
 UID = f"{os.getuid()}:{os.getgid()}"
 
 
@@ -78,6 +85,7 @@ def filter_reads(fastq, out, min_quality=None, version="0.2.2", threads=2):
 
 def build_index(db_dir, out, threads=8, version="2.24", k=21):
     out = Path(out)
+    version = "2.31" if version == "2.31+1.24" else version
     cmd = f"minimap2 -x map-ont -k {k} -t {threads} -d {{OUT}} {db_dir}/species_taxid.fasta"
     return _run(out, docker(ALIGN_IMAGE[version], cmd, [Path(db_dir), out.parent]))
 
@@ -90,6 +98,11 @@ def align(reads, index, out, N, threads=4, version="2.24"):
            f"{index} {reads}")
     if version == "2.24":
         cmd = f"{mm2} | samtools view -b -@ 2 -o {{OUT}} -"
+        return _run(out, docker(ALIGN_IMAGE[version], cmd, [Path(reads).parent, Path(index).parent, out.parent]))
+    if version == "2.31+1.24":
+        # bash's times, not in a pipe (a subshell has no children): the second line is the
+        # children's user and system CPU
+        cmd = f"{mm2} | samtools view -b -@ 2 -o {{OUT}} -; times > {out}.cpu.tmp && mv {out}.cpu.tmp {out}.cpu"
         return _run(out, docker(ALIGN_IMAGE[version], cmd, [Path(reads).parent, Path(index).parent, out.parent]))
     # minimap2 2.31 writes SAM; the pipeline's samtools converts it in a second container
     sam = out.with_suffix(".sam")
@@ -190,6 +203,84 @@ def read_counts(npz):
     return json.loads(Path(npz).with_suffix(".counts.json").read_text())
 
 
-def index_path(db, version="2.24", k=21):
+def index_path(db, version="2.24", k=21, root=None):
+    # one index per minimap2 version: the pipeline's image builds the same index as minimap2 2.31's
+    version = version.split("+")[0]
     suffix = "" if version == "2.24" else f".minimap2-{version}"
-    return BENCH / "indexes" / f"{db}.map-ont.k{k}{suffix}.mmi"
+    return (root or BENCH) / "indexes" / f"{db}.map-ont.k{k}{suffix}.mmi"
+
+
+def align_cpu(bam):
+    """User + system CPU seconds of an alignment run with version '2.31+1.24' (None for others)."""
+    path = Path(str(bam) + ".cpu")
+    if not path.exists():
+        return None
+    # second line of bash's times: children's user and system CPU, as 'XmY.YYYs XmY.YYYs'
+    return sum(60 * float(m) + float(sec) for m, sec in re.findall(r"(\d+)m([\d.]+)s",
+                                                                   path.read_text().splitlines()[1]))
+
+
+# ─── Phase 13: cross-genus database arms (F56) ──────────────────────────────
+
+CROSS_VERSION = "2.31+1.24"
+
+
+def cross_index(db):
+    """minimap2 2.31 index of a Phase 13 database; exact's is the Phase 7a/7b one."""
+    root = BENCH if db == "exact" else PHASE13
+    path = index_path(db, CROSS_VERSION, root=root)
+    if not path.exists():
+        build_index(cross_db_dir(db), path, threads=8, version=CROSS_VERSION)
+    return path
+
+
+def _link(src, dst):
+    dst = Path(dst)
+    if not dst.exists():
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        dst.symlink_to(src)
+    return dst
+
+
+def cross_run(run_dir, raw_reads, db, confirm_name=None, threads=4):
+    """One Phase 13 arm as the pipeline runs it: fastplong 0.7.0, minimap2 2.31 + samtools 1.24 at
+    -N 3, the Emu score, VB at the defaults. Returns (filtered reads, BAM, npz, estimate).
+
+    Where Phase 7b's pipeline run of the exact database has the sample (confirm_name), its
+    filtered reads are used for every database and its alignment for exact, so the exact arm
+    is that run.
+    """
+    run = Path(run_dir)
+    filt, aln, npz, est = (run / "filtered.fastq.gz", run / "aln" / f"{db}.bam",
+                           run / "lik" / f"{db}.npz", run / "est" / f"{db}.json")
+    confirm_reads = PHASE7B_CONFIRM / "filtered" / f"{confirm_name}_filtered.fastq.gz"
+    if confirm_name and confirm_reads.exists():
+        _link(confirm_reads, filt)
+        if db == "exact":
+            _link(PHASE7B_CONFIRM / "bam" / f"{confirm_name}_vi_alignments.bam", aln)
+    else:
+        filter_reads(raw_reads, filt, version="0.7.0")
+    # a linked file's own directory is what the container must mount
+    align(filt.resolve(), cross_index(db), aln, 3, threads=threads, version=CROSS_VERSION)
+    likelihood(aln, npz)
+    estimate(npz, est)
+    return filt, aln, npz, est
+
+
+@functools.lru_cache(maxsize=None)
+def confirm_align_cpu():
+    """sample -> CPU seconds of ALIGN_READS in Phase 7b's pipeline run (realtime x %cpu, its trace)."""
+    import csv
+    unit = {"h": 3600, "m": 60, "s": 1, "ms": 0.001}
+    out = {}
+    with open(PHASE7B_CONFIRM / "pipeline_info" / "trace.txt") as f:
+        for row in csv.DictReader(f, delimiter="\t"):
+            if "ALIGN_READS" not in row["name"]:
+                continue
+            secs = sum(float(v) * unit[u] for v, u in re.findall(r"([\d.]+)(ms|h|m|s)", row["realtime"]))
+            # the trace names tasks by number: the BAM in the task's work directory names the sample
+            work = next((PHASE7B_CONFIRM.parent / "work" / row["hash"].split("/")[0]).glob(
+                row["hash"].split("/")[1] + "*"))
+            sample = next(work.glob("*_vi_alignments.bam")).name.replace("_vi_alignments.bam", "")
+            out[sample] = secs * float(row["%cpu"].rstrip("%")) / 100
+    return out

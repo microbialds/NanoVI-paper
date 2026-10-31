@@ -19,6 +19,11 @@ Zymo mock (SRR23636353), each subsampled to 10,000 reads (seqkit shuffle, seed
 
 The hac basecalls (an extra arm, D20) run the reference and q10/q15 only.
 Writes <bench>/results/real/<sample>.tsv per sample and real_nanovi.tsv.
+
+--cross (Phase 13, F56) runs instead the reference setting on each database of
+common.CROSS_DBS with the pipeline's tools since Phase 7b (harness.cross_run), on
+the 13 sup and Emu/preprint samples, and writes under NANOVI_PHASE13
+(results/real/<sample>.tsv, results/real_cross.tsv).
 """
 import argparse
 import gzip
@@ -28,8 +33,8 @@ from pathlib import Path
 import pandas as pd
 
 import harness
-from common import BENCH, write_tsv
-from evaluate import load_estimate, real_metrics
+from common import BENCH, CROSS_DBS, PHASE13, cross_db_dir, write_tsv
+from evaluate import cross_fp, emptied_destinations, emptied_tax_ids, load_estimate, load_real_truth, real_metrics
 from names import load as load_crosswalk, to_gtdb
 
 N_READS = 10000
@@ -127,6 +132,32 @@ def run_sample(name, arms, align_threads):
     return write_tsv(pd.DataFrame(rows), out)
 
 
+def run_cross(name, dbs, align_threads):
+    """Phase 13: every database of one real sample, then its metrics."""
+    out = PHASE13 / "results" / "real" / f"{name}.tsv"
+    if out.exists():
+        return out
+    run = PHASE13 / "real" / "runs" / name
+    paths = {db: harness.cross_run(run, subsample(name), db, confirm_name=name, threads=align_threads)
+             for db in dbs}
+    expected = set(load_real_truth(name))
+    confirm_cpu = harness.confirm_align_cpu()
+    rows = []
+    for db in dbs:
+        _, aln, npz, est = paths[db]
+        abund, below = load_estimate(est, cross_db_dir(db))
+        base = "c995" if db.startswith("c995_") else "exact"
+        moved = {}
+        if db != base and base in paths:
+            moved = emptied_destinations(paths[base][1], paths[base][3], aln, est, emptied_tax_ids(db), expected,
+                                         cross_db_dir(db))
+        rows.append({"sample": name, "db": db, "below_detection": below, **harness.read_counts(npz),
+                     **real_metrics(abund, name, N_READS), **cross_fp(abund, expected),
+                     "align_cpu_s": harness.align_cpu(aln) if not aln.is_symlink() else confirm_cpu.get(name),
+                     "index_bytes": harness.cross_index(db).stat().st_size, **moved})
+    return write_tsv(pd.DataFrame(rows), out)
+
+
 def samples():
     return sorted(p.name.replace(".fastq.gz", "") for p in (REAL / "sub20k").glob("*.fastq.gz"))
 
@@ -137,8 +168,26 @@ def main():
     ap.add_argument("--arms", default=",".join(ARMS))
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--align-threads", type=int, default=4)
+    ap.add_argument("--cross", action="store_true", help="Phase 13: the cross-genus databases (see above)")
+    ap.add_argument("--dbs", default=",".join(CROSS_DBS), help="--cross: databases (default: all)")
     args = ap.parse_args()
     names = args.samples.split(",") if args.samples else samples()
+    if args.cross:
+        names = [n for n in names if "_hac_" not in n]
+        dbs = args.dbs.split(",")
+        for db in dbs:
+            harness.cross_index(db)
+        with ProcessPoolExecutor(args.workers) as pool:
+            futures = {pool.submit(run_cross, n, dbs, args.align_threads): n for n in names}
+            for f in as_completed(futures):
+                try:
+                    f.result()
+                    print(f"done {futures[f]}", flush=True)
+                except Exception as e:
+                    print(f"FAILED {futures[f]}: {e!r}", flush=True)
+        files = sorted((PHASE13 / "results" / "real").glob("*.tsv"))
+        write_tsv(pd.concat(pd.read_csv(p, sep="\t") for p in files), PHASE13 / "results" / "real_cross.tsv")
+        return
     arms = args.arms.split(",")
     for arm in arms:
         harness.check_options(ARMS[arm][3], ARMS[arm][4])

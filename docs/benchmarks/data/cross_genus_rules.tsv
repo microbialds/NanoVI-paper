@@ -1,0 +1,9 @@
+build	rule	entries	species_with_sequence	cross_genus_sequences	cross_genus_entries	entries_removed	species_touched	species_emptied	sequences_kept_in_one_genus	sequences_removed_everywhere	identical_16s_species	identical_16s_groups
+merged	keep	232447	59037	1360	4147	0	0	0	0	0	4335	1264
+merged	remove	228300	58682	1360	4147	4147	2080	355	0	1360	3925	1238
+merged	best-genus	229161	58830	1360	4147	3286	1642	207	243	1117	4250	1257
+merged	most-copies	230244	58904	1360	4147	2203	1227	133	1356	4	4223	1257
+suffixes	keep	233611	62295	1360	4281	0	0	0	0	0	5215	1513
+suffixes	remove	229330	61882	1360	4281	4281	2256	413	0	1360	4730	1490
+suffixes	best-genus	230345	62071	1360	4281	3266	1679	224	265	1095	5126	1507
+suffixes	most-copies	231401	62157	1360	4281	2210	1260	138	1356	4	5098	1506

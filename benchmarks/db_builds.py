@@ -8,13 +8,19 @@ Reads each build's species_taxid.fasta, taxonomy.tsv, identical_16s.tsv and
 cross_genus_identical.tsv and writes docs/benchmarks/data/db_builds_r226.tsv.
 
     python benchmarks/db_builds.py --merged <dir> --suffixes <dir>
+
+With --cross (Phase 13, F56) it reads instead the Phase 13 builds under
+NANOVI_PHASE13/db, each build with each --cross-genus-rule (keep, remove,
+best-genus, most-copies), and writes db_builds_r226_cross.tsv. A cleaned build's
+cross_genus_identical.tsv lists the sequences as built, so its two cross-genus
+rows repeat the keep build's; db_audit.py --cross-genus gives what each rule removed.
 """
 import argparse
 from pathlib import Path
 
 import pandas as pd
 
-from common import DOCS_DATA, write_tsv
+from common import CROSS_RULES, DOCS_DATA, PHASE13, write_tsv
 
 
 def counts(db):
@@ -42,9 +48,19 @@ def counts(db):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--merged", required=True)
-    ap.add_argument("--suffixes", required=True)
+    ap.add_argument("--merged")
+    ap.add_argument("--suffixes")
+    ap.add_argument("--cross", action="store_true", help="the Phase 13 builds instead")
     args = ap.parse_args()
+    if args.cross:
+        cols = {f"{b}_{r}": counts(PHASE13 / "db" / f"{b}_{r}")
+                for b in ("merged", "suffixes") for r in ["keep", *CROSS_RULES]}
+        df = pd.DataFrame({"metric": list(cols["merged_keep"]), **{k: list(v.values()) for k, v in cols.items()}})
+        print(df.to_string(index=False))
+        write_tsv(df, DOCS_DATA / "db_builds_r226_cross.tsv")
+        return
+    if not (args.merged and args.suffixes):
+        ap.error("--merged and --suffixes are required without --cross")
     m, s = counts(args.merged), counts(args.suffixes)
     df = pd.DataFrame({"metric": list(m), "merged": list(m.values()), "suffixes_kept": [s[k] for k in m]})
     print(df.to_string(index=False))
