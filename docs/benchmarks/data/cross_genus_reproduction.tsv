@@ -1,0 +1,5 @@
+check	samples	max_abs_diff_species_l1	max_abs_diff_genus_l1	max_abs_diff_group_l1	max_abs_diff_species_fp_count	max_abs_diff_below_detection	same_species	max_abs_diff_assigned
+stored 7a alignments, bin/ now	92	0.0	0.0	0.0	0.0	0.0	92.0	
+minimap2 2.31 + fastplong 0.7.0 (Phase 7b run), bin/ now	92	0.0004314785073595284	0.00020184069880710073	0.0019242224483345012	0.0	11.0	92.0	3.0
+real mocks: Phase 7a reference	13	0.00044716427874053055	0.0002773141530928447	0.00029366697229826766	0.0	1.0		3.0
+real mocks: Phase 7a tools_new (minimap2 2.31 + fastplong 0.7.0)	13	0.0	0.0	0.0	0.0	0.0		0.0
