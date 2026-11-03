@@ -36,8 +36,8 @@ import numpy as np
 import pandas as pd
 import pysam
 
-from common import BENCH, CROSS_DBS, DOCS_DATA, DOCS_FIG, PHASE13, write_tsv
-from evaluate import load_estimate, taxonomy
+from common import BENCH, CROSS_DBS, CROSS_RULES, DOCS_DATA, DOCS_FIG, PHASE13, cross_db_dir, write_tsv
+from evaluate import UNKNOWN, load_estimate, load_real_truth, taxonomy
 from likelihood import score_reads
 from simulate import PAIRS
 
@@ -716,6 +716,30 @@ def _paired(t, metrics, keys):
     return pd.DataFrame(rows)
 
 
+def _cross_real_species():
+    """Per real sample and expected species (known share): |estimate - truth| on exact and on each rule
+    applied to it (estimate renormalised over the known species, as species_l1_known), and the entries
+    the rule removed from the species."""
+    lost = pd.read_csv(DOCS_DATA / "cross_genus_truth_species.tsv", sep="\t")
+    lost = lost[lost["build"] == "merged"]
+    rows = []
+    for run in sorted((PHASE13 / "real" / "runs").iterdir()):
+        known = {k: v for k, v in load_real_truth(run.name).items() if v == v}
+        err = {}
+        for db in ["exact", *CROSS_RULES]:
+            est, _ = load_estimate(run / "est" / f"{db}.json", cross_db_dir(db))
+            tot = sum(est.get(k, 0.0) for k in known if k != UNKNOWN)
+            err[db] = {sp: abs(est.get(sp, 0.0) / tot - t) for sp, t in known.items()}
+        for sp, t in known.items():
+            row = {"sample": run.name, "species": sp, "truth": t, "abs_err_exact": err["exact"][sp]}
+            for db in CROSS_RULES:
+                l = lost[(lost["rule"] == db) & (lost["species"] == sp)]["entries_removed"]
+                row[f"diff_{db}"] = err[db][sp] - err["exact"][sp]
+                row[f"entries_removed_{db}"] = int(l.iloc[0]) if len(l) else 0
+            rows.append(row)
+    return pd.DataFrame(rows)
+
+
 def cross():
     res = PHASE13 / "results"
     order = {db: i for i, db in enumerate(CROSS_DBS)}
@@ -743,6 +767,22 @@ def cross():
                  "same_species": int(sum(spx.get(s) == sp7a.get(s) for s in common)),
                  "max_abs_diff_assigned": float((ex.loc[common, "assigned_count"]
                                                  - ofat.loc[common, "assigned_count"]).abs().max())})
+    real = pd.read_csv(res / "real_cross.tsv", sep="\t").sort_values("db", key=lambda c: c.map(order), kind="stable")
+    rx = real[real["db"] == "exact"].set_index("sample")
+    r7a = pd.read_csv(RESULTS / "real_nanovi.tsv", sep="\t")
+    for arm, label in (("reference", "real mocks: Phase 7a reference"),
+                       ("tools_new", "real mocks: Phase 7a tools_new (minimap2 2.31 + fastplong 0.7.0)")):
+        r = r7a[r7a["arm"] == arm].set_index("sample")
+        c = rx.index.intersection(r.index)
+        rows.append({"check": label, "samples": len(c),
+                     **{f"max_abs_diff_{m}": float((rx.loc[c, f"{m}_known"] - r.loc[c, f"{m}_known"]).abs().max())
+                        for m in ("species_l1", "genus_l1", "group_l1")},
+                     "max_abs_diff_species_fp_count": float((rx.loc[c, "species_fp_count"]
+                                                             - r.loc[c, "species_fp_count"]).abs().max()),
+                     "max_abs_diff_below_detection": float((rx.loc[c, "below_detection"]
+                                                            - r.loc[c, "below_detection"]).abs().max()),
+                     "max_abs_diff_assigned": float((rx.loc[c, "assigned_count"]
+                                                     - r.loc[c, "assigned_count"]).abs().max())})
     write_tsv(pd.DataFrame(rows), DOCS_DATA / "cross_genus_reproduction.tsv")
 
     keys = ["depth", "chemistry", "shape", "db"]
@@ -753,10 +793,13 @@ def cross():
     write_tsv(grid.groupby("db", sort=False)[CROSS_METRICS].mean().reset_index(),
               DOCS_DATA / "cross_genus_sims_overall.tsv")
 
-    real = pd.read_csv(res / "real_cross.tsv", sep="\t").sort_values("db", key=lambda c: c.map(order), kind="stable")
     write_tsv(real, DOCS_DATA / "cross_genus_real_per_sample.tsv")
     write_tsv(real.groupby("db", sort=False)[REAL_METRICS].mean().reset_index(), DOCS_DATA / "cross_genus_real_summary.tsv")
     write_tsv(_paired(real, REAL_METRICS, []), DOCS_DATA / "cross_genus_real_paired.tsv")
+
+    # Real mocks: where each rule changes the error, per expected species with a known share,
+    # next to the entries the rule removed from that species
+    write_tsv(_cross_real_species(), DOCS_DATA / "cross_genus_real_species.tsv")
 
     # Reads the base database put on species a rule left with no sequence, and where they went
     moved = []
