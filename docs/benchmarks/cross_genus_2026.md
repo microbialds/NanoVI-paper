@@ -39,7 +39,7 @@ and rebuilds `identical_16s.tsv` from the cleaned sequences.
 - **Code.** NanoVI `bin/` at `310a8b9` for every build and run (`NANOVI_REPO` pointed
   at `phase13/br_src`, a `git archive` of that commit). NanoVI-paper scripts at
   `fe85534` (branch `roadmap/p13-cross-genus-db`); `analyse.py cross` gained the real
-  reproduction rows and the per-species table in the commit that adds this report.
+  reproduction rows and the per-species table in `b5c53d6`.
 - **Tools.** The pipeline's tools since Phase 7b: fastplong 0.7.0
   (`quay.io/biocontainers/fastplong:0.7.0--h43da1c4_0`), minimap2 2.31 with samtools
   1.24 (the mulled image `mulled-v2-66534bcb…:ad4c2404…-0`), `-ax map-ont -N 3 -p 0.9
