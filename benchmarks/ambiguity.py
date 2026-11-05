@@ -31,6 +31,11 @@ ambiguity_coverage.tsv. --cross-links refits the real mocks' groups that cross a
 (at the default threshold) and writes, to docs/benchmarks/data/ambiguity_real_cross_links.tsv,
 each link between their members with f, the members' expected reads, whether each is a
 mock species and whether it carries a cross-genus identical sequence (D23).
+
+--family runs one more arm, FAMILY_ARM (VB at the default threshold, links limited to
+rows of one family: benchmarks/family_groups.py, a change to D39 NanoVI does not have),
+on every sample and writes it to results/ambiguity_family.tsv,
+ambiguity_family_groups.tsv and ambiguity_family_coverage.tsv in the same layout.
 """
 import argparse
 import json
@@ -52,6 +57,7 @@ TAUS = [0.2, 0.25, 0.3, 0.4]
 DEFAULT_TAU = 0.25
 RIGHT_TOLERANCE = 0.25
 PLACEHOLDERS = {"Below detection", "Unassigned"}
+FAMILY_ARM = f"family_tau{DEFAULT_TAU}"
 
 
 def samples():
@@ -64,7 +70,9 @@ def lik_dir(sample, kind):
     return (PHASE13 / "runs" / sample if kind == "sim" else PHASE13 / "real" / "runs" / sample) / "lik"
 
 
-def arms(sample):
+def arms(sample, family=False):
+    if family:
+        return [(FAMILY_ARM, "vb", DEFAULT_TAU)]
     out = [(f"vb_tau{t}", "vb", t) for t in TAUS]
     if "_10k_" in sample:
         out.append((f"em_tau{DEFAULT_TAU}", "em", DEFAULT_TAU))
@@ -78,7 +86,8 @@ def run_arm(sample, kind, arm, estimator, tau):
     out.mkdir(parents=True, exist_ok=True)
     lik = lik_dir(sample, kind)
     taxonomy = DB / "taxonomy.tsv"
-    subprocess.run([PYTHON, str(BIN / "estimate_abundance.py"), "--scores", str(lik / "exact.npz"),
+    script = Path(__file__).with_name("family_groups.py") if arm == FAMILY_ARM else BIN / "estimate_abundance.py"
+    subprocess.run([PYTHON, str(script), "--scores", str(lik / "exact.npz"),
                     "--output", str(out / "tmp_est.json"), "--estimator", estimator, "--taxonomy", str(taxonomy),
                     "--groups", "--group-min-shared", str(tau)],
                    check=True, stdout=subprocess.DEVNULL, stderr=open(out / "est.log", "w"))
@@ -280,13 +289,14 @@ def main():
     parser.add_argument("--jobs", type=int, default=8)
     parser.add_argument("--score-only", action="store_true")
     parser.add_argument("--cross-links", action="store_true", help="only write ambiguity_real_cross_links.tsv")
+    parser.add_argument("--family", action="store_true", help=f"only the {FAMILY_ARM} arm (links within a family)")
     parser.add_argument("--only", help="run the samples whose name contains this (a smoke test; no results written)")
     args = parser.parse_args()
     print(f"NanoVI: {NANOVI}", file=sys.stderr)
     if args.cross_links:
         cross_links()
         return
-    todo = [(s, k, a, e, t) for s, k in samples() for a, e, t in arms(s) if not args.only or args.only in s]
+    todo = [(s, k, a, e, t) for s, k in samples() for a, e, t in arms(s, args.family) if not args.only or args.only in s]
     if not args.score_only:
         with ProcessPoolExecutor(args.jobs) as pool:
             for i, (s, a) in enumerate(pool.map(_job, todo), 1):
@@ -302,9 +312,10 @@ def main():
         d = pd.DataFrame(rows)
         print(d.groupby(["arm", "table"])[[c for c in ("l1", "l1_known", "groups") if c in d]].mean())
         return
-    write_tsv(pd.DataFrame(rows), PHASE14 / "results" / "ambiguity.tsv")
-    write_tsv(pd.DataFrame(group_rows), PHASE14 / "results" / "ambiguity_groups.tsv")
-    write_tsv(pd.DataFrame(cov), PHASE14 / "results" / "ambiguity_coverage.tsv")
+    name = "ambiguity_family" if args.family else "ambiguity"
+    write_tsv(pd.DataFrame(rows), PHASE14 / "results" / f"{name}.tsv")
+    write_tsv(pd.DataFrame(group_rows), PHASE14 / "results" / f"{name}_groups.tsv")
+    write_tsv(pd.DataFrame(cov), PHASE14 / "results" / f"{name}_coverage.tsv")
 
 
 if __name__ == "__main__":

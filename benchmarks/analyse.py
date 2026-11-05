@@ -27,6 +27,8 @@
                  lenient) at each threshold on the simulations and the real mocks, the
                  groups formed, EM against VB and the group intervals (ambiguity_*.tsv,
                  fig_ambiguity.png)
+  ambiguity_family  Phase 14: links limited to one family (ambiguity.py --family) against
+                 D39 as shipped (ambiguity_family_*.tsv)
 
 Every figure (docs/benchmarks/figures/*.png) has its source data in
 docs/benchmarks/data/ under the same name.
@@ -976,10 +978,59 @@ def ambiguity():
     save_figure(fig, "fig_ambiguity", data)
 
 
+ABOVE_FAMILY = {"order", "class", "phylum", "superkingdom"}
+
+
+def ambiguity_family():
+    """The family-restricted links (ambiguity.py --family) against D39 as shipped, both at the default threshold."""
+    res = PHASE14 / "results"
+    default, family = "vb_tau0.25", "family_tau0.25"
+    d = pd.concat([pd.read_csv(res / "ambiguity.tsv", sep="\t"), pd.read_csv(res / "ambiguity_family.tsv", sep="\t")])
+    d = d[d["arm"].isin([default, family])].copy()
+    d["l1"] = d["l1"].fillna(d["l1_known"])
+    g = pd.concat([pd.read_csv(res / "ambiguity_groups.tsv", sep="\t", keep_default_na=False),
+                   pd.read_csv(res / "ambiguity_family_groups.tsv", sep="\t", keep_default_na=False)])
+    g = g[g["arm"].isin([default, family]) & (g["scoring"] == "strict")]
+    above = g[g["lowest_common_rank"].isin(ABOVE_FAMILY)]
+    d = d.merge(above.groupby(["sample", "arm"]).size().rename("groups_above_family").reset_index(),
+                on=["sample", "arm"], how="left")
+    d["groups_above_family"] = d["groups_above_family"].fillna(0).astype(int)
+
+    cols = AMBIGUITY_METRICS + AMBIGUITY_COUNTS + ["groups_above_family"]
+    write_tsv(d.groupby(["kind", "table", "arm"])[cols].mean().reset_index(), DOCS_DATA / "ambiguity_family_summary.tsv")
+
+    # Per sample and table, the family arm against the default; the samples whose groups changed
+    w = d.pivot_table(index=["kind", "sample", "table"], columns="arm", values=["l1", "fp_count", "groups"])
+    w.columns = [f"{m}_{'family' if a == family else 'default'}" for m, a in w.columns]
+    w = w.reset_index()
+    # The scores sum over sets, so the same tables can differ in the last bits between runs
+    w["l1_diff"] = (w["l1_family"] - w["l1_default"]).where(lambda x: x.abs() > 1e-12, 0.0)
+    w["fp_diff"] = w["fp_count_family"] - w["fp_count_default"]
+    changed = w[(w["l1_diff"] != 0) | (w["fp_diff"] != 0) | (w["groups_family"] != w["groups_default"])]
+    split = (above[above["arm"] == default].groupby("sample")["members"].agg(" | ".join)
+             .rename("default_groups_above_family"))
+    changed = changed.merge(split, left_on="sample", right_index=True, how="left")
+    write_tsv(changed[changed["table"] != "species"], DOCS_DATA / "ambiguity_family_changed.tsv")
+    rows = []
+    for (kind, table), x in w[w["table"] != "species"].groupby(["kind", "table"]):
+        for m in ("l1", "fp"):
+            dd = x[f"{m}_diff"]
+            rows.append({"kind": kind, "table": table, "metric": m if m == "l1" else "fp_count", "n": len(dd),
+                         "mean_diff": dd.mean(), "better": int((dd < 0).sum()), "worse": int((dd > 0).sum())})
+    write_tsv(pd.DataFrame(rows), DOCS_DATA / "ambiguity_family_paired.tsv")
+
+    cov = pd.concat([pd.read_csv(res / "ambiguity_coverage.tsv", sep="\t"),
+                     pd.read_csv(res / "ambiguity_family_coverage.tsv", sep="\t")])
+    cov = cov[cov["arm"].isin([default, family])]
+    write_tsv(cov.groupby(["arm", "level"])["covers"].agg(["mean", "size"])
+              .rename(columns={"mean": "coverage", "size": "n"}).reset_index(), DOCS_DATA / "ambiguity_family_coverage.tsv")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("what", nargs="+", choices=["ablation", "contamination", "pairs", "lod", "clade", "real", "intervals",
-                                                 "comparators", "timing", "cross", "ambiguity"])
+                                                 "comparators", "timing", "cross", "ambiguity",
+                                                 "ambiguity_family"])
     ap.add_argument("--samples", help="comma-separated (default: per analysis)")
     args = ap.parse_args()
     ofat = sorted(pd.read_csv(RESULTS / "grid_ofat.tsv", sep="\t")["sample"].unique())
@@ -1006,6 +1057,8 @@ def main():
             cross()
         elif what == "ambiguity":
             ambiguity()
+        elif what == "ambiguity_family":
+            ambiguity_family()
         else:
             real()
         print("done", what, flush=True)

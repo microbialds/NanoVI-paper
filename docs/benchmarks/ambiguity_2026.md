@@ -242,7 +242,59 @@ and 155 MB on the branch without the option, 3.97 / 3.81 s and 162 MB with it. T
 is otherwise identical to dev's. No group formed there, since the synthetic reads' decoys
 score lower.
 
-## 7. Summary
+## 7. Links limited to one family
+
+A test of a change to D39 that NanoVI does not have: two rows link only when their species
+are in the same family of the database's taxonomy. `ambiguity.py --family` runs it as one
+more arm, `family_tau0.25` (VB, τ = 0.25, `--credible-intervals`), on all 105 samples:
+105 runs, no failures. The run goes through `benchmarks/family_groups.py`, which runs
+NanoVI's `estimate_abundance.py` at `9137b7b` and sets f to 0 between rows of different
+families before the rows are linked. Families are transitive, so every group stays inside
+one family. `analyse.py ambiguity_family` compares it with `vb_tau0.25`
+(`ambiguity_family_summary.tsv`, `_paired.tsv`, `_changed.tsv`, `_coverage.tsv`).
+
+**What changes.** The species tables are byte-identical to the default arm's in all 105
+samples, and the group tables in 95. The 10 that change are the 10 with a group above the
+family:
+- 7 real mocks: the 7 cross-genus groups of section 4 (class or superkingdom level);
+- 3 simulations (even R9.4.1 1k, seeds 2, 5, 9): *Akkermansia muciniphila* +
+  *Lepagella* sp009775355 (twice, 0.043 against 0.044 and 0.055 against 0.057) and
+  *Collinsella* sp938045065 + *Lactobacillus delbrueckii* (0.003, truth 0).
+
+In this database every cross-genus group also crosses a family, so a genus rule would remove
+the same groups. Other taxonomies differ: GTDB places *Shigella* in *Escherichia*, but the
+e2e fixture's taxonomy keeps *Shigella* as its own genus. There, a genus rule would split
+*E. coli* / *S. flexneri*; the family rule keeps them (both Enterobacteriaceae). The
+fixture's RUN_VI JSON is byte-identical with and without the family rule.
+
+| | default (D39) | family rule |
+|---|---|---|
+| Real mocks, strict L1 | 0.3251 | 0.3257 (4 lower, 3 higher) |
+| Real mocks, lenient L1 | 0.3319 | 0.3334 |
+| Real mocks, false positives per sample (strict) | 2.85 | 3.54 (species table 5.15) |
+| Real mocks, groups above family | 7 | 0 |
+| Simulations, strict L1 | 0.07516 | 0.07526 (2 higher) |
+| Simulations, false positives per sample (strict) | 1.90 | 1.93 |
+| Group interval coverage at 10k | 0.69 (64 groups) | 0.69 (the same groups) |
+
+**Per sample** (strict L1):
+- **Worse with the family rule:** *Akkermansia*'s groups. GutMock reps 1, 3 and 4 rise by
+  0.0040, 0.0040 and 0.0053. There the false positives' reads belong to *Akkermansia* (the
+  group's 0.0075-0.0093 against its truth 0.0097, the species row alone 0.005-0.007), so
+  the group was nearer the truth. The two simulated *Akkermansia* + *Lepagella* groups
+  rise by 0.0051 and 0.0039 for the same reason.
+- **Better with the family rule:** MSPlus reps 3-5 fall by 0.0010-0.0013, and the Emu gut
+  mock falls by 0.0024 (its *Romboutsia* group was 0.135 against 0.122).
+- **False positives:** 9 come back as their own rows over the 7 real mocks. They keep
+  their high `shared_read_fraction` in both tables.
+
+**Reading.** On these data the family rule is neutral on accuracy: means within 0.0006
+(real) and 0.0001 (simulations), in both directions per sample. It costs 0.7
+false-positive rows per real mock. What it removes are the groups whose label is wrong in
+kind: in each of them a database sequence (D23) makes a species from another phylum or
+class look like a 16S look-alike.
+
+## 8. Summary
 
 - **What the group table does.** It reports what the reads support where the species
   table splits by abundance. On the simulations at τ = 0.25, L1 falls from 0.132 to 0.075
@@ -265,6 +317,9 @@ score lower.
 - **The cross-genus groups** all come from a false positive linked to a mock species,
   almost always through the cross-genus identical sequences the `keep` database retains
   (D38).
+- **Links limited to one family** (section 7, not in D39) remove all 10 groups above
+  the family. Mean L1 changes by at most 0.0006, and the real mocks gain 0.7
+  false-positive rows per sample. *E. coli* / *S. flexneri* stays grouped on the e2e
+  fixture.
 - **Not addressed here:** the species table still reports the split, and
-  `shared_read_fraction` still flags it. Cross-genus groups would shrink if the links were
-  limited to one family or genus. That is not in D39 and was not tested.
+  `shared_read_fraction` still flags it.
