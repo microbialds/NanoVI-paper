@@ -1,0 +1,43 @@
+kind	members	samples	sets	lowest_common_rank	mean_abundance	mean_truth	right	right_lenient	members_right	mean_max_shared
+sim	Escherichia coli; Escherichia fergusonii	73	even_r1041_10k,even_r1041_1k,even_r1041_50k,even_r941_10k,even_r941_1k,even_r941_50k,log_r1041_10k,log_r1041_1k,log_r1041_50k,log_r941_10k,log_r941_1k,log_r941_50k	genus	0.22575222228646896	0.22661315068493149	1.0	1.0	0.4246575342465753	0.3836798455592116
+sim	Klebsiella pneumoniae; Klebsiella variicola	22	log_r1041_10k,log_r1041_1k,log_r941_10k,log_r941_1k,log_r941_50k	genus	0.09341804073455595	0.09090636363636363	1.0	1.0	1.0	0.33844749231853327
+sim	Bacillus subtilis; Bacillus spizizenii	17	even_r1041_10k,even_r1041_1k,even_r1041_50k,even_r941_1k	genus	0.10019362552299838	0.10092352941176469	1.0	1.0	1.8823529411764706	0.31872823303256326
+sim	Bacillus subtilis; Bacillus spizizenii; Bacillus stercoris	17	even_r1041_1k,even_r941_10k,even_r941_1k,even_r941_50k	genus	0.09597440390712358	0.0998070588235294	1.0	1.0	0.23529411764705882	0.39199289776612145
+sim	Streptococcus pneumoniae; Streptococcus mitis	14	even_r1041_10k,even_r1041_1k,even_r1041_50k,even_r941_10k,even_r941_1k	genus	0.09911131737792041	0.1001342857142857	1.0	1.0	1.7142857142857142	0.3250257703852628
+sim	Streptococcus pneumoniae; Streptococcus mitis; Streptococcus pseudopneumoniae	14	even_r1041_1k,even_r941_10k,even_r941_1k,even_r941_50k	genus	0.09907301726615649	0.09941285714285712	1.0	1.0	0.14285714285714285	0.3722300776271855
+sim	Bacillus spizizenii; Bacillus subtilis	4	even_r1041_1k	genus	0.09596098288367325	0.097	1.0	1.0	2.0	0.4619964070221292
+sim	Streptococcus pneumoniae; Streptococcus chosunense	3	even_r1041_1k,even_r941_1k	genus	0.06588170118406854	0.055333333333333325	0.6666666666666666	0.0	0.6666666666666666	0.6736263074078304
+sim	Streptococcus pneumoniae; Streptococcus mitis; Streptococcus chosunense	3	even_r1041_10k,even_r1041_50k	genus	0.09812686082910875	0.09812	1.0	1.0	2.0	0.36746022828343666
+sim	Akkermansia muciniphila; Lepagella sp009775355	2	even_r941_1k	superkingdom	0.048909477563934003	0.0505	1.0	1.0	1.0	0.48131700962876456
+sim	Bacillus subtilis; Bacillus spizizenii; Bacillus stercoris; Bacillus velezensis	2	even_r941_1k	genus	0.09466666436979784	0.09549999999999995	1.0	1.0	0.0	0.4654501165201217
+sim	Streptococcus pneumoniae; Streptococcus mitis; Streptococcus sp013276625	2	even_r1041_10k,even_r1041_1k	genus	0.09665639550272956	0.0966	1.0	1.0	2.0	0.5012142881680377
+sim	Bacillus subtilis; Bacillus spizizenii; Bacillus halotolerans	1	even_r941_1k	genus	0.0941846415883419	0.108	1.0	1.0	0.0	0.2844485605695035
+sim	Bacillus subtilis; Bacillus spizizenii; Bacillus stercoris; Bacillus inaquosorum	1	even_r941_10k	genus	0.0997791272854167	0.1026	1.0	1.0	0.0	0.3162332732843726
+sim	Bacillus subtilis; Bacillus spizizenii; Bacillus stercoris; Bacillus rugosus	1	even_r941_1k	genus	0.0956354032504103	0.102	1.0	1.0	0.0	0.9326729201321882
+sim	Bacillus subtilis; Bacillus spizizenii; Bacillus stercoris; Bacillus velezensis; Bacillus inaquosorum	1	even_r941_10k	genus	0.0967864736332841	0.0972	1.0	1.0	0.0	0.3119161852284529
+sim	Bacillus subtilis; Bacillus spizizenii; Bacillus velezensis; Bacillus inaquosorum	1	even_r941_1k	genus	0.0809824250334353	0.086	1.0	1.0	0.0	0.4018609139163889
+sim	Bacillus subtilis; Bacillus velezensis	1	log_r941_1k	genus	0.0221756591583726	0.021	1.0	1.0	1.0	0.2980879581105349
+sim	Bacillus velezensis; Bacillus halotolerans	1	even_r941_1k	genus	0.0042938586972305	0.0	0.0	0.0	0.0	0.98326409201776
+sim	Bacillus velezensis; Bacillus inaquosorum	1	even_r941_1k	genus	0.0071293497774964	0.0	0.0	0.0	0.0	0.3230119087908165
+sim	Bifidobacterium longum; Bifidobacterium infantis	1	even_r941_1k	genus	0.0551048288735738	0.056	1.0	1.0	1.0	0.5081555478704829
+sim	Clostridioides difficile; Clostridioides sp020641055	1	even_r941_1k	genus	0.0581830327321309	0.058	1.0	1.0	1.0	1.0
+sim	Collinsella sp938045065; Lactobacillus delbrueckii	1	even_r941_1k	superkingdom	0.003297650649722	0.0	0.0	0.0	0.0	0.3211769365789258
+sim	Enterococcus faecium; Enterococcus hirae	1	log_r941_1k	genus	0.0021155315272962	0.0	0.0	0.0	0.0	1.0
+sim	Listeria monocytogenes; Listeria innocua	1	even_r941_1k	genus	0.0512181706409551	0.051	1.0	1.0	1.0	0.5000130952672651
+sim	Streptococcus mitis; Streptococcus chosunense	1	even_r1041_1k	genus	0.0396695303796364	0.05	1.0	0.0	0.0	0.407188283257445
+sim	Streptococcus pneumoniae; Streptococcus mitis; Streptococcus pseudopneumoniae; Streptococcus sp905221235	1	even_r941_1k	genus	0.1116738377219557	0.113	1.0	1.0	0.0	0.9980890079971184
+sim	Streptococcus pneumoniae; Streptococcus pseudopneumoniae	1	even_r941_10k	genus	0.0675310665106164	0.0471	0.0	0.0	0.0	0.4994799263301883
+sim	Streptococcus pneumoniae; Streptococcus sp013277205	1	even_r941_1k	genus	0.0687600296379473	0.052	0.0	0.0	0.0	0.4248132963212975
+sim	Streptococcus pneumoniae; Streptococcus sp013277205; Streptococcus pseudopneumoniae	1	even_r1041_1k	genus	0.0636281730023648	0.053	1.0	0.0	1.0	0.8161029774124264
+real	Bacillus subtilis; Bacillus velezensis	4	zymo_MSPlus	genus	0.014129459621075001	0.0	0.0	0.0	0.0	0.35973672251652516
+real	Enterococcus faecalis; Staphylococcus hominis	3	zymo_MSPlus	class	0.0915464439613584	0.09900000000000002	1.0	0.0	1.0	0.48453915345857035
+real	Akkermansia muciniphila; Faecalibacterium taiwanense	2	zymo_GutMock	superkingdom	0.00840508597414695	0.00970038	1.0	0.0	0.0	0.7629099793513223
+real	Akkermansia muciniphila; Faecalibacterium taiwanense; Collinsella sp959026725	1	zymo_GutMock	superkingdom	0.0084439509394654	0.00970038	1.0	0.0	0.0	0.8556873825475423
+real	Bacillus spizizenii; Bacillus halotolerans; Bacillus subtilis; Bacillus stercoris; Bacillus velezensis	1	preprint_zymo_SRR23636353	genus	0.233508103546254	0.174	0.0	0.0	1.0	0.3489133410417731
+real	Bacillus subtilis; Bacillus spizizenii; Bacillus halotolerans; Bacillus stercoris; Bacillus inaquosorum	1	emu_zymo_SRR10391201	genus	0.2010033116179249	0.174	1.0	1.0	0.0	0.3492474403070735
+real	Bacillus subtilis; Bacillus stercoris; Bacillus velezensis	1	zymo_MSPlus	genus	0.0212961195015298	0.0	0.0	0.0	0.0	0.4602313345255616
+real	Bacillus subtilis; Bacillus velezensis; Bacillus stercoris	1	zymo_MSPlus	genus	0.0202390211738117	0.0	0.0	0.0	0.0	0.4771645785633442
+real	Dorea longicatena; Dorea sp019421265; Dorea amylophila	1	emu_gutmock_SRR14326315	genus	0.0615853190114482	0.0691045	1.0	1.0	1.0	0.7927038711872708
+real	Enterococcus faecium; Enterococcus lactis	1	emu_gutmock_SRR14326315	genus	0.0849332384281473	0.0712334	1.0	0.0	0.0	0.3985065869375496
+real	Paraclostridium dentum; Paraclostridium benzoelyticum; Paraclostridium bifermentans	1	emu_gutmock_SRR14326315	genus	0.0738263428033517	0.0704469	1.0	1.0	0.0	0.7594991456463184
+real	Romboutsia hominis; Parabacteroides merdae; Faecalicatena contorta	1	emu_gutmock_SRR14326315	superkingdom	0.1346540063568202	0.121761	1.0	1.0	1.0	0.3496742129979646
