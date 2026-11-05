@@ -312,4 +312,4 @@ NanoVI's review fixes after the benchmark (commit `8ae1a65`: blank or NA species
 duplicated tax IDs, short metadata lines, tax IDs with no abundance, a species name
 shared by several tax IDs counted once in a median) change none of these results: the
 merged build's `copy_numbers.tsv` rebuilt with them is byte-identical, and so are the
-species and cell tables of four samples rerun with them (two real, two simulated).
+species and cell tables of four samples rerun with them (two real, two simulated). The same holds for the second round (commit `13db133`: one cell total for the cell and group tables, finite copy numbers, levels checked, the build's old file removed first).
