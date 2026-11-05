@@ -27,7 +27,10 @@ species, as intervals.py scores the species).
 Writes <phase14>/runs/<sample>/<arm>/ (est.json, species.tsv, groups.tsv) and
 <phase14>/results/ambiguity.tsv (one row per sample, arm and table),
 ambiguity_groups.tsv (one row per group of two or more rows) and
-ambiguity_coverage.tsv.
+ambiguity_coverage.tsv. --cross-links refits the real mocks' groups that cross a genus
+(at the default threshold) and writes, to docs/benchmarks/data/ambiguity_real_cross_links.tsv,
+each link between their members with f, the members' expected reads, whether each is a
+mock species and whether it carries a cross-genus identical sequence (D23).
 """
 import argparse
 import json
@@ -39,8 +42,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from common import BENCH, BIN, NANOVI, PHASE13, PHASE14, write_tsv
-from evaluate import compare, compare_real, load_real_truth, load_truth
+from common import BENCH, BIN, DOCS_DATA, NANOVI, PHASE13, PHASE14, write_tsv
+from evaluate import compare, compare_real, cross_genus_species, load_real_truth, load_truth
 
 PYTHON = os.environ.get("BENCH_PYTHON", sys.executable)
 DB = BENCH / "db" / "exact"
@@ -228,13 +231,61 @@ def coverage(sample, arm):
     return rows
 
 
+def cross_links():
+    """The links (f >= the default threshold) inside the real mocks' groups that cross a genus."""
+    import contextlib
+    import io
+
+    import numpy as np
+    from ambiguity_groups import pairwise_shared, table_rows
+    from read_scores import load_read_scores
+    from variational_inference_bayesian import bayesian_vi, sparse_likelihood_from_csr
+
+    tax = pd.read_csv(DB / "taxonomy.tsv", sep="\t", dtype=str).set_index("tax_id")
+    carriers = cross_genus_species()
+    g = pd.read_csv(PHASE14 / "results" / "ambiguity_groups.tsv", sep="\t", keep_default_na=False)
+    g = g[(g["kind"] == "real") & (g["arm"] == f"vb_tau{DEFAULT_TAU}") & (g["scoring"] == "strict")]
+    rows = []
+    for sample, gg in g.groupby("sample"):
+        cross = [m.split("; ") for m in gg["members"] if len({x.split()[0] for x in m.split("; ")}) > 1]
+        if not cross:
+            continue
+        offsets, tax_ids, scores, _, _ = load_read_scores(str(lik_dir(sample, "real") / "exact.npz"))
+        db_ids = list({int(t) for t in tax_ids})
+        idx, logL = sparse_likelihood_from_csr(offsets, tax_ids, scores, np.array(db_ids, dtype=np.int64))
+        with contextlib.redirect_stdout(io.StringIO()):
+            result = bayesian_vi(idx, logL, db_ids, abundance_threshold=0.001, alpha_prior=1.0,
+                                 max_outer_iterations=10, max_inner_iterations=1000, inner_tolerance=1e-7,
+                                 responsibilities=True)
+        idx_r, phi, reported = result[-1]
+        rows_of, n = table_rows(reported, None)
+        expected, shared = pairwise_shared(idx_r, np.where(idx_r >= 0, phi, 0.0), rows_of, n)
+        names = [tax.loc[str(t), "species"] for t in reported]
+        truth = load_real_truth(sample)
+        for members in cross:
+            for a in members:
+                for b in members:
+                    i, j = names.index(a), names.index(b)
+                    f = max(shared[i, j] / expected[i], shared[j, i] / expected[j])
+                    if i < j and f >= DEFAULT_TAU:
+                        rows.append({"sample": sample, "group": "; ".join(members), "a": a, "b": b, "f": f,
+                                     "expected_reads_a": expected[i], "expected_reads_b": expected[j],
+                                     "a_in_mock": a in truth, "b_in_mock": b in truth,
+                                     "a_cross_genus_carrier": a in carriers, "b_cross_genus_carrier": b in carriers})
+    write_tsv(pd.DataFrame(rows), DOCS_DATA / "ambiguity_real_cross_links.tsv")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--jobs", type=int, default=8)
     parser.add_argument("--score-only", action="store_true")
+    parser.add_argument("--cross-links", action="store_true", help="only write ambiguity_real_cross_links.tsv")
     parser.add_argument("--only", help="run the samples whose name contains this (a smoke test; no results written)")
     args = parser.parse_args()
     print(f"NanoVI: {NANOVI}", file=sys.stderr)
+    if args.cross_links:
+        cross_links()
+        return
     todo = [(s, k, a, e, t) for s, k in samples() for a, e, t in arms(s) if not args.only or args.only in s]
     if not args.score_only:
         with ProcessPoolExecutor(args.jobs) as pool:

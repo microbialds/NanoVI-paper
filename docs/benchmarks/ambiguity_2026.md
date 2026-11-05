@@ -146,7 +146,9 @@ renormalised over the reported species as in `intervals.py`):
 | members of groups of two or more rows (their species intervals) | 0.26 | 128 |
 | those groups (summed-α intervals) | 0.69 | 64 |
 
-The group intervals cover the group's truth far more often than the members' intervals
+The 0.61 for all reported species is not comparable with Phase 7a's 81% at 10k
+(`methods_2026.md` §8): that figure left out the pair members (42%), and this one pools
+both, on minimap2 2.31 alignments. The group intervals cover the group's truth far more often than the members' intervals
 cover theirs, as the Phase 7a toy case predicted (the pair's sum is identifiable, its
 split is not). They are still sampling intervals and still undercover.
 
@@ -190,10 +192,17 @@ more often than in the simulations: 7 of the 18 groups do. Examples:
 - *Romboutsia hominis* + *Parabacteroides merdae* + *Faecalicatena contorta* (Emu gut mock,
   three phyla, 0.135 against 0.122).
 
-In each of them a false-positive species shares reads with a mock species. These are
-most likely the cross-genus identical sequences of D23, which the `keep` database
-retains. The group's sum is close to the truth, but its label names a species that is
-not there, at a rank as high as superkingdom. Two groups contain only false-positive
+Every link inside these groups was checked (`ambiguity.py --cross-links`,
+`ambiguity_real_cross_links.tsv`: 10 links at f ≥ 0.25). No link joins two mock species:
+- 9 links join a mock species to a false positive with 10-23 expected reads (one more
+  joins two false positives).
+- Every species in them except *Faecalicatena contorta* carries a sequence that
+  `cross_genus_identical.tsv` lists, the D23 sequences the `keep` database retains.
+- In the Emu gut mock, *Romboutsia hominis* (a mock species) links to two false
+  positives: *Parabacteroides merdae* (f = 0.27) and *F. contorta* (0.35).
+
+The group's sum is close to the truth, but its label names a species that is not there,
+at a rank as high as superkingdom. Two groups contain only false-positive
 species: *B. subtilis* + *B. velezensis* in MSPlus, 0.014-0.021, truth 0.
 
 The lenient score is not better than the strict one on the real mocks (0.332 against
@@ -248,6 +257,9 @@ score lower.
   most of the real-mock gain (0.337). 0.25 (D39) is supported.
 - **Intervals:** the group intervals cover 0.69 of group truths at 10k, against 0.26 for
   their members' intervals.
+- **The cross-genus groups** all come from a false positive linked to a mock species,
+  almost always through the cross-genus identical sequences the `keep` database retains
+  (D38).
 - **Not addressed here:** the species table still reports the split, and
   `shared_read_fraction` still flags it. Cross-genus groups would shrink if the links were
   limited to one family or genus. That is not in D39 and was not tested.
