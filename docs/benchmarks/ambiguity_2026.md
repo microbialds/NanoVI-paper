@@ -51,7 +51,12 @@ files Phase 13 stored for the exact database, so no read was realigned:
   τ = 0.25 on the 40 samples at 10k.
 - **Identical-16S relatives:** from the merged build's `identical_16s.tsv` (4,335 species).
 
-460 runs, no failures. `analyse.py ambiguity` writes the tables (`ambiguity_*.tsv`) and
+460 runs, no failures. After the code review the branch computes a group's shared reads on the sparse
+reads × rows matrix instead of through `posterior_read_summary`, and a group of one row
+copies its species row's values. Rerun with the reviewed code on three samples
+(emu_gutmock_SRR14326315, zymo_MSPlus_sup_rep3, even_r941_10k_s01), the group tables have
+the same groups, members, abundances and counts. `shared_read_fraction` and the
+intervals differ by at most 1.1e-16. No number below depends on it. `analyse.py ambiguity` writes the tables (`ambiguity_*.tsv`) and
 `fig_ambiguity.png`.
 
 Scoring (`evaluate.compare` on the simulations' realised read shares, `compare_real` on
