@@ -1,0 +1,71 @@
+panel	group	arm_truth	n	species_l1	genus_l1	species_bray_curtis	species_l1_sd
+real	all	db vs cell	12	0.3673	0.3504	0.1837	0.2154
+real	all	masked vs cell	12	0.3999	0.3882	0.2000	0.1982
+real	all	oracle vs cell	12	0.3708	0.3536	0.1854	0.2202
+real	all	read vs 16s	12	0.3586	0.3371	0.1793	0.2024
+real	all	read vs cell	12	0.4381	0.4392	0.2190	0.1752
+sim	all	db vs cell	40	0.1298	0.0269	0.0649	0.1176
+sim	all	masked vs cell	40	0.2356	0.1336	0.1178	0.0828
+sim	all	oracle vs cell	40	0.1156	0.0133	0.0578	0.1067
+sim	all	read vs 16s	40	0.1209	0.0062	0.0604	0.1120
+sim	all	read vs cell	40	0.3435	0.2650	0.1717	0.1200
+real	D6300 MSPlus	db vs cell	6	0.1792	0.1910	0.0896	0.0084
+real	D6300 MSPlus	masked vs cell	6	0.2321	0.2492	0.1160	0.0118
+real	D6300 MSPlus	oracle vs cell	6	0.1792	0.1910	0.0896	0.0084
+real	D6300 MSPlus	read vs 16s	6	0.1801	0.1977	0.0900	0.0084
+real	D6300 MSPlus	read vs cell	6	0.2986	0.3220	0.1493	0.0121
+real	D6300 SRR10391201	db vs cell	1	0.3881	0.2937	0.1941	
+real	D6300 SRR10391201	masked vs cell	1	0.4004	0.3247	0.2002	
+real	D6300 SRR10391201	oracle vs cell	1	0.3881	0.2937	0.1941	
+real	D6300 SRR10391201	read vs 16s	1	0.4279	0.2582	0.2139	
+real	D6300 SRR10391201	read vs cell	1	0.4065	0.3984	0.2032	
+real	D6300 SRR23636353	db vs cell	1	0.3864	0.3578	0.1932	
+real	D6300 SRR23636353	masked vs cell	1	0.3840	0.3649	0.1920	
+real	D6300 SRR23636353	oracle vs cell	1	0.3864	0.3578	0.1932	
+real	D6300 SRR23636353	read vs 16s	1	0.3529	0.3059	0.1765	
+real	D6300 SRR23636353	read vs cell	1	0.3781	0.4308	0.1890	
+real	D6331 GutMock	db vs cell	4	0.6396	0.6018	0.3198	0.0129
+real	D6331 GutMock	masked vs cell	4	0.6556	0.6185	0.3278	0.0114
+real	D6331 GutMock	oracle vs cell	4	0.6499	0.6116	0.3250	0.0128
+real	D6331 GutMock	read vs 16s	4	0.6103	0.5739	0.3052	0.0131
+real	D6331 GutMock	read vs cell	4	0.6702	0.6274	0.3351	0.0090
+sim	even r1041 10k	db vs cell	5	0.1825	0.0451	0.0913	0.0057
+sim	even r1041 10k	masked vs cell	5	0.2560	0.1157	0.1280	0.0058
+sim	even r1041 10k	oracle vs cell	5	0.1527	0.0164	0.0763	0.0058
+sim	even r1041 10k	read vs 16s	5	0.1520	0.0043	0.0760	0.0055
+sim	even r1041 10k	read vs cell	5	0.4057	0.3072	0.2029	0.0027
+sim	even r1041 1k	db vs cell	5	0.1886	0.0451	0.0943	0.0094
+sim	even r1041 1k	masked vs cell	5	0.2590	0.1130	0.1295	0.0106
+sim	even r1041 1k	oracle vs cell	5	0.1581	0.0161	0.0791	0.0115
+sim	even r1041 1k	read vs 16s	5	0.1563	0.0034	0.0782	0.0126
+sim	even r1041 1k	read vs cell	5	0.4125	0.3051	0.2063	0.0131
+sim	even r941 10k	db vs cell	5	0.2839	0.0436	0.1420	0.0081
+sim	even r941 10k	masked vs cell	5	0.3530	0.1099	0.1765	0.0072
+sim	even r941 10k	oracle vs cell	5	0.2590	0.0194	0.1295	0.0085
+sim	even r941 10k	read vs 16s	5	0.2758	0.0046	0.1379	0.0083
+sim	even r941 10k	read vs cell	5	0.4958	0.3068	0.2479	0.0083
+sim	even r941 1k	db vs cell	5	0.3005	0.0487	0.1502	0.0258
+sim	even r941 1k	masked vs cell	5	0.3653	0.1113	0.1826	0.0238
+sim	even r941 1k	oracle vs cell	5	0.2788	0.0269	0.1394	0.0247
+sim	even r941 1k	read vs 16s	5	0.2967	0.0089	0.1484	0.0213
+sim	even r941 1k	read vs cell	5	0.5127	0.3055	0.2563	0.0210
+sim	log r1041 10k	db vs cell	5	0.0107	0.0064	0.0054	0.0011
+sim	log r1041 10k	masked vs cell	5	0.1611	0.1580	0.0805	0.0018
+sim	log r1041 10k	oracle vs cell	5	0.0088	0.0046	0.0044	0.0010
+sim	log r1041 10k	read vs 16s	5	0.0089	0.0045	0.0044	0.0012
+sim	log r1041 10k	read vs cell	5	0.2281	0.2263	0.1140	0.0023
+sim	log r1041 1k	db vs cell	5	0.0127	0.0062	0.0064	0.0043
+sim	log r1041 1k	masked vs cell	5	0.1585	0.1547	0.0792	0.0052
+sim	log r1041 1k	oracle vs cell	5	0.0107	0.0042	0.0054	0.0042
+sim	log r1041 1k	read vs 16s	5	0.0113	0.0036	0.0057	0.0047
+sim	log r1041 1k	read vs cell	5	0.2262	0.2237	0.1131	0.0045
+sim	log r941 10k	db vs cell	5	0.0272	0.0103	0.0136	0.0020
+sim	log r941 10k	masked vs cell	5	0.1648	0.1537	0.0824	0.0041
+sim	log r941 10k	oracle vs cell	5	0.0252	0.0091	0.0126	0.0022
+sim	log r941 10k	read vs 16s	5	0.0290	0.0098	0.0145	0.0025
+sim	log r941 10k	read vs cell	5	0.2311	0.2222	0.1156	0.0046
+sim	log r941 1k	db vs cell	5	0.0321	0.0099	0.0161	0.0092
+sim	log r941 1k	masked vs cell	5	0.1674	0.1528	0.0837	0.0075
+sim	log r941 1k	oracle vs cell	5	0.0310	0.0093	0.0155	0.0089
+sim	log r941 1k	read vs 16s	5	0.0368	0.0104	0.0184	0.0097
+sim	log r941 1k	read vs cell	5	0.2358	0.2230	0.1179	0.0091

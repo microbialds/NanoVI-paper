@@ -1,0 +1,31 @@
+panel	group	arm_truth	mean_species_l1	sd
+real	D6300 MSPlus	read vs 16s	0.1801	0.0084
+real	D6300 SRR10391201	read vs 16s	0.4279	
+real	D6300 SRR23636353	read vs 16s	0.3529	
+real	D6331 GutMock	read vs 16s	0.6103	0.0131
+real	D6300 MSPlus	read vs cell	0.2986	0.0121
+real	D6300 SRR10391201	read vs cell	0.4065	
+real	D6300 SRR23636353	read vs cell	0.3781	
+real	D6331 GutMock	read vs cell	0.6702	0.0090
+real	D6300 MSPlus	db vs cell	0.1792	0.0084
+real	D6300 SRR10391201	db vs cell	0.3881	
+real	D6300 SRR23636353	db vs cell	0.3864	
+real	D6331 GutMock	db vs cell	0.6396	0.0129
+real	D6300 MSPlus	oracle vs cell	0.1792	0.0084
+real	D6300 SRR10391201	oracle vs cell	0.3881	
+real	D6300 SRR23636353	oracle vs cell	0.3864	
+real	D6331 GutMock	oracle vs cell	0.6499	0.0128
+real	D6300 MSPlus	masked vs cell	0.2321	0.0118
+real	D6300 SRR10391201	masked vs cell	0.4004	
+real	D6300 SRR23636353	masked vs cell	0.3840	
+real	D6331 GutMock	masked vs cell	0.6556	0.0114
+sim	even cells	read vs 16s	0.2202	0.0693
+sim	log cells	read vs 16s	0.0215	0.0131
+sim	even cells	read vs cell	0.4567	0.0507
+sim	log cells	read vs cell	0.2303	0.0064
+sim	even cells	db vs cell	0.2389	0.0567
+sim	log cells	db vs cell	0.0207	0.0105
+sim	even cells	oracle vs cell	0.2122	0.0602
+sim	log cells	oracle vs cell	0.0189	0.0107
+sim	even cells	masked vs cell	0.3083	0.0538
+sim	log cells	masked vs cell	0.1629	0.0058

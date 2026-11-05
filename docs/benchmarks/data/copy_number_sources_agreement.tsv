@@ -1,0 +1,14 @@
+level	pair	n	pearson	spearman	mean_abs_diff	median_abs_diff	equal_rounded	within_1	mean_diff_a_minus_b
+genome	ssu_count_vs_rrndb	43167	0.9981	0.9982	0.0122	0.0	0.9913	0.9983	0.012
+genome	ncbi_ssu_count_vs_rrndb	43136	0.9996	0.9996	0.0031	0.0	0.9974	0.9998	-0.0007
+genome	ssu_count_vs_ncbi_ssu_count	47487	0.9894	0.9892	0.0334	0.0	0.9865	0.9948	0.033
+species (default)	gtdb_complete_vs_rrndb_accession	9731	0.9981	0.9975	0.0141	0.0	0.9895	0.9979	0.0114
+species (default)	gtdb_complete_vs_rrndb_ncbi_taxonomy	7187	0.9871	0.9893	0.0766	0.0	0.9514	0.9872	0.0001
+species (default)	rrndb_accession_vs_rrndb_ncbi_taxonomy	7029	0.9929	0.9952	0.0517	0.0	0.9644	0.9926	-0.0136
+species (default)	gtdb_all_vs_gtdb_complete	11971	0.6776	0.6009	1.1896	0.0	0.6563	0.7282	-1.1722
+species (default)	ssu_all_complete_vs_gtdb_complete	11971	1.0	1.0	0.0	0.0	1.0	1.0	0.0
+species (merged)	gtdb_complete_vs_rrndb_accession	9025	0.9981	0.9973	0.014	0.0	0.9893	0.9981	0.0102
+species (merged)	gtdb_complete_vs_rrndb_ncbi_taxonomy	6398	0.9884	0.991	0.0617	0.0	0.9619	0.9897	0.0112
+species (merged)	rrndb_accession_vs_rrndb_ncbi_taxonomy	6329	0.9949	0.9964	0.0359	0.0	0.976	0.9943	-0.0048
+species (merged)	gtdb_all_vs_gtdb_complete	11124	0.6618	0.5868	1.2205	0.0	0.6475	0.7219	-1.2026
+species (merged)	ssu_all_complete_vs_gtdb_complete	11124	1.0	1.0	0.0	0.0	1.0	1.0	0.0
