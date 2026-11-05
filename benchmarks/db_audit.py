@@ -12,7 +12,13 @@ Writes, under <bench>/audit/<label>/:
   identical_groups.tsv  species that share at least one identical 16S sequence (connected groups)
   suffix_merges.tsv     stripped names built from more than one GTDB species, with lineage conflicts
 and summary tables into docs/benchmarks/data/. With --db it summarises built
-databases instead (sequences per species in each variant).
+databases instead (sequences per species in each variant). With --cross-genus
+(Phase 13, F56) it summarises what each cross-genus rule did, from the builds'
+own reports (cross_genus_removed.tsv, cross_genus_emptied.tsv): for each build
+and rule the entries and species removed, the sequences kept in one genus and
+those removed from every genus (the ties a rule could not break), and the
+copies lost by every species of the benchmark's truth (cross_genus_rules.tsv,
+cross_genus_truth_species.tsv).
 """
 import argparse
 import hashlib
@@ -22,7 +28,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from common import BENCH, DOCS_DATA, RANKS, SSU_ALL, raw_gtdb_lineage, raw_gtdb_species, write_tsv
+from common import (BENCH, CROSS_RULES, DOCS_DATA, PHASE13, RANKS, SSU_ALL, raw_gtdb_lineage, raw_gtdb_species,
+                    write_tsv)
 from build_gtdb_db import fasta_records, normalize_gtdb_name, parse_ssu_header
 
 
@@ -86,13 +93,75 @@ def database_summary(db_dirs):
     print(pd.DataFrame(rows).to_string(index=False))
 
 
+def truth_species():
+    """Every species the benchmark scores against: the simulated community and the real mocks' truth tables."""
+    from simulate import community_species
+    truth = Path(__file__).resolve().parent / "truth"
+    names = set(community_species())
+    for f in sorted(truth.glob("*.tsv")):
+        names |= set(pd.read_csv(f, sep="\t")["gtdb_species"])
+    return names
+
+
+def cross_genus_summary(builds=("merged", "suffixes")):
+    """What each cross-genus rule did to each GTDB r226 build (Phase 13 builds under NANOVI_PHASE13/db)."""
+    rows, truth_rows = [], []
+    truth = truth_species()
+    for build in builds:
+        keep = PHASE13 / "db" / f"{build}_keep"
+        entries = Counter(line[1:].split(":")[0] for line in open(keep / "species_taxid.fasta") if line[0] == ">")
+        cross = pd.read_csv(keep / "cross_genus_identical.tsv", sep="\t", dtype=str)
+        tax = pd.read_csv(keep / "taxonomy.tsv", sep="\t", dtype=str).set_index("tax_id")
+        groups = pd.read_csv(keep / "identical_16s.tsv", sep="\t")
+        rows.append({"build": build, "rule": "keep", "entries": sum(entries.values()),
+                     "species_with_sequence": len(entries), "cross_genus_sequences": len(cross),
+                     "cross_genus_entries": int(cross["species_count"].astype(int).sum()),
+                     "entries_removed": 0, "species_touched": 0, "species_emptied": 0,
+                     "sequences_kept_in_one_genus": 0, "sequences_removed_everywhere": 0,
+                     "identical_16s_species": len(groups), "identical_16s_groups": groups["group"].nunique()})
+        for rule in CROSS_RULES:
+            d = PHASE13 / "db" / f"{build}_{rule}"
+            removed = pd.read_csv(d / "cross_genus_removed.tsv", sep="\t", dtype=str, keep_default_na=False)
+            emptied = pd.read_csv(d / "cross_genus_emptied.tsv", sep="\t", dtype=str)
+            groups = pd.read_csv(d / "identical_16s.tsv", sep="\t")
+            n_left = sum(1 for line in open(d / "species_taxid.fasta") if line[0] == ">")
+            everywhere = set(removed.loc[removed["kept_in"] == "", "md5"])
+            rows.append({"build": build, "rule": rule, "entries": n_left,
+                         "species_with_sequence": len(entries) - len(emptied), "cross_genus_sequences": len(cross),
+                         "cross_genus_entries": int(cross["species_count"].astype(int).sum()),
+                         "entries_removed": len(removed), "species_touched": removed["tax_id"].nunique(),
+                         "species_emptied": len(emptied),
+                         "sequences_kept_in_one_genus": len(cross) - len(everywhere),
+                         "sequences_removed_everywhere": len(everywhere),
+                         "identical_16s_species": len(groups), "identical_16s_groups": groups["group"].nunique()})
+            lost = removed["tax_id"].value_counts()
+            for t, n in lost.items():
+                sp = tax.loc[t, "species"]
+                if sp in truth or identical_16s_strip(sp) in truth:
+                    truth_rows.append({"build": build, "rule": rule, "tax_id": t, "species": sp,
+                                       "entries": entries[t], "entries_removed": int(n),
+                                       "share_removed": n / entries[t], "emptied": t in set(emptied["tax_id"])})
+    write_tsv(pd.DataFrame(rows), DOCS_DATA / "cross_genus_rules.tsv")
+    write_tsv(pd.DataFrame(truth_rows).sort_values(["build", "rule", "share_removed"], ascending=[True, True, False]),
+              DOCS_DATA / "cross_genus_truth_species.tsv")
+    print(pd.DataFrame(rows).to_string(index=False))
+
+
+def identical_16s_strip(name):
+    from identical_16s import strip_gtdb_suffixes
+    return strip_gtdb_suffixes(name)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--ssu", default=str(SSU_ALL))
     ap.add_argument("--label", default="ssu_all")
     ap.add_argument("--min-length", type=int, default=900)
     ap.add_argument("--db", nargs="+", help="summarise these built databases instead (db_variants_summary.tsv)")
+    ap.add_argument("--cross-genus", action="store_true", help="summarise the Phase 13 cross-genus builds instead")
     args = ap.parse_args()
+    if args.cross_genus:
+        return cross_genus_summary()
     if args.db:
         return database_summary(args.db)
     out = BENCH / "audit" / args.label

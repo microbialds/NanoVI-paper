@@ -16,6 +16,12 @@ the final abundances: to the unknown component, to its 16S sibling in the sample
 to other community species, to species absent from the sample, unassigned or
 below detection), false positives created, and the error on the species that are
 in the database. Writes <bench>/results/clade_exclusion.tsv.
+
+--database <db> (Phase 13, F56) removes each species from that database of
+common.CROSS_DBS instead, and runs only the pipeline as it is ('none') with the
+pipeline's tools since Phase 7b (minimap2 2.31 + samtools 1.24 on Phase 7b's
+fastplong 0.7.0 reads); --seeds limits the samples. Writes under NANOVI_PHASE13
+(results/clade/<db>.tsv).
 """
 import argparse
 import gzip
@@ -30,8 +36,8 @@ import numpy as np
 import pandas as pd
 
 import harness
-from common import BENCH, write_tsv
-from evaluate import UNKNOWN, UNKNOWN_TAX_ID, compare, load_estimate, load_truth, taxonomy
+from common import BENCH, PHASE13, cross_db_dir, write_tsv
+from evaluate import UNKNOWN, UNKNOWN_TAX_ID, compare, load_estimate, load_truth, responsibilities, taxonomy
 from likelihood import read_alignment_records, score_reads
 from simulate import PAIRS, community_species
 
@@ -80,9 +86,9 @@ def run_one(job):
 
 
 @lru_cache(maxsize=None)
-def filtered_reads(sample):
+def filtered_reads(sample, root=None):
     """Names of the reads that passed the length filter, the reads that were aligned."""
-    with gzip.open(BENCH / "runs" / sample / "filtered.fastq.gz", "rt") as f:
+    with gzip.open((root or BENCH) / "runs" / sample / "filtered.fastq.gz", "rt") as f:
         return frozenset(line[1:].split(maxsplit=1)[0] for i, line in enumerate(f) if i % 4 == 0)
 
 
@@ -152,12 +158,90 @@ def evaluate(sample, sp, arm):
             **read_destinations(sample, sp, arm)}
 
 
+# ─── Phase 13: clade exclusion on the cross-genus databases (F56) ────────────
+
+def cross_excl_dir(db, sp):
+    return PHASE13 / "db" / "excl" / db / db_name(sp)
+
+
+def cross_build(db, sp):
+    out = cross_excl_dir(db, sp)
+    if not (out / "species_taxid.fasta").exists():
+        tax = taxonomy(str(cross_db_dir(db)))
+        excl = out.with_name(f"{db_name(sp)}.exclude.txt")
+        excl.parent.mkdir(parents=True, exist_ok=True)
+        excl.write_text("\n".join(map(str, tax.index[tax["species"] == sp])) + "\n")
+        subprocess.run([sys.executable, str(Path(__file__).parent / "build_variants.py"),
+                        "--src", str(cross_db_dir(db)), "--out", str(out), "--exclude", str(excl)], check=True)
+    index = PHASE13 / "indexes" / "excl" / f"{db}_{db_name(sp)}.map-ont.k21.minimap2-2.31.mmi"
+    return harness.build_index(out, index, threads=4, version=harness.CROSS_VERSION)
+
+
+def cross_one(job):
+    """Align one sample to one reduced database, score and estimate at the defaults."""
+    sample, db, sp, threads = job
+    run = PHASE13 / "runs" / sample
+    reads = harness.cross_run(run, BENCH / "sims" / sample / "reads.fastq.gz", "exact", confirm_name=sample)[0]
+    out = run / "clade" / db / db_name(sp)
+    index = PHASE13 / "indexes" / "excl" / f"{db}_{db_name(sp)}.map-ont.k21.minimap2-2.31.mmi"
+    harness.align(reads.resolve(), index, out / "aln.bam", 3, threads=threads, version=harness.CROSS_VERSION)
+    harness.likelihood(out / "aln.bam", out / "none.npz")
+    harness.estimate(out / "none.npz", out / "none.json")
+    return out
+
+
+def cross_evaluate(sample, db, sp):
+    """Clade-exclusion metrics of one (sample, database, excluded species), as evaluate() above."""
+    out = PHASE13 / "runs" / sample / "clade" / db / db_name(sp)
+    tax = taxonomy(str(cross_excl_dir(db, sp)))
+    est, below = load_estimate(out / "none.json", cross_excl_dir(db, sp))
+    truth = load_truth(BENCH / "sims" / sample)
+    t = dict(zip(truth["species"], truth["realised"]))
+    t_in = {k: v for k, v in t.items() if k != sp}
+    tot = sum(t_in.values())
+    m = compare(est, {k: v / tot for k, v in t_in.items()}, "species")
+    reads = pd.read_csv(BENCH / "sims" / sample / "read_truth.tsv.gz", sep="\t")
+    ours = set(reads.loc[reads["species"] == sp, "read"]) & filtered_reads(sample, PHASE13)
+    resp = responsibilities(out / "aln.bam", out / "none.json")
+    community = set(community_species())
+    dest = dict.fromkeys(["sibling", "other community", "absent species", "below detection"], 0.0)
+    for read in ours & set(resp):
+        if not resp[read]:
+            dest["below detection"] += 1
+        for t_id, p in resp[read].items():
+            name = tax.loc[t_id, "species"]
+            dest["sibling" if name == SIBLING.get(sp) else
+                 "other community" if name in community else "absent species"] += p
+    n = len(ours)
+    return {"sample": sample, "db": db, "excluded": sp, "sibling_in_sample": SIBLING.get(sp, ""),
+            "below_detection": below, **{k.replace("species_", "indb_"): v for k, v in m.items()},
+            **{f"to_{k.replace(' ', '_')}": v / n for k, v in dest.items()},
+            "to_unassigned": len(ours - set(resp)) / n, "excluded_reads": n,
+            "align_cpu_s": harness.align_cpu(out / "aln.bam")}
+
+
+def cross_main(db, species, samples, threads):
+    with ProcessPoolExecutor(max(1, threads // 4)) as pool:
+        list(pool.map(cross_build, [db] * len(species), species))
+    jobs = [(s, db, sp, 4) for sp in species for s in samples]
+    with ProcessPoolExecutor(max(1, threads // 4)) as pool:
+        list(pool.map(cross_one, jobs))
+    with ProcessPoolExecutor(threads) as pool:
+        rows = list(pool.map(cross_evaluate, *zip(*[(s, db, sp) for s, db, sp, _ in jobs])))
+    write_tsv(pd.DataFrame(rows), PHASE13 / "results" / "clade" / f"{db}.tsv")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--threads", type=int, default=16)
     ap.add_argument("--species", help="comma-separated subset (default: all 20)")
+    ap.add_argument("--database", help="Phase 13: a database of common.CROSS_DBS (see above)")
+    ap.add_argument("--seeds", default="1,2,3", help="--database: seeds of the even 10k samples (default 1,2,3)")
     args = ap.parse_args()
     species = args.species.split(",") if args.species else community_species()
+    if args.database:
+        seeds = {int(x) for x in args.seeds.split(",")}
+        return cross_main(args.database, species, [s for s in SAMPLES if int(s[-2:]) in seeds], args.threads)
     with ProcessPoolExecutor(max(1, args.threads // 4)) as pool:
         list(pool.map(build, species))
     jobs = [(s, sp, arm, 2) for sp in species for s in SAMPLES for arm in ARMS]

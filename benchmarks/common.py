@@ -7,6 +7,9 @@ NANOVI_REPO names. Data and results live outside the repository,
 under NANOVI_BENCH (default ~/pipelines/NanoVI_benchmarks/phase7a, decision D11).
 NANOVI_BIN points the scripts at another bin/, such as a checkout of commit 34d0411
 for the Phase 7a arms whose options Phase 7b removed (D22, D25, D29, D31).
+Phase 13 (cross-genus rules, F56) writes under NANOVI_PHASE13 (default
+~/pipelines/NanoVI_benchmarks/phase13) and needs NANOVI_REPO at a NanoVI commit with
+--cross-genus-rule (the report names it).
 """
 import gzip
 import os
@@ -23,6 +26,25 @@ if str(BIN) not in sys.path:
 BENCH = Path(os.environ.get("NANOVI_BENCH", Path.home() / "pipelines" / "NanoVI_benchmarks" / "phase7a"))
 DOCS_DATA = REPO / "docs" / "benchmarks" / "data"
 DOCS_FIG = REPO / "docs" / "benchmarks" / "figures"
+
+# Phase 13 (F56, cross-genus rules): its databases, runs and results, beside the Phase 7a data it reuses
+PHASE13 = Path(os.environ.get("NANOVI_PHASE13", BENCH.parent / "phase13"))
+# Phase 7b's confirmation run of the pipeline on the exact (merged) database: minimap2 2.31 + samtools 1.24
+# alignments and fastplong 0.7.0 reads of the 80 simulated samples at 1k/10k and the 13 real ones
+PHASE7B_CONFIRM = BENCH.parent / "phase7b" / "confirm" / "merged" / "out"
+CROSS_RULES = ["remove", "best-genus", "most-copies"]
+# Phase 13 databases: the Phase 7a exact build, each cross-genus rule applied to it, and c995 of each
+CROSS_DBS = ["exact", *CROSS_RULES, "c995", *(f"c995_{r}" for r in CROSS_RULES)]
+
+
+def cross_db_dir(db):
+    """Directory of a Phase 13 database (exact is Phase 7a's merged build; c995 is rebuilt from it there)."""
+    if db == "exact":
+        return BENCH / "db" / "exact"
+    if db == "c995":
+        return BENCH / "db" / "c995"
+    return PHASE13 / "db" / (db if db.startswith("c995_") else f"merged_{db}")
+
 
 GTDB = BENCH / "downloads" / "gtdb_r226"
 SSU_ALL = GTDB / "ssu_all_r226.fna.gz"

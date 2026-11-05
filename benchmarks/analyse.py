@@ -19,6 +19,10 @@
                  wf-16s and NanoCLUST on the same samples (D8)
   timing         CPU time, wall time and memory per step of NanoVI and Emu at matched -N
                  and k, Emu as shipped, and both tools' accuracy on the same alignments (W3)
+  cross          Phase 13 (F56): the cross-genus databases on the simulations, the real
+                 mocks and the clade-exclusion sets, against the database each rule was
+                 applied to; the reproduction of the Phase 7a reference; index size and
+                 alignment CPU (cross_genus_*.tsv, fig_cross_genus.png)
 
 Every figure (docs/benchmarks/figures/*.png) has its source data in
 docs/benchmarks/data/ under the same name.
@@ -32,8 +36,8 @@ import numpy as np
 import pandas as pd
 import pysam
 
-from common import BENCH, DOCS_DATA, DOCS_FIG, write_tsv
-from evaluate import load_estimate, taxonomy
+from common import BENCH, CROSS_DBS, CROSS_RULES, DOCS_DATA, DOCS_FIG, PHASE13, cross_db_dir, write_tsv
+from evaluate import UNKNOWN, load_estimate, load_real_truth, taxonomy
 from likelihood import score_reads
 from simulate import PAIRS
 
@@ -677,10 +681,195 @@ def timing():
     return tools
 
 
+# ─── Phase 13: cross-genus databases (F56) ──────────────────────────────────
+
+CROSS_METRICS = ["species_l1", "genus_l1", "group_l1", "species_precision", "species_recall", "species_fp_count",
+                 "species_fp_abundance", "fp_cross_carrier_count", "fp_cross_carrier_abundance", "genus_precision",
+                 "genus_recall", "genus_fp_count"]
+REAL_METRICS = ["species_l1_known", "genus_l1_known", "group_l1_known", "species_precision", "species_recall",
+                "species_fp_count", "species_fp_abundance", "fp_cross_carrier_count", "fp_cross_carrier_abundance",
+                "genus_precision", "genus_recall", "genus_fp_count"]
+EMPTIED = ["emptied_species_reads", "emptied_reads_to_expected", "emptied_reads_to_other",
+           "emptied_reads_to_below_detection", "emptied_reads_to_unassigned"]
+
+
+def _cross_base(db):
+    return "c995" if db.startswith("c995") else "exact"
+
+
+def _paired(t, metrics, keys):
+    """Each database against the one its rule was applied to, sample by sample."""
+    rows = []
+    for db, d in t[~t["db"].isin(["exact"])].groupby("db"):
+        base = t[t["db"] == _cross_base(db) if db != "c995" else t["db"] == "exact"].set_index("sample")
+        d = d.set_index("sample")
+        common = d.index.intersection(base.index)
+        for m in metrics:
+            diff = d.loc[common, m] - base.loc[common, m]
+            lower_better = "l1" in m or "fp" in m
+            for key, dd in (diff.groupby([d.loc[common, k] for k in keys]) if keys else [("all", diff)]):
+                rows.append({"db": db, "against": "exact" if db == "c995" else _cross_base(db), "metric": m,
+                             **(dict(zip(keys, key if isinstance(key, tuple) else (key,))) if keys else {}),
+                             "n": len(dd), "mean_diff": dd.mean(),
+                             "better": int((dd < 0).sum() if lower_better else (dd > 0).sum()),
+                             "worse": int((dd > 0).sum() if lower_better else (dd < 0).sum())})
+    return pd.DataFrame(rows)
+
+
+def _cross_real_species():
+    """Per real sample and expected species (known share): |estimate - truth| on exact and on each rule
+    applied to it (estimate renormalised over the known species, as species_l1_known), and the entries
+    the rule removed from the species."""
+    lost = pd.read_csv(DOCS_DATA / "cross_genus_truth_species.tsv", sep="\t")
+    lost = lost[lost["build"] == "merged"]
+    rows = []
+    for run in sorted((PHASE13 / "real" / "runs").iterdir()):
+        known = {k: v for k, v in load_real_truth(run.name).items() if v == v}
+        err = {}
+        for db in ["exact", *CROSS_RULES]:
+            est, _ = load_estimate(run / "est" / f"{db}.json", cross_db_dir(db))
+            tot = sum(est.get(k, 0.0) for k in known if k != UNKNOWN)
+            err[db] = {sp: abs(est.get(sp, 0.0) / tot - t) for sp, t in known.items()}
+        for sp, t in known.items():
+            row = {"sample": run.name, "species": sp, "truth": t, "abs_err_exact": err["exact"][sp]}
+            for db in CROSS_RULES:
+                l = lost[(lost["rule"] == db) & (lost["species"] == sp)]["entries_removed"]
+                row[f"diff_{db}"] = err[db][sp] - err["exact"][sp]
+                row[f"entries_removed_{db}"] = int(l.iloc[0]) if len(l) else 0
+            rows.append(row)
+    return pd.DataFrame(rows)
+
+
+def cross():
+    res = PHASE13 / "results"
+    order = {db: i for i, db in enumerate(CROSS_DBS)}
+    grid = pd.read_csv(res / "grid_cross.tsv", sep="\t")
+    grid = grid.sort_values(["db"], key=lambda c: c.map(order), kind="stable")
+
+    # Reproduction of the Phase 7a reference: (1) the stored alignments with today's bin/,
+    # (2) the pipeline's tools since Phase 7b (minimap2 2.31) on the exact database
+    rep = pd.read_csv(res / "grid_reproduce.tsv", sep="\t")
+    ofat = pd.read_csv(RESULTS / "grid_ofat.tsv", sep="\t")
+    ofat = ofat[ofat["arm"] == REFERENCE_ARM].set_index("sample")
+    sp7a = pd.read_csv(RESULTS / "grid_ofat_species.tsv.gz", sep="\t")
+    sp7a = sp7a[(sp7a["arm"] == REFERENCE_ARM) & (sp7a["estimate"] > 0)].groupby("sample")["species"].apply(frozenset)
+    spx = pd.read_csv(res / "grid_cross_species.tsv.gz", sep="\t")
+    spx = spx[(spx["db"] == "exact") & (spx["estimate"] > 0)].groupby("sample")["species"].apply(frozenset)
+    ex = grid[grid["db"] == "exact"].set_index("sample")
+    common = ex.index.intersection(ofat.index)
+    rows = [{"check": "stored 7a alignments, bin/ now", "samples": len(rep),
+             **{f"max_abs_diff_{m}": float((rep[f"{m}_now"] - rep[f"{m}_7a"]).abs().max())
+                for m in ("species_l1", "genus_l1", "group_l1", "species_fp_count", "below_detection")},
+             "same_species": int(len(rep))}]
+    rows.append({"check": "minimap2 2.31 + fastplong 0.7.0 (Phase 7b run), bin/ now", "samples": len(common),
+                 **{f"max_abs_diff_{m}": float((ex.loc[common, m] - ofat.loc[common, m]).abs().max())
+                    for m in ("species_l1", "genus_l1", "group_l1", "species_fp_count", "below_detection")},
+                 "same_species": int(sum(spx.get(s) == sp7a.get(s) for s in common)),
+                 "max_abs_diff_assigned": float((ex.loc[common, "assigned_count"]
+                                                 - ofat.loc[common, "assigned_count"]).abs().max())})
+    real = pd.read_csv(res / "real_cross.tsv", sep="\t").sort_values("db", key=lambda c: c.map(order), kind="stable")
+    rx = real[real["db"] == "exact"].set_index("sample")
+    r7a = pd.read_csv(RESULTS / "real_nanovi.tsv", sep="\t")
+    for arm, label in (("reference", "real mocks: Phase 7a reference"),
+                       ("tools_new", "real mocks: Phase 7a tools_new (minimap2 2.31 + fastplong 0.7.0)")):
+        r = r7a[r7a["arm"] == arm].set_index("sample")
+        c = rx.index.intersection(r.index)
+        rows.append({"check": label, "samples": len(c),
+                     **{f"max_abs_diff_{m}": float((rx.loc[c, f"{m}_known"] - r.loc[c, f"{m}_known"]).abs().max())
+                        for m in ("species_l1", "genus_l1", "group_l1")},
+                     "max_abs_diff_species_fp_count": float((rx.loc[c, "species_fp_count"]
+                                                             - r.loc[c, "species_fp_count"]).abs().max()),
+                     "max_abs_diff_below_detection": float((rx.loc[c, "below_detection"]
+                                                            - r.loc[c, "below_detection"]).abs().max()),
+                     "max_abs_diff_assigned": float((rx.loc[c, "assigned_count"]
+                                                     - r.loc[c, "assigned_count"]).abs().max())})
+    write_tsv(pd.DataFrame(rows), DOCS_DATA / "cross_genus_reproduction.tsv")
+
+    keys = ["depth", "chemistry", "shape", "db"]
+    summary = grid.groupby(keys, sort=False)[CROSS_METRICS].mean()
+    summary["n_samples"] = grid.groupby(keys, sort=False).size()
+    write_tsv(summary.reset_index(), DOCS_DATA / "cross_genus_sims_summary.tsv")
+    write_tsv(_paired(grid, CROSS_METRICS, ["depth", "chemistry"]), DOCS_DATA / "cross_genus_sims_paired.tsv")
+    write_tsv(grid.groupby("db", sort=False)[CROSS_METRICS].mean().reset_index(),
+              DOCS_DATA / "cross_genus_sims_overall.tsv")
+
+    write_tsv(real, DOCS_DATA / "cross_genus_real_per_sample.tsv")
+    write_tsv(real.groupby("db", sort=False)[REAL_METRICS].mean().reset_index(), DOCS_DATA / "cross_genus_real_summary.tsv")
+    write_tsv(_paired(real, REAL_METRICS, []), DOCS_DATA / "cross_genus_real_paired.tsv")
+
+    # Real mocks: where each rule changes the error, per expected species with a known share,
+    # next to the entries the rule removed from that species
+    write_tsv(_cross_real_species(), DOCS_DATA / "cross_genus_real_species.tsv")
+
+    # Reads the base database put on species a rule left with no sequence, and where they went
+    moved = []
+    for name, t in (("simulations", grid), ("real", real)):
+        for db, d in t.groupby("db", sort=False):
+            if db in ("exact", "c995"):
+                continue
+            w = d["emptied_species_reads"].fillna(0)
+            row = {"data": name, "db": db, "samples": len(d), "reads_on_emptied_species": float(w.sum()),
+                   "samples_with_such_reads": int((w > 0).sum()),
+                   "share_of_assigned_reads": float(w.sum() / d["assigned_count"].sum())}
+            for c in EMPTIED[1:]:
+                row[c] = float((d[c].fillna(0) * w).sum() / w.sum()) if w.sum() else float("nan")
+            moved.append(row)
+    write_tsv(pd.DataFrame(moved), DOCS_DATA / "cross_genus_emptied_reads.tsv")
+
+    # Cost: index size and alignment CPU per 1,000 reads
+    both = pd.concat([grid.assign(data="simulations"), real.assign(data="real")])
+    both = both[both["align_cpu_s"].notna() & (both["align_cpu_s"] > 0)]
+    cost = both.groupby(["data", "db"], sort=False).agg(index_bytes=("index_bytes", "first"),
+                                                         align_cpu_s=("align_cpu_s", "sum"),
+                                                         reads=("assigned_count", "sum"), samples=("sample", "size"))
+    cost["cpu_s_per_1000_reads"] = 1000 * cost["align_cpu_s"] / cost["reads"]
+    cost = cost.reset_index()
+    for data, d in cost.groupby("data"):
+        ref = float(d.loc[d["db"] == "exact", "cpu_s_per_1000_reads"].iloc[0]) if (d["db"] == "exact").any() else np.nan
+        cost.loc[d.index, "cpu_vs_exact"] = d["cpu_s_per_1000_reads"] / ref
+    write_tsv(cost, DOCS_DATA / "cross_genus_cost.tsv")
+
+    clade_files = sorted((res / "clade").glob("*.tsv")) if (res / "clade").exists() else []
+    if clade_files:
+        clade = pd.concat([pd.read_csv(p, sep="\t") for p in clade_files])
+        cols = ["to_sibling", "to_other_community", "to_absent_species", "to_below_detection", "to_unassigned",
+                "indb_l1", "indb_fp_count", "indb_fp_abundance"]
+        write_tsv(clade.groupby("db", sort=False)[cols].mean().reset_index().assign(
+            runs=clade.groupby("db", sort=False).size().values), DOCS_DATA / "cross_genus_clade_summary.tsv")
+
+    # Figure: species and genus L1 per database (simulations at 10k by chemistry, real mocks), and CPU
+    plt = _plt()
+    fig, axes = plt.subplots(1, 3, figsize=(10, 2.8))
+    dbs = [d for d in CROSS_DBS if d in set(grid["db"])]
+    data = []
+    for i, (label, sel) in enumerate([("sims 10k R9.4.1", (grid["depth"] == 10000) & (grid["chemistry"] == "r941")),
+                                      ("sims 10k R10.4.1", (grid["depth"] == 10000) & (grid["chemistry"] == "r1041"))]):
+        d = grid[sel].groupby("db")[["species_l1", "genus_l1"]].mean().reindex(dbs)
+        data += [{"panel": label, "db": db, **d.loc[db].to_dict()} for db in dbs]
+    d = real.groupby("db")[["species_l1_known", "genus_l1_known"]].mean().reindex(dbs)
+    data += [{"panel": "real mocks", "db": db, "species_l1": d.loc[db, "species_l1_known"],
+              "genus_l1": d.loc[db, "genus_l1_known"]} for db in dbs]
+    data = pd.DataFrame(data)
+    x = np.arange(len(dbs))
+    for ax, m in zip(axes[:2], ["species_l1", "genus_l1"]):
+        for j, panel in enumerate(data["panel"].unique()):
+            v = data[data["panel"] == panel].set_index("db").loc[dbs, m]
+            ax.bar(x + (j - 1) * 0.27, v, width=0.27, label=panel)
+        ax.set_xticks(x, dbs, rotation=45, ha="right", fontsize=6)
+        ax.set_ylabel(f"{m.replace('_', ' ')} (mean)")
+    axes[0].legend(frameon=False, fontsize=6)
+    c = cost[cost["data"] == "simulations"].set_index("db").reindex(dbs)
+    axes[2].bar(x, c["cpu_s_per_1000_reads"])
+    axes[2].set_xticks(x, dbs, rotation=45, ha="right", fontsize=6)
+    axes[2].set_ylabel("alignment CPU s per 1,000 reads")
+    fig.tight_layout()
+    save_figure(fig, "fig_cross_genus", data.merge(c[["cpu_s_per_1000_reads"]].reset_index(), on="db", how="left"))
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("what", nargs="+", choices=["ablation", "contamination", "pairs", "lod", "clade", "real", "intervals",
-                                                 "comparators", "timing"])
+                                                 "comparators", "timing", "cross"])
     ap.add_argument("--samples", help="comma-separated (default: per analysis)")
     args = ap.parse_args()
     ofat = sorted(pd.read_csv(RESULTS / "grid_ofat.tsv", sep="\t")["sample"].unique())
@@ -703,6 +892,8 @@ def main():
             comparators()
         elif what == "timing":
             timing()
+        elif what == "cross":
+            cross()
         else:
             real()
         print("done", what, flush=True)
