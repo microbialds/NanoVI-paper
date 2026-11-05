@@ -25,7 +25,10 @@ or EM's posterior):
   f_a(b) = Σ_r φ_ra · [read r's share on b ≥ 0.01] / E_a,   E_a = Σ_r φ_ra
 
 f_a(b) is the share of a's expected reads that sit on reads b also takes at least 1% of.
-Rows a and b are linked when max(f_a(b), f_b(a)) ≥ τ. Groups are the connected
+Rows a and b are linked when max(f_a(b), f_b(a)) ≥ τ. In sections 3-6 there is no other
+condition. D39 was amended after the benchmark (2026-11-05, section 7): rows link only
+within one family of the database's taxonomy, and a row with a blank family links to
+nothing. That is the rule NanoVI ships (commit `3b24374`). Groups are the connected
 components of the links, so every species row is in exactly one group, a row that links
 to nothing being a group of one. τ = 0.25 is fixed in the pipeline;
 `--group-min-shared` exists in the script for this benchmark only. WRITE_OUTPUT
@@ -244,8 +247,9 @@ score lower.
 
 ## 7. Links limited to one family
 
-A test of a change to D39 that NanoVI does not have: two rows link only when their species
-are in the same family of the database's taxonomy. `ambiguity.py --family` runs it as one
+A test of a change to D39, made after sections 3-6 and since adopted (D39 amended
+2026-11-05): two rows link only when their species are in the same family of the
+database's taxonomy. `ambiguity.py --family` runs it as one
 more arm, `family_tau0.25` (VB, τ = 0.25, `--credible-intervals`), on all 105 samples:
 105 runs, no failures. The run goes through `benchmarks/family_groups.py`, which runs
 NanoVI's `estimate_abundance.py` at `9137b7b` and sets f to 0 between rows of different
@@ -288,6 +292,16 @@ fixture's RUN_VI JSON is byte-identical with and without the family rule.
 - **False positives:** 9 come back as their own rows over the 7 real mocks. They keep
   their high `shared_read_fraction` in both tables.
 
+**The shipped rule.** NanoVI commit `3b24374` implements the rule in `bin/ambiguity_groups.py`.
+Its families come from `taxonomy.tsv` with the ranks above them, so a family name used in two
+orders is two families. A blank or missing family links to nothing. `ambiguity.py` (all 460
+runs, `NANOVI_PHASE14=phase14/confirm_3b24374`) reproduces `family_tau0.25` at
+`vb_tau0.25`: in all 105 samples the species tables are byte-identical, and so are the group
+tables' groups, members, abundances, counts, ranks and `max_shared`. `shared_read_fraction`
+and the intervals differ by at most 2.2e-16, as they do in samples the family rule does not
+change (the review fix of section 2). The e2e fixture's tables with the option off are
+byte-identical to dev @ 2f6c031.
+
 **Reading.** On these data the family rule is neutral on accuracy: means within 0.0006
 (real) and 0.0001 (simulations), in both directions per sample. It costs 0.7
 false-positive rows per real mock. What it removes are the groups whose label is wrong in
@@ -317,9 +331,10 @@ class look like a 16S look-alike.
 - **The cross-genus groups** all come from a false positive linked to a mock species,
   almost always through the cross-genus identical sequences the `keep` database retains
   (D38).
-- **Links limited to one family** (section 7, not in D39) remove all 10 groups above
-  the family. Mean L1 changes by at most 0.0006, and the real mocks gain 0.7
+- **Links limited to one family** (section 7; D39 amended to it) remove all 10 groups
+  above the family. Mean L1 changes by at most 0.0006, and the real mocks gain 0.7
   false-positive rows per sample. *E. coli* / *S. flexneri* stays grouped on the e2e
-  fixture.
+  fixture. With the rule as shipped, the strict L1 is 0.075 on the simulations and 0.326
+  on the real mocks.
 - **Not addressed here:** the species table still reports the split, and
   `shared_read_fraction` still flags it.
