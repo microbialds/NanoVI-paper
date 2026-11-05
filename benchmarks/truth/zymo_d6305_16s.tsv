@@ -1,9 +1,9 @@
-ncbi_species	gtdb_species	abundance	note
-Pseudomonas aeruginosa	Pseudomonas aeruginosa	0.042	
-Escherichia coli	Escherichia coli	0.101	
-Salmonella enterica	Salmonella enterica	0.104	
-Lactobacillus fermentum	Limosilactobacillus fermentum	0.184	NCBI synonym Limosilactobacillus fermentum
-Enterococcus faecalis	Enterococcus faecalis	0.099	
-Staphylococcus aureus	Staphylococcus aureus	0.155	
-Listeria monocytogenes	Listeria monocytogenes	0.141	
-Bacillus subtilis	Bacillus spizizenii	0.174	Zymo's strain is GTDB B. spizizenii: its genome is 99.97% identical over 100% to the type strain ATCC 6633 (GCF_031316495.1), 87.8% to B. subtilis 168; its 16S copies match B. spizizenii, none only B. subtilis
+ncbi_species	gtdb_species	abundance	genome_copy	cell_abundance	note
+Pseudomonas aeruginosa	Pseudomonas aeruginosa	0.042	0.0616785	0.0613682	
+Escherichia coli	Escherichia coli	0.101	0.0859454	0.0855131	
+Salmonella enterica	Salmonella enterica	0.104	0.0879676	0.0885312	
+Lactobacillus fermentum	Limosilactobacillus fermentum	0.184	0.218402	0.220322	NCBI synonym Limosilactobacillus fermentum
+Enterococcus faecalis	Enterococcus faecalis	0.099	0.147624	0.146881	
+Staphylococcus aureus	Staphylococcus aureus	0.155	0.153691	0.153924	
+Listeria monocytogenes	Listeria monocytogenes	0.141	0.140546	0.139839	
+Bacillus subtilis	Bacillus spizizenii	0.174	0.104146	0.103622	Zymo's strain is GTDB B. spizizenii: its genome is 99.97% identical over 100% to the type strain ATCC 6633 (GCF_031316495.1), 87.8% to B. subtilis 168; its 16S copies match B. spizizenii, none only B. subtilis
