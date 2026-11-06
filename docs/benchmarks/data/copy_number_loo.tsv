@@ -1,0 +1,7 @@
+build	level	n	mae	median_rel_err	within_1	mean_signed
+default	family	1537	0.8139	0.1000	0.8146	0.0934
+default	genus	9958	0.4525	0.0000	0.9086	-0.0299
+default	none	476			0.0000	
+merged	family	1376	0.8839	0.1250	0.8031	0.2258
+merged	genus	9269	0.5066	0.0000	0.8950	-0.0443
+merged	none	479			0.0000	

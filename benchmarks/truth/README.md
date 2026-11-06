@@ -4,7 +4,16 @@ Each table lists the species expected in a mock, under the name in its source (N
 and under the GTDB r226 name that NanoVI's database uses (suffixes stripped; from
 `benchmarks/names.py`, with the synonyms noted). `abundance` is the expected share of
 16S reads, renormalised over the species that have a 16S gene; it is empty for
-species known only to be present.
+species known only to be present. The two Zymo tables also give `genome_copy` and
+`cell_abundance` (Phase 15, F58): the same manuals' Table 1 "Genome Copy" and "Cell
+Number" columns, renormalised over the same species (the bacteria and, in D6331,
+the archaeon; the yeasts left out; the five *E. coli* strains summed). Zymo derives
+them from the genomic DNA composition: genome copies = DNA / genome size, cells =
+genome copies / ploidy, and 16S = genome copies x 16S copies per genome, so for these
+species the cell shares are the 16S shares divided by Zymo's copy numbers. Values from
+the D6300 manual Ver. 1.3.0 (revised 2023-09-21; the D6305 DNA standard is the same
+strains) and the D6331 manual Ver. 1.2.0 (revised 2023-01-25), both from
+files.zymoresearch.com. The Emu gut mock has no cell-level truth.
 
 | File | Samples | Source |
 |---|---|---|
