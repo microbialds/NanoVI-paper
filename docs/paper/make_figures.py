@@ -839,6 +839,74 @@ def fig8_clinical():
     return fig, data
 
 
+# ─── Figure 9: the 1.2.0 options ────────────────────────────────────────────
+
+OPTION_SETS = {"sims": ("Simulated communities", style.OKABE_ITO["sky_blue"], "o", 2.4),
+               "real": ("Mock communities", style.OKABE_ITO["vermillion"], "s", 3.4)}
+
+
+def fig9_options():
+    """(a) cross-genus rules against the exact database, (b) species and group tables, (c) read-level and
+    cell-level tables against the cell composition; species L1 per sample (fig_options.tsv)."""
+    name = "fig_options.tsv"
+    d = read(name)
+    fig = style.figure(style.DOUBLE, 62)
+    axes = fig.subplots(1, 3, gridspec_kw={"width_ratios": [1.15, 1, 1]})
+    rng = np.random.default_rng(0)
+
+    # (a) paired difference from the exact database, per sample
+    ax = axes[0]
+    c = d[d["panel"] == "cross_genus"]
+    wide = c.pivot_table(index=["set", "sample"], columns="arm", values="species_l1").reset_index()
+    rules = ["remove", "best-genus", "most-copies"]
+    ax.axhline(0, color="#999999", lw=0.6, ls="--", zorder=0)
+    rows = []
+    for i, rule in enumerate(rules):
+        for k, (setname, (label, colour, marker, ms)) in enumerate(OPTION_SETS.items()):
+            x = wide[wide["set"] == setname]
+            diff = (x[rule] - x["exact"]).to_numpy()
+            pos = i + (k - 0.5) * 0.36
+            ax.plot(pos + rng.uniform(-0.1, 0.1, len(diff)), diff, ls="none", marker=marker, ms=ms,
+                    markerfacecolor=colour, markeredgecolor=style.edge_for(colour), markeredgewidth=0.3,
+                    alpha=0.75)
+            ax.plot([pos - 0.14, pos + 0.14], [diff.mean()] * 2, color="#222222", lw=1.0)
+            rows += [{"panel": "a", "set": setname, "sample": s, "rule": rule, "species_l1_minus_exact": v}
+                     for s, v in zip(x["sample"], diff)]
+    ax.set_xticks(range(len(rules)), rules)
+    ax.set_xlabel("Cross-genus rule")
+    ax.set_ylabel("Species L1, rule − exact database")
+
+    # (b) and (c): two tables of the same samples, against y = x
+    pairs = [(axes[1], "ambiguity", "species table", "strict table", "Species table L1",
+              "Group table L1", "b"),
+             (axes[2], "copy_number", "read-level table", "cell-level table", "Read-level table L1",
+              "Cell-level table L1", "c")]
+    for ax, panel, xarm, yarm, xlabel, ylabel, letter in pairs:
+        p = d[d["panel"] == panel].pivot_table(index=["set", "sample"], columns="arm", values="species_l1").reset_index()
+        top = max(p[xarm].max(), p[yarm].max()) * 1.05
+        ax.plot([0, top], [0, top], color="#999999", lw=0.6, ls="--", zorder=0)
+        for setname, (label, colour, marker, ms) in OPTION_SETS.items():
+            x = p[p["set"] == setname]
+            ax.plot(x[xarm], x[yarm], ls="none", marker=marker, ms=ms, markerfacecolor=colour,
+                    markeredgecolor=style.edge_for(colour), markeredgewidth=0.3, alpha=0.8)
+            rows += [{"panel": letter, "set": setname, "sample": s, xarm: a, yarm: b}
+                     for s, a, b in zip(x["sample"], x[xarm], x[yarm])]
+        ax.set_xlim(0, top)
+        ax.set_ylim(0, top)
+        ax.set_aspect("equal")
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+    handles = [Line2D([], [], ls="none", marker=m, ms=ms, markerfacecolor=col, markeredgecolor=style.edge_for(col),
+                      markeredgewidth=0.3, label=lbl) for lbl, col, m, ms in OPTION_SETS.values()]
+    handles += [Line2D([], [], color="#222222", lw=1.0, label="mean"),
+                Line2D([], [], color="#999999", ls="--", lw=0.6, label="no change / y = x")]
+    fig.legend(handles=handles, loc="outside lower center", ncols=4)
+    style.panel_labels(fig, list(zip(axes, "abc")))
+    data = pd.DataFrame(rows)
+    data["source_file"] = name
+    return fig, data
+
+
 FIGURES = {
     "fig1_database": fig1_database,
     "fig2_comparators": fig2_comparators,
@@ -848,6 +916,7 @@ FIGURES = {
     "fig6_clade": fig6_clade,
     "fig7_runtime": fig7_runtime,
     "fig8_clinical": fig8_clinical,
+    "fig9_options": fig9_options,
 }
 
 

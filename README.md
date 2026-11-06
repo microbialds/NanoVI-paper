@@ -16,10 +16,14 @@ place where they are kept and changed.
 | `docs/benchmarks/methods_2026.md` | The methods benchmark report (Phase 7a, with the Phase 7b confirmation in §13); NanoVI's `docs/methods.md` cites its sections as § |
 | `docs/benchmarks/m10_claims.md` | What the benchmark supports for each claim of the preprint |
 | `docs/benchmarks/clinical_2026.md` | The clinical rerun (three ONT 16S cohorts) |
+| `docs/benchmarks/cross_genus_2026.md` | Phase 13: the database without 16S sequences found in more than one genus (`--cross-genus-rule`, D38) |
+| `docs/benchmarks/ambiguity_2026.md` | Phase 14: the ambiguity groups (`--ambiguity_groups`, D39) |
+| `docs/benchmarks/copy_number_2026.md` | Phase 15: the 16S copy numbers and the cell-level table (`--cell_abundance`, D40) |
 | `docs/benchmarks/data/` | The result tables (TSV), the source of every number in the reports and the manuscript |
 | `docs/benchmarks/figures/` | The benchmark report's figures (PNG) |
 | `docs/paper/` | `make_figures.py` and `style.py`, which draw the manuscript figures from `docs/benchmarks/data/` (see its README) |
 | `docs/design/unknown_component.md` | Design note for the unknown-taxon component, dropped after the benchmark (a negative result, §9) |
+| `docs/design/ambiguity_groups.md` | Design note for the ambiguity groups (Phase 14) |
 | `docs/reviewer_response_point9.md` | Response to point 9 of the preprint's review (software engineering) |
 | `nanovi/` | NanoVI, as a git submodule pinned at the v1.1.0 tag |
 
@@ -66,13 +70,16 @@ NanoVI's clinical runs need Nextflow 26.04 or later. Tool versions and sources a
 The data are not in this repository. They live under `~/pipelines/NanoVI_benchmarks`
 on the host that ran the benchmark (`NANOVI_BENCH`, default
 `~/pipelines/NanoVI_benchmarks/phase7a`; the other folders are found beside it).
-Sizes in October 2026:
+Sizes in October and November 2026:
 
 | Folder | Size | Contents |
 |---|---|---|
 | `phase7a/` | 55 GB | `downloads/` (7.7 GB: GTDB r226 SSU files, the comparators' databases, the ONT Zymo 2025.09 basecalls, SRR10391201, SRR14326315 and SRR23636353 from ENA, NanoCLUST, Zymo and *Bacillus* reference genomes; `fetch.sh` fetches them), the databases, simulations, alignments and estimates of every arm, `results/`, the conda environments and their lock files (`env_*.lock.txt`) |
 | `phase7b/` | 9.3 GB | The two GTDB r226 builds (`db/`, 1.7 GB) and the Phase 7b confirmation runs (`confirm/`, 8.2 GB) |
 | `phase9/` | 53 GB | Clinical cohorts: downloads (31 GB), subsampled reads (1.3 GB), runs of the four arms (21 GB), the pipeline copy that ran them (`src/`) |
+| `phase13/` | 102 GB | The eight cross-genus database variants (`db/`), their alignments and estimates on the simulations, the real mocks and the clade-exclusion sets, `results/`; the NanoVI checkout that ran them (`br_src`) |
+| `phase14/` | 142 MB | The group-table runs on Phase 13's stored score files (exact database), `results/`, and the NanoVI checkouts (`bench_src` at 9137b7b) |
+| `phase15/` | 1.7 GB | rrnDB 5.10, GTDB metadata field descriptions and the Zymo manuals (`downloads/`), the copy-number source comparison (`sources/`), the merged database rebuilt with copy numbers (`db/merged_cn`), the 40 simulations (`sims/`), the runs (`bench/`) and `results/` |
 
 Only the GTDB r226 files and the public read sets need downloading again; the
 accessions and sources are in §1 and §6 of `methods_2026.md` and in
@@ -93,6 +100,10 @@ only `docs/benchmarks/data/`.
 | Benchmark tables and figures | `python benchmarks/analyse.py <analysis>` | `docs/benchmarks/data/`, `docs/benchmarks/figures/` |
 | Phase 7b confirmation | `python benchmarks/confirm_7b.py --merged <dir> --suffixes <dir>` | `docs/benchmarks/data/confirm_7b_*.tsv` |
 | Database build counts | `python benchmarks/db_builds.py --merged <dir> --suffixes <dir>` | `docs/benchmarks/data/db_builds_r226.tsv` |
+| Phase 13 cross-genus databases | `db_builds.py --cross`, `db_audit.py --cross-genus`, `run_grid.py --design reproduce` / `cross`, `real.py --cross`, `clade_exclusion.py --database <db>`, then `analyse.py cross` (commands in §2 of `cross_genus_2026.md`) | `phase13/`, `docs/benchmarks/data/cross_genus_*.tsv` |
+| Phase 14 ambiguity groups | `ambiguity.py` (and `--family`), then `analyse.py ambiguity ambiguity_family` (§2 of `ambiguity_2026.md`) | `phase14/results/`, `docs/benchmarks/data/ambiguity_*.tsv` |
+| Phase 15 copy numbers | `copy_number_sources.py compare` / `weighted`, `copy_number.py check-db` / `simulate` / `run` / `analyse` (§8 of `copy_number_2026.md`) | `phase15/`, `docs/benchmarks/data/copy_number_*.tsv` |
+| Figure 9 source data | `python benchmarks/analyse.py options` (reads the Phase 13-15 results) | `docs/benchmarks/data/fig_options.tsv` |
 
 Each script's docstring gives its arms and options; §1 of `methods_2026.md` gives the
 order of the Phase 7a stages and the compute budget.
@@ -109,7 +120,15 @@ current release. To rerun a part as it was run, check `nanovi/` out at that comm
 | Phase 7b confirmation | `208349f`, the merge of PR #14 | `methods_2026.md` §13, `confirm_7b_per_sample.tsv`, `confirm_7b_summary.tsv` |
 | Clinical rerun | `6659e25` (`phase9/src/COMMIT`) | `clinical_2026.md`, `clinical_*.tsv` |
 | Database build counts | `6bd05f0`, the merge of PR #16 | `db_builds_r226.tsv` |
-| Manuscript figures | `6bd05f0`, the merge of PR #16 | `docs/paper/` (drawn from the tables above) |
+| Manuscript figures 1-8 | `6bd05f0`, the merge of PR #16 | `docs/paper/` (drawn from the tables above) |
+| Phase 13 cross-genus databases | `310a8b9` (NanoVI PR #24) | `cross_genus_2026.md`, `cross_genus_*.tsv`, `db_builds_r226_cross.tsv`, `fig_cross_genus.*` |
+| Phase 14 ambiguity groups | `9137b7b` (NanoVI PR #25); the family rule as shipped rerun on `3b24374`: the same groups and counts, floats within 2.2e-16 | `ambiguity_2026.md`, `docs/design/ambiguity_groups.md`, `ambiguity_*.tsv`, `fig_ambiguity.*` |
+| Phase 15 copy numbers | `92e3fbd` (NanoVI PR #26); four samples and the database rerun on `8ae1a65` and `13db133`, byte-identical | `copy_number_2026.md`, `copy_number_*.tsv`, `fig_copy_number.*` |
+| Manuscript figure 9 | the Phase 13-15 commits above (`fig_options.tsv` rearranges their results) | `docs/paper/make_figures.py` `fig9_options` |
+
+The Phase 13-15 scripts import modules that NanoVI 1.1.0 does not have (`identical_16s.py`'s
+rules, `ambiguity_groups.py`, `copy_numbers.py`), so they need `NANOVI_REPO` pointed at a
+checkout of the commit above, or of NanoVI 1.2.0 or later.
 
 The arms whose options Phase 7b removed from NanoVI (unknown component, per-base score,
 identity and aligned-length filters, `--error-profile all`, pruning off) run only with

@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "These are the benchmark scripts, results and figure code of the NanoVI manuscript. If you use them, please cite the preprint below and NanoVI."
 title: "NanoVI-paper: benchmark and manuscript material for NanoVI"
-abstract: "Scripts, result tables and figure code behind the NanoVI manuscript: the 2026 methods benchmark on simulated and real 16S mock communities, the comparison with Emu, EPI2ME wf-16s, Kraken2 + Bracken and NanoCLUST, and the clinical rerun on three ONT 16S cohorts."
+abstract: "Scripts, result tables and figure code behind the NanoVI manuscript: the 2026 methods benchmark on simulated and real 16S mock communities, the comparison with Emu, EPI2ME wf-16s, Kraken2 + Bracken and NanoCLUST, the clinical rerun on three ONT 16S cohorts, and the benchmarks of the options added in NanoVI 1.2.0: a database without 16S sequences found in more than one genus, ambiguity groups and a cell-level table corrected for 16S copy number."
 type: software
 authors:
   - family-names: Curiqueo

@@ -34,6 +34,8 @@ PHASE13 = Path(os.environ.get("NANOVI_PHASE13", BENCH.parent / "phase13"))
 PHASE7B_CONFIRM = BENCH.parent / "phase7b" / "confirm" / "merged" / "out"
 # Phase 14 (ambiguity groups, F57): its runs and results; it rescores Phase 13's stored score files
 PHASE14 = Path(os.environ.get("NANOVI_PHASE14", BENCH.parent / "phase14"))
+# Phase 15 (16S copy numbers, F58): its database, simulations, runs and results (copy_number.py)
+PHASE15 = Path(os.environ.get("NANOVI_PHASE15", BENCH.parent / "phase15"))
 CROSS_RULES = ["remove", "best-genus", "most-copies"]
 # Phase 13 databases: the Phase 7a exact build, each cross-genus rule applied to it, and c995 of each
 CROSS_DBS = ["exact", *CROSS_RULES, "c995", *(f"c995_{r}" for r in CROSS_RULES)]

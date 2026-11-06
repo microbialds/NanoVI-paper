@@ -29,6 +29,11 @@
                  fig_ambiguity.png)
   ambiguity_family  Phase 14: links limited to one family (ambiguity.py --family) against
                  D39 as shipped (ambiguity_family_*.tsv)
+  options        Phase 17 (W17): per sample, the species L1 behind the manuscript's Figure 9:
+                 each cross-genus rule and the exact database (Phase 13), the species and
+                 the strict group table with the family rule as shipped (Phase 14), and
+                 the read-level and the cell-level table against the cell composition
+                 (Phase 15) (fig_options.tsv)
 
 Every figure (docs/benchmarks/figures/*.png) has its source data in
 docs/benchmarks/data/ under the same name.
@@ -42,7 +47,7 @@ import numpy as np
 import pandas as pd
 import pysam
 
-from common import BENCH, CROSS_DBS, CROSS_RULES, DOCS_DATA, DOCS_FIG, PHASE13, PHASE14, cross_db_dir, write_tsv
+from common import BENCH, CROSS_DBS, CROSS_RULES, DOCS_DATA, DOCS_FIG, PHASE13, PHASE14, PHASE15, cross_db_dir, write_tsv
 from evaluate import UNKNOWN, load_estimate, load_real_truth, taxonomy
 from likelihood import score_reads
 from simulate import PAIRS
@@ -1026,11 +1031,48 @@ def ambiguity_family():
               .rename(columns={"mean": "coverage", "size": "n"}).reset_index(), DOCS_DATA / "ambiguity_family_coverage.tsv")
 
 
+def options():
+    """Per-sample species (and genus) L1 of the three option benchmarks, for the manuscript's Figure 9
+    and Supplementary Table S3.
+
+    Read from the results the cross, ambiguity_family and copy_number analyses summarise, so
+    the means of each arm equal those of cross_genus_*_summary.tsv, ambiguity_family_summary.tsv
+    and copy_number_summary.tsv.
+    """
+    rows = []
+    dbs = ["exact", *CROSS_RULES]
+    sims = pd.read_csv(PHASE13 / "results" / "grid_cross.tsv", sep="\t")
+    sims = sims[sims["db"].isin(dbs)]
+    for r in sims.itertuples():
+        rows.append({"panel": "cross_genus", "set": "sims", "sample": r.sample, "chemistry": r.chemistry,
+                     "shape": r.shape, "depth": r.depth, "arm": r.db, "species_l1": r.species_l1,
+                     "genus_l1": r.genus_l1})
+    real = pd.read_csv(PHASE13 / "results" / "real_cross.tsv", sep="\t")
+    real = real[real["db"].isin(dbs)]
+    for r in real.itertuples():
+        rows.append({"panel": "cross_genus", "set": "real", "sample": r.sample, "arm": r.db,
+                     "species_l1": r.species_l1_known, "genus_l1": r.genus_l1_known})
+    amb = pd.read_csv(PHASE14 / "results" / "ambiguity_family.tsv", sep="\t")
+    amb = amb[(amb["arm"] == "family_tau0.25") & amb["table"].isin(["species", "strict"])].copy()
+    amb["l1"] = amb["l1"].fillna(amb["l1_known"])
+    for r in amb.itertuples():
+        rows.append({"panel": "ambiguity", "set": "sims" if r.kind == "sim" else "real", "sample": r.sample,
+                     "arm": f"{r.table} table", "species_l1": r.l1})
+    cn = pd.read_csv(PHASE15 / "results" / "copy_number.tsv", sep="\t")
+    arms = {"read": "read-level table", "db": "cell-level table", "oracle": "cell-level, genome's own copy number",
+            "masked": "cell-level, community values from the genus"}
+    cn = cn[(cn["truth"] == "cell") & cn["arm"].isin(list(arms))]
+    for r in cn.itertuples():
+        rows.append({"panel": "copy_number", "set": "sims" if r.panel == "sim" else "real", "sample": r.sample,
+                     "arm": arms[r.arm], "species_l1": r.species_l1, "genus_l1": r.genus_l1})
+    write_tsv(pd.DataFrame(rows), DOCS_DATA / "fig_options.tsv")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("what", nargs="+", choices=["ablation", "contamination", "pairs", "lod", "clade", "real", "intervals",
                                                  "comparators", "timing", "cross", "ambiguity",
-                                                 "ambiguity_family"])
+                                                 "ambiguity_family", "options"])
     ap.add_argument("--samples", help="comma-separated (default: per analysis)")
     args = ap.parse_args()
     ofat = sorted(pd.read_csv(RESULTS / "grid_ofat.tsv", sep="\t")["sample"].unique())
@@ -1059,6 +1101,8 @@ def main():
             ambiguity()
         elif what == "ambiguity_family":
             ambiguity_family()
+        elif what == "options":
+            options()
         else:
             real()
         print("done", what, flush=True)
