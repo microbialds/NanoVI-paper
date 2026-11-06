@@ -1032,7 +1032,8 @@ def ambiguity_family():
 
 
 def options():
-    """Per-sample species L1 of the three option benchmarks, for the manuscript's Figure 9.
+    """Per-sample species (and genus) L1 of the three option benchmarks, for the manuscript's Figure 9
+    and Supplementary Table S3.
 
     Read from the results the cross, ambiguity_family and copy_number analyses summarise, so
     the means of each arm equal those of cross_genus_*_summary.tsv, ambiguity_family_summary.tsv
@@ -1044,12 +1045,13 @@ def options():
     sims = sims[sims["db"].isin(dbs)]
     for r in sims.itertuples():
         rows.append({"panel": "cross_genus", "set": "sims", "sample": r.sample, "chemistry": r.chemistry,
-                     "shape": r.shape, "depth": r.depth, "arm": r.db, "species_l1": r.species_l1})
+                     "shape": r.shape, "depth": r.depth, "arm": r.db, "species_l1": r.species_l1,
+                     "genus_l1": r.genus_l1})
     real = pd.read_csv(PHASE13 / "results" / "real_cross.tsv", sep="\t")
     real = real[real["db"].isin(dbs)]
     for r in real.itertuples():
         rows.append({"panel": "cross_genus", "set": "real", "sample": r.sample, "arm": r.db,
-                     "species_l1": r.species_l1_known})
+                     "species_l1": r.species_l1_known, "genus_l1": r.genus_l1_known})
     amb = pd.read_csv(PHASE14 / "results" / "ambiguity_family.tsv", sep="\t")
     amb = amb[(amb["arm"] == "family_tau0.25") & amb["table"].isin(["species", "strict"])].copy()
     amb["l1"] = amb["l1"].fillna(amb["l1_known"])
@@ -1057,11 +1059,12 @@ def options():
         rows.append({"panel": "ambiguity", "set": "sims" if r.kind == "sim" else "real", "sample": r.sample,
                      "arm": f"{r.table} table", "species_l1": r.l1})
     cn = pd.read_csv(PHASE15 / "results" / "copy_number.tsv", sep="\t")
-    cn = cn[(cn["truth"] == "cell") & cn["arm"].isin(["read", "db"])]
+    arms = {"read": "read-level table", "db": "cell-level table", "oracle": "cell-level, genome's own copy number",
+            "masked": "cell-level, community values from the genus"}
+    cn = cn[(cn["truth"] == "cell") & cn["arm"].isin(list(arms))]
     for r in cn.itertuples():
         rows.append({"panel": "copy_number", "set": "sims" if r.panel == "sim" else "real", "sample": r.sample,
-                     "arm": "read-level table" if r.arm == "read" else "cell-level table",
-                     "species_l1": r.species_l1})
+                     "arm": arms[r.arm], "species_l1": r.species_l1, "genus_l1": r.genus_l1})
     write_tsv(pd.DataFrame(rows), DOCS_DATA / "fig_options.tsv")
 
 
