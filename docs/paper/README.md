@@ -49,6 +49,7 @@ and `<name>_data.tsv`: the plotted rows and columns, with a `source_file` column
 | `fig6_clade` | single | `fig_clade.tsv` |
 | `fig7_runtime` | double | `fig_timing.tsv` |
 | `fig8_clinical` | double | `clinical_pairs.tsv`, `clinical_samples.tsv`, `clinical_crc_paper_species.tsv` |
+| `fig9_options` | double | `fig_options.tsv` (`benchmarks/analyse.py options`) |
 
 **fig1_database.** (a) GTDB r226 species by number of database sequences, in log2 bins
 (1, 2-3, 4-7, ...; log axes), with the median, 95th percentile and maximum read from
@@ -121,3 +122,12 @@ four species of the stool paper's smallest model for each arm; a species in fewe
 of samples is not tested and is labelled with its largest prevalence. Emu on NanoVI's
 alignments is Emu's colour, open.
 
+**fig9_options.** The three options benchmarked after release 1.1.1, as species L1 per
+sample: simulated communities as sky-blue circles, mock communities as vermillion squares.
+(a) Each cross-genus rule minus the exact database, on the 92 simulations of the Phase 7a
+one-factor design and the 13 mocks; bars are means. (b) The species table against the
+group table (family rule, τ = 0.25), whose L1 is against the truth summed over each group
+(strict), on the same samples. (c) The read-level against the cell-level table, both
+against the cell composition, on the 40 Phase 15 simulations and the 12 mocks with a
+cell-level truth. The means equal those in `cross_genus_sims_overall.tsv`,
+`cross_genus_real_summary.tsv`, `ambiguity_family_summary.tsv` and `copy_number_summary.tsv`.

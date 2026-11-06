@@ -1,0 +1,735 @@
+panel	set	sample	chemistry	shape	depth	arm	species_l1
+cross_genus	sims	even_r1041_10k_s01	r1041	even	10000.0	exact	0.1856103675112847
+cross_genus	sims	even_r1041_10k_s01	r1041	even	10000.0	remove	0.1894405521782584
+cross_genus	sims	even_r1041_10k_s01	r1041	even	10000.0	best-genus	0.1883276402182934
+cross_genus	sims	even_r1041_10k_s01	r1041	even	10000.0	most-copies	0.1844479882350843
+cross_genus	sims	even_r1041_10k_s02	r1041	even	10000.0	exact	0.1856613019280555
+cross_genus	sims	even_r1041_10k_s02	r1041	even	10000.0	remove	0.1810068843668607
+cross_genus	sims	even_r1041_10k_s02	r1041	even	10000.0	best-genus	0.1828243364426963
+cross_genus	sims	even_r1041_10k_s02	r1041	even	10000.0	most-copies	0.179149975890101
+cross_genus	sims	even_r1041_10k_s03	r1041	even	10000.0	exact	0.1849569742912042
+cross_genus	sims	even_r1041_10k_s03	r1041	even	10000.0	remove	0.1878682295375713
+cross_genus	sims	even_r1041_10k_s03	r1041	even	10000.0	best-genus	0.191099562620756
+cross_genus	sims	even_r1041_10k_s03	r1041	even	10000.0	most-copies	0.1877889369035616
+cross_genus	sims	even_r1041_10k_s04	r1041	even	10000.0	exact	0.1777248438441891
+cross_genus	sims	even_r1041_10k_s04	r1041	even	10000.0	remove	0.1771611957122504
+cross_genus	sims	even_r1041_10k_s04	r1041	even	10000.0	best-genus	0.1836196427832713
+cross_genus	sims	even_r1041_10k_s04	r1041	even	10000.0	most-copies	0.1872680333769391
+cross_genus	sims	even_r1041_10k_s05	r1041	even	10000.0	exact	0.1804682414134938
+cross_genus	sims	even_r1041_10k_s05	r1041	even	10000.0	remove	0.1836441215666012
+cross_genus	sims	even_r1041_10k_s05	r1041	even	10000.0	best-genus	0.183527379544742
+cross_genus	sims	even_r1041_10k_s05	r1041	even	10000.0	most-copies	0.1815798948413996
+cross_genus	sims	even_r1041_10k_s06	r1041	even	10000.0	exact	0.1944541620808867
+cross_genus	sims	even_r1041_10k_s06	r1041	even	10000.0	remove	0.1873383992040579
+cross_genus	sims	even_r1041_10k_s06	r1041	even	10000.0	best-genus	0.1888091502352417
+cross_genus	sims	even_r1041_10k_s06	r1041	even	10000.0	most-copies	0.1854363458229618
+cross_genus	sims	even_r1041_10k_s07	r1041	even	10000.0	exact	0.1832702313915606
+cross_genus	sims	even_r1041_10k_s07	r1041	even	10000.0	remove	0.1835419046689557
+cross_genus	sims	even_r1041_10k_s07	r1041	even	10000.0	best-genus	0.1839581677823323
+cross_genus	sims	even_r1041_10k_s07	r1041	even	10000.0	most-copies	0.183148666953333
+cross_genus	sims	even_r1041_10k_s08	r1041	even	10000.0	exact	0.1862038297548119
+cross_genus	sims	even_r1041_10k_s08	r1041	even	10000.0	remove	0.1871582959753418
+cross_genus	sims	even_r1041_10k_s08	r1041	even	10000.0	best-genus	0.1893408096555799
+cross_genus	sims	even_r1041_10k_s08	r1041	even	10000.0	most-copies	0.1838956892941958
+cross_genus	sims	even_r1041_10k_s09	r1041	even	10000.0	exact	0.18438378415187
+cross_genus	sims	even_r1041_10k_s09	r1041	even	10000.0	remove	0.1843917161389418
+cross_genus	sims	even_r1041_10k_s09	r1041	even	10000.0	best-genus	0.1812691228958023
+cross_genus	sims	even_r1041_10k_s09	r1041	even	10000.0	most-copies	0.1861981319040554
+cross_genus	sims	even_r1041_10k_s10	r1041	even	10000.0	exact	0.1904810150769344
+cross_genus	sims	even_r1041_10k_s10	r1041	even	10000.0	remove	0.1911637559204674
+cross_genus	sims	even_r1041_10k_s10	r1041	even	10000.0	best-genus	0.1914950244188425
+cross_genus	sims	even_r1041_10k_s10	r1041	even	10000.0	most-copies	0.1939443920246558
+cross_genus	sims	even_r1041_1k_s01	r1041	even	1000.0	exact	0.1781302055859125
+cross_genus	sims	even_r1041_1k_s01	r1041	even	1000.0	remove	0.1686650225400682
+cross_genus	sims	even_r1041_1k_s01	r1041	even	1000.0	best-genus	0.1677512124240017
+cross_genus	sims	even_r1041_1k_s01	r1041	even	1000.0	most-copies	0.167424608166938
+cross_genus	sims	even_r1041_1k_s02	r1041	even	1000.0	exact	0.2012728577715108
+cross_genus	sims	even_r1041_1k_s02	r1041	even	1000.0	remove	0.1891378047154437
+cross_genus	sims	even_r1041_1k_s02	r1041	even	1000.0	best-genus	0.1953192198565453
+cross_genus	sims	even_r1041_1k_s02	r1041	even	1000.0	most-copies	0.1931882261372466
+cross_genus	sims	even_r1041_1k_s03	r1041	even	1000.0	exact	0.1873682548750491
+cross_genus	sims	even_r1041_1k_s03	r1041	even	1000.0	remove	0.1673293827688421
+cross_genus	sims	even_r1041_1k_s03	r1041	even	1000.0	best-genus	0.1853198382743262
+cross_genus	sims	even_r1041_1k_s03	r1041	even	1000.0	most-copies	0.1755515795524617
+cross_genus	sims	even_r1041_1k_s04	r1041	even	1000.0	exact	0.2022470484564025
+cross_genus	sims	even_r1041_1k_s04	r1041	even	1000.0	remove	0.1809495441948069
+cross_genus	sims	even_r1041_1k_s04	r1041	even	1000.0	best-genus	0.1873299096760931
+cross_genus	sims	even_r1041_1k_s04	r1041	even	1000.0	most-copies	0.1917334793379561
+cross_genus	sims	even_r1041_1k_s05	r1041	even	1000.0	exact	0.1780546713093622
+cross_genus	sims	even_r1041_1k_s05	r1041	even	1000.0	remove	0.1825036090119104
+cross_genus	sims	even_r1041_1k_s05	r1041	even	1000.0	best-genus	0.1726727425105944
+cross_genus	sims	even_r1041_1k_s05	r1041	even	1000.0	most-copies	0.1839955654587269
+cross_genus	sims	even_r1041_1k_s06	r1041	even	1000.0	exact	0.1957328130769159
+cross_genus	sims	even_r1041_1k_s06	r1041	even	1000.0	remove	0.1758442692039403
+cross_genus	sims	even_r1041_1k_s06	r1041	even	1000.0	best-genus	0.1843104184468714
+cross_genus	sims	even_r1041_1k_s06	r1041	even	1000.0	most-copies	0.1987785803803608
+cross_genus	sims	even_r1041_1k_s07	r1041	even	1000.0	exact	0.185266150750242
+cross_genus	sims	even_r1041_1k_s07	r1041	even	1000.0	remove	0.1787482461249228
+cross_genus	sims	even_r1041_1k_s07	r1041	even	1000.0	best-genus	0.1744341597560749
+cross_genus	sims	even_r1041_1k_s07	r1041	even	1000.0	most-copies	0.1673520789226654
+cross_genus	sims	even_r1041_1k_s08	r1041	even	1000.0	exact	0.1781966075704099
+cross_genus	sims	even_r1041_1k_s08	r1041	even	1000.0	remove	0.1771123637504213
+cross_genus	sims	even_r1041_1k_s08	r1041	even	1000.0	best-genus	0.1674664984816412
+cross_genus	sims	even_r1041_1k_s08	r1041	even	1000.0	most-copies	0.160137803839091
+cross_genus	sims	even_r1041_1k_s09	r1041	even	1000.0	exact	0.170243650798582
+cross_genus	sims	even_r1041_1k_s09	r1041	even	1000.0	remove	0.1586933317004024
+cross_genus	sims	even_r1041_1k_s09	r1041	even	1000.0	best-genus	0.1545204288902173
+cross_genus	sims	even_r1041_1k_s09	r1041	even	1000.0	most-copies	0.1566557056625684
+cross_genus	sims	even_r1041_1k_s10	r1041	even	1000.0	exact	0.1488337270575228
+cross_genus	sims	even_r1041_1k_s10	r1041	even	1000.0	remove	0.1623938148579931
+cross_genus	sims	even_r1041_1k_s10	r1041	even	1000.0	best-genus	0.1345411138140476
+cross_genus	sims	even_r1041_1k_s10	r1041	even	1000.0	most-copies	0.1577688205484513
+cross_genus	sims	even_r1041_50k_s01	r1041	even	50000.0	exact	0.1903750833698079
+cross_genus	sims	even_r1041_50k_s01	r1041	even	50000.0	remove	0.1882880570393741
+cross_genus	sims	even_r1041_50k_s01	r1041	even	50000.0	best-genus	0.1884049576112661
+cross_genus	sims	even_r1041_50k_s01	r1041	even	50000.0	most-copies	0.1863524567219278
+cross_genus	sims	even_r1041_50k_s02	r1041	even	50000.0	exact	0.1843270322496557
+cross_genus	sims	even_r1041_50k_s02	r1041	even	50000.0	remove	0.1849077398076112
+cross_genus	sims	even_r1041_50k_s02	r1041	even	50000.0	best-genus	0.1850668813759773
+cross_genus	sims	even_r1041_50k_s02	r1041	even	50000.0	most-copies	0.1824308393575276
+cross_genus	sims	even_r1041_50k_s03	r1041	even	50000.0	exact	0.1877653166313578
+cross_genus	sims	even_r1041_50k_s03	r1041	even	50000.0	remove	0.1867787995216086
+cross_genus	sims	even_r1041_50k_s03	r1041	even	50000.0	best-genus	0.1872824563485229
+cross_genus	sims	even_r1041_50k_s03	r1041	even	50000.0	most-copies	0.1846756520962393
+cross_genus	sims	even_r941_10k_s01	r941	even	10000.0	exact	0.2913485997385803
+cross_genus	sims	even_r941_10k_s01	r941	even	10000.0	remove	0.2912884172482824
+cross_genus	sims	even_r941_10k_s01	r941	even	10000.0	best-genus	0.2891015974540597
+cross_genus	sims	even_r941_10k_s01	r941	even	10000.0	most-copies	0.2896536747875066
+cross_genus	sims	even_r941_10k_s02	r941	even	10000.0	exact	0.2727863947535184
+cross_genus	sims	even_r941_10k_s02	r941	even	10000.0	remove	0.2721886714313091
+cross_genus	sims	even_r941_10k_s02	r941	even	10000.0	best-genus	0.2745351801064493
+cross_genus	sims	even_r941_10k_s02	r941	even	10000.0	most-copies	0.2678985582535097
+cross_genus	sims	even_r941_10k_s03	r941	even	10000.0	exact	0.2760722574949326
+cross_genus	sims	even_r941_10k_s03	r941	even	10000.0	remove	0.2727502425436629
+cross_genus	sims	even_r941_10k_s03	r941	even	10000.0	best-genus	0.2735451107214827
+cross_genus	sims	even_r941_10k_s03	r941	even	10000.0	most-copies	0.2731721780569482
+cross_genus	sims	even_r941_10k_s04	r941	even	10000.0	exact	0.2759472348083384
+cross_genus	sims	even_r941_10k_s04	r941	even	10000.0	remove	0.2750730067378754
+cross_genus	sims	even_r941_10k_s04	r941	even	10000.0	best-genus	0.2734294521799583
+cross_genus	sims	even_r941_10k_s04	r941	even	10000.0	most-copies	0.2718357526785797
+cross_genus	sims	even_r941_10k_s05	r941	even	10000.0	exact	0.2764236159799504
+cross_genus	sims	even_r941_10k_s05	r941	even	10000.0	remove	0.2705990415125825
+cross_genus	sims	even_r941_10k_s05	r941	even	10000.0	best-genus	0.2732867620877022
+cross_genus	sims	even_r941_10k_s05	r941	even	10000.0	most-copies	0.2708693467918911
+cross_genus	sims	even_r941_10k_s06	r941	even	10000.0	exact	0.2811898019709187
+cross_genus	sims	even_r941_10k_s06	r941	even	10000.0	remove	0.2868248130505623
+cross_genus	sims	even_r941_10k_s06	r941	even	10000.0	best-genus	0.2803641856655228
+cross_genus	sims	even_r941_10k_s06	r941	even	10000.0	most-copies	0.279686433896872
+cross_genus	sims	even_r941_10k_s07	r941	even	10000.0	exact	0.268753039601125
+cross_genus	sims	even_r941_10k_s07	r941	even	10000.0	remove	0.2675658847858076
+cross_genus	sims	even_r941_10k_s07	r941	even	10000.0	best-genus	0.2654864231180132
+cross_genus	sims	even_r941_10k_s07	r941	even	10000.0	most-copies	0.2637272973844334
+cross_genus	sims	even_r941_10k_s08	r941	even	10000.0	exact	0.2768308825153074
+cross_genus	sims	even_r941_10k_s08	r941	even	10000.0	remove	0.2739973216727439
+cross_genus	sims	even_r941_10k_s08	r941	even	10000.0	best-genus	0.2706817059809768
+cross_genus	sims	even_r941_10k_s08	r941	even	10000.0	most-copies	0.2711492533946758
+cross_genus	sims	even_r941_10k_s09	r941	even	10000.0	exact	0.2585477845791465
+cross_genus	sims	even_r941_10k_s09	r941	even	10000.0	remove	0.2551312102432369
+cross_genus	sims	even_r941_10k_s09	r941	even	10000.0	best-genus	0.2586962786720114
+cross_genus	sims	even_r941_10k_s09	r941	even	10000.0	most-copies	0.2571925674183674
+cross_genus	sims	even_r941_10k_s10	r941	even	10000.0	exact	0.2754465833999225
+cross_genus	sims	even_r941_10k_s10	r941	even	10000.0	remove	0.2739110526097388
+cross_genus	sims	even_r941_10k_s10	r941	even	10000.0	best-genus	0.2706003676023011
+cross_genus	sims	even_r941_10k_s10	r941	even	10000.0	most-copies	0.2768882230833174
+cross_genus	sims	even_r941_1k_s01	r941	even	1000.0	exact	0.3170771446924173
+cross_genus	sims	even_r941_1k_s01	r941	even	1000.0	remove	0.3069650312329305
+cross_genus	sims	even_r941_1k_s01	r941	even	1000.0	best-genus	0.3096578360894137
+cross_genus	sims	even_r941_1k_s01	r941	even	1000.0	most-copies	0.3060735538345326
+cross_genus	sims	even_r941_1k_s02	r941	even	1000.0	exact	0.3265739319253113
+cross_genus	sims	even_r941_1k_s02	r941	even	1000.0	remove	0.3186211573025055
+cross_genus	sims	even_r941_1k_s02	r941	even	1000.0	best-genus	0.3223430147415095
+cross_genus	sims	even_r941_1k_s02	r941	even	1000.0	most-copies	0.3192160093258738
+cross_genus	sims	even_r941_1k_s03	r941	even	1000.0	exact	0.2955411313698938
+cross_genus	sims	even_r941_1k_s03	r941	even	1000.0	remove	0.2846952549204158
+cross_genus	sims	even_r941_1k_s03	r941	even	1000.0	best-genus	0.2864085590992444
+cross_genus	sims	even_r941_1k_s03	r941	even	1000.0	most-copies	0.2792715510816426
+cross_genus	sims	even_r941_1k_s04	r941	even	1000.0	exact	0.3013799306444428
+cross_genus	sims	even_r941_1k_s04	r941	even	1000.0	remove	0.3022954251258826
+cross_genus	sims	even_r941_1k_s04	r941	even	1000.0	best-genus	0.3113566379964537
+cross_genus	sims	even_r941_1k_s04	r941	even	1000.0	most-copies	0.2993044843381126
+cross_genus	sims	even_r941_1k_s05	r941	even	1000.0	exact	0.2910034567243913
+cross_genus	sims	even_r941_1k_s05	r941	even	1000.0	remove	0.28606776267387
+cross_genus	sims	even_r941_1k_s05	r941	even	1000.0	best-genus	0.284471554531957
+cross_genus	sims	even_r941_1k_s05	r941	even	1000.0	most-copies	0.2851383885461712
+cross_genus	sims	even_r941_1k_s06	r941	even	1000.0	exact	0.3351154261770502
+cross_genus	sims	even_r941_1k_s06	r941	even	1000.0	remove	0.3317693071142892
+cross_genus	sims	even_r941_1k_s06	r941	even	1000.0	best-genus	0.3355543789233527
+cross_genus	sims	even_r941_1k_s06	r941	even	1000.0	most-copies	0.3330694986063428
+cross_genus	sims	even_r941_1k_s07	r941	even	1000.0	exact	0.2923161358287453
+cross_genus	sims	even_r941_1k_s07	r941	even	1000.0	remove	0.2885762874913916
+cross_genus	sims	even_r941_1k_s07	r941	even	1000.0	best-genus	0.2926259624213134
+cross_genus	sims	even_r941_1k_s07	r941	even	1000.0	most-copies	0.3030631295375005
+cross_genus	sims	even_r941_1k_s08	r941	even	1000.0	exact	0.2787304612489891
+cross_genus	sims	even_r941_1k_s08	r941	even	1000.0	remove	0.2707139117301027
+cross_genus	sims	even_r941_1k_s08	r941	even	1000.0	best-genus	0.2827051111447572
+cross_genus	sims	even_r941_1k_s08	r941	even	1000.0	most-copies	0.2724392701465794
+cross_genus	sims	even_r941_1k_s09	r941	even	1000.0	exact	0.3266356157040486
+cross_genus	sims	even_r941_1k_s09	r941	even	1000.0	remove	0.3299096736756571
+cross_genus	sims	even_r941_1k_s09	r941	even	1000.0	best-genus	0.3202492123356876
+cross_genus	sims	even_r941_1k_s09	r941	even	1000.0	most-copies	0.3281688020386307
+cross_genus	sims	even_r941_1k_s10	r941	even	1000.0	exact	0.2906552362520212
+cross_genus	sims	even_r941_1k_s10	r941	even	1000.0	remove	0.2823458162879759
+cross_genus	sims	even_r941_1k_s10	r941	even	1000.0	best-genus	0.284962213615974
+cross_genus	sims	even_r941_1k_s10	r941	even	1000.0	most-copies	0.2854339215044575
+cross_genus	sims	even_r941_50k_s01	r941	even	50000.0	exact	0.2729803679775925
+cross_genus	sims	even_r941_50k_s01	r941	even	50000.0	remove	0.2717415173111428
+cross_genus	sims	even_r941_50k_s01	r941	even	50000.0	best-genus	0.2704383214724348
+cross_genus	sims	even_r941_50k_s01	r941	even	50000.0	most-copies	0.2702954872787441
+cross_genus	sims	even_r941_50k_s02	r941	even	50000.0	exact	0.2770366897962266
+cross_genus	sims	even_r941_50k_s02	r941	even	50000.0	remove	0.275539852984393
+cross_genus	sims	even_r941_50k_s02	r941	even	50000.0	best-genus	0.2768623196347304
+cross_genus	sims	even_r941_50k_s02	r941	even	50000.0	most-copies	0.2735912965139359
+cross_genus	sims	even_r941_50k_s03	r941	even	50000.0	exact	0.283746937946692
+cross_genus	sims	even_r941_50k_s03	r941	even	50000.0	remove	0.2828572724017914
+cross_genus	sims	even_r941_50k_s03	r941	even	50000.0	best-genus	0.2830672073456354
+cross_genus	sims	even_r941_50k_s03	r941	even	50000.0	most-copies	0.2809362776065579
+cross_genus	sims	log_r1041_10k_s01	r1041	log	10000.0	exact	0.032786286523341
+cross_genus	sims	log_r1041_10k_s01	r1041	log	10000.0	remove	0.0322877720376098
+cross_genus	sims	log_r1041_10k_s01	r1041	log	10000.0	best-genus	0.0309357597110889
+cross_genus	sims	log_r1041_10k_s01	r1041	log	10000.0	most-copies	0.0318478237218401
+cross_genus	sims	log_r1041_10k_s02	r1041	log	10000.0	exact	0.0322518251894461
+cross_genus	sims	log_r1041_10k_s02	r1041	log	10000.0	remove	0.03228684526224
+cross_genus	sims	log_r1041_10k_s02	r1041	log	10000.0	best-genus	0.0321902428421103
+cross_genus	sims	log_r1041_10k_s02	r1041	log	10000.0	most-copies	0.030012087157784
+cross_genus	sims	log_r1041_10k_s03	r1041	log	10000.0	exact	0.0326743240879355
+cross_genus	sims	log_r1041_10k_s03	r1041	log	10000.0	remove	0.030419342023647
+cross_genus	sims	log_r1041_10k_s03	r1041	log	10000.0	best-genus	0.0295427379892214
+cross_genus	sims	log_r1041_10k_s03	r1041	log	10000.0	most-copies	0.0303521007058651
+cross_genus	sims	log_r1041_10k_s04	r1041	log	10000.0	exact	0.0276405968824223
+cross_genus	sims	log_r1041_10k_s04	r1041	log	10000.0	remove	0.0284232477073333
+cross_genus	sims	log_r1041_10k_s04	r1041	log	10000.0	best-genus	0.0248290013902219
+cross_genus	sims	log_r1041_10k_s04	r1041	log	10000.0	most-copies	0.0252287958667025
+cross_genus	sims	log_r1041_10k_s05	r1041	log	10000.0	exact	0.0302334235437545
+cross_genus	sims	log_r1041_10k_s05	r1041	log	10000.0	remove	0.0286491325971733
+cross_genus	sims	log_r1041_10k_s05	r1041	log	10000.0	best-genus	0.0277310579879555
+cross_genus	sims	log_r1041_10k_s05	r1041	log	10000.0	most-copies	0.0277998566270124
+cross_genus	sims	log_r1041_10k_s06	r1041	log	10000.0	exact	0.0309746562080465
+cross_genus	sims	log_r1041_10k_s06	r1041	log	10000.0	remove	0.0310872482312608
+cross_genus	sims	log_r1041_10k_s06	r1041	log	10000.0	best-genus	0.0298297883072569
+cross_genus	sims	log_r1041_10k_s06	r1041	log	10000.0	most-copies	0.0283740112494626
+cross_genus	sims	log_r1041_10k_s07	r1041	log	10000.0	exact	0.0275097666462457
+cross_genus	sims	log_r1041_10k_s07	r1041	log	10000.0	remove	0.0271315265678111
+cross_genus	sims	log_r1041_10k_s07	r1041	log	10000.0	best-genus	0.028294995326548
+cross_genus	sims	log_r1041_10k_s07	r1041	log	10000.0	most-copies	0.0267036376633114
+cross_genus	sims	log_r1041_10k_s08	r1041	log	10000.0	exact	0.0267660046273911
+cross_genus	sims	log_r1041_10k_s08	r1041	log	10000.0	remove	0.0264231551242904
+cross_genus	sims	log_r1041_10k_s08	r1041	log	10000.0	best-genus	0.0256806839312263
+cross_genus	sims	log_r1041_10k_s08	r1041	log	10000.0	most-copies	0.0260732254249939
+cross_genus	sims	log_r1041_10k_s09	r1041	log	10000.0	exact	0.0266064296796303
+cross_genus	sims	log_r1041_10k_s09	r1041	log	10000.0	remove	0.0273846042541928
+cross_genus	sims	log_r1041_10k_s09	r1041	log	10000.0	best-genus	0.0247470420546978
+cross_genus	sims	log_r1041_10k_s09	r1041	log	10000.0	most-copies	0.0258111290936698
+cross_genus	sims	log_r1041_10k_s10	r1041	log	10000.0	exact	0.0292439059759587
+cross_genus	sims	log_r1041_10k_s10	r1041	log	10000.0	remove	0.0291432410204747
+cross_genus	sims	log_r1041_10k_s10	r1041	log	10000.0	best-genus	0.0281561458851248
+cross_genus	sims	log_r1041_10k_s10	r1041	log	10000.0	most-copies	0.0295194918125398
+cross_genus	sims	log_r1041_1k_s01	r1041	log	1000.0	exact	0.0160993783559421
+cross_genus	sims	log_r1041_1k_s01	r1041	log	1000.0	remove	0.011947327369471
+cross_genus	sims	log_r1041_1k_s01	r1041	log	1000.0	best-genus	0.0125511377608943
+cross_genus	sims	log_r1041_1k_s01	r1041	log	1000.0	most-copies	0.0132460413375695
+cross_genus	sims	log_r1041_1k_s02	r1041	log	1000.0	exact	0.039758702695455
+cross_genus	sims	log_r1041_1k_s02	r1041	log	1000.0	remove	0.0435100341667483
+cross_genus	sims	log_r1041_1k_s02	r1041	log	1000.0	best-genus	0.0381707470121274
+cross_genus	sims	log_r1041_1k_s02	r1041	log	1000.0	most-copies	0.036150459429159
+cross_genus	sims	log_r1041_1k_s03	r1041	log	1000.0	exact	0.0235277536067763
+cross_genus	sims	log_r1041_1k_s03	r1041	log	1000.0	remove	0.0278276861700056
+cross_genus	sims	log_r1041_1k_s03	r1041	log	1000.0	best-genus	0.031951273220225
+cross_genus	sims	log_r1041_1k_s03	r1041	log	1000.0	most-copies	0.0278781287690464
+cross_genus	sims	log_r1041_1k_s04	r1041	log	1000.0	exact	0.0187772824423872
+cross_genus	sims	log_r1041_1k_s04	r1041	log	1000.0	remove	0.0183494766709874
+cross_genus	sims	log_r1041_1k_s04	r1041	log	1000.0	best-genus	0.0161284295066272
+cross_genus	sims	log_r1041_1k_s04	r1041	log	1000.0	most-copies	0.0184827242455007
+cross_genus	sims	log_r1041_1k_s05	r1041	log	1000.0	exact	0.0185681740669845
+cross_genus	sims	log_r1041_1k_s05	r1041	log	1000.0	remove	0.0246658326388708
+cross_genus	sims	log_r1041_1k_s05	r1041	log	1000.0	best-genus	0.019110489595162
+cross_genus	sims	log_r1041_1k_s05	r1041	log	1000.0	most-copies	0.0219633183696321
+cross_genus	sims	log_r1041_1k_s06	r1041	log	1000.0	exact	0.017320945054561
+cross_genus	sims	log_r1041_1k_s06	r1041	log	1000.0	remove	0.0143750596698256
+cross_genus	sims	log_r1041_1k_s06	r1041	log	1000.0	best-genus	0.0139500374897873
+cross_genus	sims	log_r1041_1k_s06	r1041	log	1000.0	most-copies	0.0160235929405834
+cross_genus	sims	log_r1041_1k_s07	r1041	log	1000.0	exact	0.0300807144238336
+cross_genus	sims	log_r1041_1k_s07	r1041	log	1000.0	remove	0.0212713252652599
+cross_genus	sims	log_r1041_1k_s07	r1041	log	1000.0	best-genus	0.025908090242916
+cross_genus	sims	log_r1041_1k_s07	r1041	log	1000.0	most-copies	0.0237537666327141
+cross_genus	sims	log_r1041_1k_s08	r1041	log	1000.0	exact	0.0198144444183656
+cross_genus	sims	log_r1041_1k_s08	r1041	log	1000.0	remove	0.023076227116707
+cross_genus	sims	log_r1041_1k_s08	r1041	log	1000.0	best-genus	0.019030423001312
+cross_genus	sims	log_r1041_1k_s08	r1041	log	1000.0	most-copies	0.0175533079127674
+cross_genus	sims	log_r1041_1k_s09	r1041	log	1000.0	exact	0.0276673305930224
+cross_genus	sims	log_r1041_1k_s09	r1041	log	1000.0	remove	0.0256125057853971
+cross_genus	sims	log_r1041_1k_s09	r1041	log	1000.0	best-genus	0.0219486790932138
+cross_genus	sims	log_r1041_1k_s09	r1041	log	1000.0	most-copies	0.0240504394246923
+cross_genus	sims	log_r1041_1k_s10	r1041	log	1000.0	exact	0.0212406622391378
+cross_genus	sims	log_r1041_1k_s10	r1041	log	1000.0	remove	0.021794781234108
+cross_genus	sims	log_r1041_1k_s10	r1041	log	1000.0	best-genus	0.015481013741608
+cross_genus	sims	log_r1041_1k_s10	r1041	log	1000.0	most-copies	0.0208638183365243
+cross_genus	sims	log_r1041_50k_s01	r1041	log	50000.0	exact	0.0307433000577682
+cross_genus	sims	log_r1041_50k_s01	r1041	log	50000.0	remove	0.0293033095933923
+cross_genus	sims	log_r1041_50k_s01	r1041	log	50000.0	best-genus	0.029039310077861
+cross_genus	sims	log_r1041_50k_s01	r1041	log	50000.0	most-copies	0.0299050882908828
+cross_genus	sims	log_r1041_50k_s02	r1041	log	50000.0	exact	0.0279369271806916
+cross_genus	sims	log_r1041_50k_s02	r1041	log	50000.0	remove	0.0265882374287677
+cross_genus	sims	log_r1041_50k_s02	r1041	log	50000.0	best-genus	0.0265350374231163
+cross_genus	sims	log_r1041_50k_s02	r1041	log	50000.0	most-copies	0.0267809307972035
+cross_genus	sims	log_r1041_50k_s03	r1041	log	50000.0	exact	0.0306274407531311
+cross_genus	sims	log_r1041_50k_s03	r1041	log	50000.0	remove	0.0286312287504256
+cross_genus	sims	log_r1041_50k_s03	r1041	log	50000.0	best-genus	0.0289150272856394
+cross_genus	sims	log_r1041_50k_s03	r1041	log	50000.0	most-copies	0.0288280641647722
+cross_genus	sims	log_r941_10k_s01	r941	log	10000.0	exact	0.0236703141262692
+cross_genus	sims	log_r941_10k_s01	r941	log	10000.0	remove	0.0243043382934055
+cross_genus	sims	log_r941_10k_s01	r941	log	10000.0	best-genus	0.0241655687264266
+cross_genus	sims	log_r941_10k_s01	r941	log	10000.0	most-copies	0.0237975808348649
+cross_genus	sims	log_r941_10k_s02	r941	log	10000.0	exact	0.031347883243655
+cross_genus	sims	log_r941_10k_s02	r941	log	10000.0	remove	0.0295273589681772
+cross_genus	sims	log_r941_10k_s02	r941	log	10000.0	best-genus	0.0299004150100806
+cross_genus	sims	log_r941_10k_s02	r941	log	10000.0	most-copies	0.0303718950988458
+cross_genus	sims	log_r941_10k_s03	r941	log	10000.0	exact	0.0261520357258168
+cross_genus	sims	log_r941_10k_s03	r941	log	10000.0	remove	0.0254779459151355
+cross_genus	sims	log_r941_10k_s03	r941	log	10000.0	best-genus	0.0263128133576518
+cross_genus	sims	log_r941_10k_s03	r941	log	10000.0	most-copies	0.0250808530350494
+cross_genus	sims	log_r941_10k_s04	r941	log	10000.0	exact	0.025230837188578
+cross_genus	sims	log_r941_10k_s04	r941	log	10000.0	remove	0.0252890239659968
+cross_genus	sims	log_r941_10k_s04	r941	log	10000.0	best-genus	0.0261738826371692
+cross_genus	sims	log_r941_10k_s04	r941	log	10000.0	most-copies	0.0251480337374026
+cross_genus	sims	log_r941_10k_s05	r941	log	10000.0	exact	0.031094638742732
+cross_genus	sims	log_r941_10k_s05	r941	log	10000.0	remove	0.0330446891904705
+cross_genus	sims	log_r941_10k_s05	r941	log	10000.0	best-genus	0.030786888886336
+cross_genus	sims	log_r941_10k_s05	r941	log	10000.0	most-copies	0.0303806005855885
+cross_genus	sims	log_r941_10k_s06	r941	log	10000.0	exact	0.0188748131206592
+cross_genus	sims	log_r941_10k_s06	r941	log	10000.0	remove	0.0182695898769413
+cross_genus	sims	log_r941_10k_s06	r941	log	10000.0	best-genus	0.0184375656238549
+cross_genus	sims	log_r941_10k_s06	r941	log	10000.0	most-copies	0.018595010739879
+cross_genus	sims	log_r941_10k_s07	r941	log	10000.0	exact	0.0249677845013536
+cross_genus	sims	log_r941_10k_s07	r941	log	10000.0	remove	0.0260603281984921
+cross_genus	sims	log_r941_10k_s07	r941	log	10000.0	best-genus	0.0257677763386641
+cross_genus	sims	log_r941_10k_s07	r941	log	10000.0	most-copies	0.0278789242945326
+cross_genus	sims	log_r941_10k_s08	r941	log	10000.0	exact	0.0285702295662984
+cross_genus	sims	log_r941_10k_s08	r941	log	10000.0	remove	0.0293808836084614
+cross_genus	sims	log_r941_10k_s08	r941	log	10000.0	best-genus	0.02881600625788
+cross_genus	sims	log_r941_10k_s08	r941	log	10000.0	most-copies	0.028068564547442
+cross_genus	sims	log_r941_10k_s09	r941	log	10000.0	exact	0.0267771146788837
+cross_genus	sims	log_r941_10k_s09	r941	log	10000.0	remove	0.0259123053924097
+cross_genus	sims	log_r941_10k_s09	r941	log	10000.0	best-genus	0.0251143849322566
+cross_genus	sims	log_r941_10k_s09	r941	log	10000.0	most-copies	0.0240407821724722
+cross_genus	sims	log_r941_10k_s10	r941	log	10000.0	exact	0.0274159492177599
+cross_genus	sims	log_r941_10k_s10	r941	log	10000.0	remove	0.0261349702393166
+cross_genus	sims	log_r941_10k_s10	r941	log	10000.0	best-genus	0.0251730235064489
+cross_genus	sims	log_r941_10k_s10	r941	log	10000.0	most-copies	0.0252748590701333
+cross_genus	sims	log_r941_1k_s01	r941	log	1000.0	exact	0.0334000176051621
+cross_genus	sims	log_r941_1k_s01	r941	log	1000.0	remove	0.0295370480711344
+cross_genus	sims	log_r941_1k_s01	r941	log	1000.0	best-genus	0.0334287165994373
+cross_genus	sims	log_r941_1k_s01	r941	log	1000.0	most-copies	0.0300735439638863
+cross_genus	sims	log_r941_1k_s02	r941	log	1000.0	exact	0.0309719509464856
+cross_genus	sims	log_r941_1k_s02	r941	log	1000.0	remove	0.0313279625940442
+cross_genus	sims	log_r941_1k_s02	r941	log	1000.0	best-genus	0.0304116308510847
+cross_genus	sims	log_r941_1k_s02	r941	log	1000.0	most-copies	0.0328875117846415
+cross_genus	sims	log_r941_1k_s03	r941	log	1000.0	exact	0.0361126050794859
+cross_genus	sims	log_r941_1k_s03	r941	log	1000.0	remove	0.0400067494522119
+cross_genus	sims	log_r941_1k_s03	r941	log	1000.0	best-genus	0.0356096390951344
+cross_genus	sims	log_r941_1k_s03	r941	log	1000.0	most-copies	0.040230605288663
+cross_genus	sims	log_r941_1k_s04	r941	log	1000.0	exact	0.0412225748898413
+cross_genus	sims	log_r941_1k_s04	r941	log	1000.0	remove	0.0420407958999124
+cross_genus	sims	log_r941_1k_s04	r941	log	1000.0	best-genus	0.0401967365379718
+cross_genus	sims	log_r941_1k_s04	r941	log	1000.0	most-copies	0.0422977693555016
+cross_genus	sims	log_r941_1k_s05	r941	log	1000.0	exact	0.0318081211214215
+cross_genus	sims	log_r941_1k_s05	r941	log	1000.0	remove	0.0343713776101501
+cross_genus	sims	log_r941_1k_s05	r941	log	1000.0	best-genus	0.0304526880532907
+cross_genus	sims	log_r941_1k_s05	r941	log	1000.0	most-copies	0.0303342015222369
+cross_genus	sims	log_r941_1k_s06	r941	log	1000.0	exact	0.0225586929489621
+cross_genus	sims	log_r941_1k_s06	r941	log	1000.0	remove	0.025895928951421
+cross_genus	sims	log_r941_1k_s06	r941	log	1000.0	best-genus	0.0237994893818635
+cross_genus	sims	log_r941_1k_s06	r941	log	1000.0	most-copies	0.0212807430229544
+cross_genus	sims	log_r941_1k_s07	r941	log	1000.0	exact	0.0345049743660273
+cross_genus	sims	log_r941_1k_s07	r941	log	1000.0	remove	0.0382120240429633
+cross_genus	sims	log_r941_1k_s07	r941	log	1000.0	best-genus	0.0392917911099939
+cross_genus	sims	log_r941_1k_s07	r941	log	1000.0	most-copies	0.0331552410177423
+cross_genus	sims	log_r941_1k_s08	r941	log	1000.0	exact	0.0175361743388638
+cross_genus	sims	log_r941_1k_s08	r941	log	1000.0	remove	0.0214206219355892
+cross_genus	sims	log_r941_1k_s08	r941	log	1000.0	best-genus	0.0195856093403501
+cross_genus	sims	log_r941_1k_s08	r941	log	1000.0	most-copies	0.0198944809667215
+cross_genus	sims	log_r941_1k_s09	r941	log	1000.0	exact	0.0268728919395739
+cross_genus	sims	log_r941_1k_s09	r941	log	1000.0	remove	0.0247878743647064
+cross_genus	sims	log_r941_1k_s09	r941	log	1000.0	best-genus	0.0270666123320105
+cross_genus	sims	log_r941_1k_s09	r941	log	1000.0	most-copies	0.0239005942790689
+cross_genus	sims	log_r941_1k_s10	r941	log	1000.0	exact	0.0292549816259826
+cross_genus	sims	log_r941_1k_s10	r941	log	1000.0	remove	0.0346189923611874
+cross_genus	sims	log_r941_1k_s10	r941	log	1000.0	best-genus	0.030586032976577
+cross_genus	sims	log_r941_1k_s10	r941	log	1000.0	most-copies	0.0367960297133759
+cross_genus	sims	log_r941_50k_s01	r941	log	50000.0	exact	0.0279713480661719
+cross_genus	sims	log_r941_50k_s01	r941	log	50000.0	remove	0.0281982149019904
+cross_genus	sims	log_r941_50k_s01	r941	log	50000.0	best-genus	0.0283176627884061
+cross_genus	sims	log_r941_50k_s01	r941	log	50000.0	most-copies	0.0277364304068256
+cross_genus	sims	log_r941_50k_s02	r941	log	50000.0	exact	0.0278696216782534
+cross_genus	sims	log_r941_50k_s02	r941	log	50000.0	remove	0.0269402851044885
+cross_genus	sims	log_r941_50k_s02	r941	log	50000.0	best-genus	0.0278888769803051
+cross_genus	sims	log_r941_50k_s02	r941	log	50000.0	most-copies	0.0270008577988368
+cross_genus	sims	log_r941_50k_s03	r941	log	50000.0	exact	0.0268303929760319
+cross_genus	sims	log_r941_50k_s03	r941	log	50000.0	remove	0.0270301971662841
+cross_genus	sims	log_r941_50k_s03	r941	log	50000.0	best-genus	0.0272233724220312
+cross_genus	sims	log_r941_50k_s03	r941	log	50000.0	most-copies	0.0266137858339158
+cross_genus	real	emu_gutmock_SRR14326315				exact	0.2775813152520842
+cross_genus	real	emu_gutmock_SRR14326315				remove	0.2821138000955372
+cross_genus	real	emu_gutmock_SRR14326315				best-genus	0.2821117565258781
+cross_genus	real	emu_gutmock_SRR14326315				most-copies	0.2806367780683642
+cross_genus	real	emu_zymo_SRR10391201				exact	0.4278566611130293
+cross_genus	real	emu_zymo_SRR10391201				remove	0.4280673482201431
+cross_genus	real	emu_zymo_SRR10391201				best-genus	0.4275093899414662
+cross_genus	real	emu_zymo_SRR10391201				most-copies	0.4280322252145649
+cross_genus	real	preprint_zymo_SRR23636353				exact	0.3529451296955386
+cross_genus	real	preprint_zymo_SRR23636353				remove	0.3554226906912768
+cross_genus	real	preprint_zymo_SRR23636353				best-genus	0.3542080259334847
+cross_genus	real	preprint_zymo_SRR23636353				most-copies	0.3540671507874139
+cross_genus	real	zymo_GutMock_sup_rep1				exact	0.6226652763547597
+cross_genus	real	zymo_GutMock_sup_rep1				remove	0.6295375883120471
+cross_genus	real	zymo_GutMock_sup_rep1				best-genus	0.6293705333385629
+cross_genus	real	zymo_GutMock_sup_rep1				most-copies	0.6260052109626779
+cross_genus	real	zymo_GutMock_sup_rep2				exact	0.6098194062365095
+cross_genus	real	zymo_GutMock_sup_rep2				remove	0.6233162288928593
+cross_genus	real	zymo_GutMock_sup_rep2				best-genus	0.6231853271610658
+cross_genus	real	zymo_GutMock_sup_rep2				most-copies	0.6192495518844287
+cross_genus	real	zymo_GutMock_sup_rep3				exact	0.6166325545207524
+cross_genus	real	zymo_GutMock_sup_rep3				remove	0.6280998951802588
+cross_genus	real	zymo_GutMock_sup_rep3				best-genus	0.6272003742629486
+cross_genus	real	zymo_GutMock_sup_rep3				most-copies	0.6220824878428286
+cross_genus	real	zymo_GutMock_sup_rep4				exact	0.5922573866586242
+cross_genus	real	zymo_GutMock_sup_rep4				remove	0.6017527525983996
+cross_genus	real	zymo_GutMock_sup_rep4				best-genus	0.6019223291132212
+cross_genus	real	zymo_GutMock_sup_rep4				most-copies	0.5972834017443808
+cross_genus	real	zymo_MSPlus_sup_rep1				exact	0.1840393301251782
+cross_genus	real	zymo_MSPlus_sup_rep1				remove	0.1896031042664398
+cross_genus	real	zymo_MSPlus_sup_rep1				best-genus	0.1914577491722427
+cross_genus	real	zymo_MSPlus_sup_rep1				most-copies	0.1898243050392495
+cross_genus	real	zymo_MSPlus_sup_rep2				exact	0.1763748669112118
+cross_genus	real	zymo_MSPlus_sup_rep2				remove	0.1811809492309789
+cross_genus	real	zymo_MSPlus_sup_rep2				best-genus	0.180739714807689
+cross_genus	real	zymo_MSPlus_sup_rep2				most-copies	0.1803067118627159
+cross_genus	real	zymo_MSPlus_sup_rep3				exact	0.1822598384813273
+cross_genus	real	zymo_MSPlus_sup_rep3				remove	0.1856956756111931
+cross_genus	real	zymo_MSPlus_sup_rep3				best-genus	0.1848205916927381
+cross_genus	real	zymo_MSPlus_sup_rep3				most-copies	0.1853791787217612
+cross_genus	real	zymo_MSPlus_sup_rep4				exact	0.1926210944821276
+cross_genus	real	zymo_MSPlus_sup_rep4				remove	0.1969869703019326
+cross_genus	real	zymo_MSPlus_sup_rep4				best-genus	0.1964770859792812
+cross_genus	real	zymo_MSPlus_sup_rep4				most-copies	0.1959523294816319
+cross_genus	real	zymo_MSPlus_sup_rep5				exact	0.1774968317177681
+cross_genus	real	zymo_MSPlus_sup_rep5				remove	0.1845682504293125
+cross_genus	real	zymo_MSPlus_sup_rep5				best-genus	0.183926937061765
+cross_genus	real	zymo_MSPlus_sup_rep5				most-copies	0.1831041448861209
+cross_genus	real	zymo_MSPlus_sup_rep6				exact	0.1676677146642362
+cross_genus	real	zymo_MSPlus_sup_rep6				remove	0.1704482587635966
+cross_genus	real	zymo_MSPlus_sup_rep6				best-genus	0.1714115092857658
+cross_genus	real	zymo_MSPlus_sup_rep6				most-copies	0.1718550057085186
+ambiguity	sims	even_r1041_10k_s01				species table	0.1856103675112849
+ambiguity	sims	even_r1041_10k_s01				strict table	0.1079604054010989
+ambiguity	sims	even_r1041_10k_s02				species table	0.1856613019280554
+ambiguity	sims	even_r1041_10k_s02				strict table	0.1054329918073702
+ambiguity	sims	even_r1041_10k_s03				species table	0.1849569742912041
+ambiguity	sims	even_r1041_10k_s03				strict table	0.1163636134948221
+ambiguity	sims	even_r1041_10k_s04				species table	0.1777248438441893
+ambiguity	sims	even_r1041_10k_s04				strict table	0.1079104280330011
+ambiguity	sims	even_r1041_10k_s05				species table	0.180468241413494
+ambiguity	sims	even_r1041_10k_s05				strict table	0.1085848744728305
+ambiguity	sims	even_r1041_10k_s06				species table	0.1944541620808869
+ambiguity	sims	even_r1041_10k_s06				strict table	0.1112107705691781
+ambiguity	sims	even_r1041_10k_s07				species table	0.1832702313915608
+ambiguity	sims	even_r1041_10k_s07				strict table	0.1095390397314196
+ambiguity	sims	even_r1041_10k_s08				species table	0.186203829754812
+ambiguity	sims	even_r1041_10k_s08				strict table	0.109327457718792
+ambiguity	sims	even_r1041_10k_s09				species table	0.1843837841518701
+ambiguity	sims	even_r1041_10k_s09				strict table	0.1064883797097797
+ambiguity	sims	even_r1041_10k_s10				species table	0.1904810150769345
+ambiguity	sims	even_r1041_10k_s10				strict table	0.1093060949258075
+ambiguity	sims	even_r1041_1k_s01				species table	0.1781302055859124
+ambiguity	sims	even_r1041_1k_s01				strict table	0.1072914588936216
+ambiguity	sims	even_r1041_1k_s02				species table	0.2012728577715108
+ambiguity	sims	even_r1041_1k_s02				strict table	0.1343473648061898
+ambiguity	sims	even_r1041_1k_s03				species table	0.187368254875049
+ambiguity	sims	even_r1041_1k_s03				strict table	0.0943442616558422
+ambiguity	sims	even_r1041_1k_s04				species table	0.2022470484564022
+ambiguity	sims	even_r1041_1k_s04				strict table	0.1203604358229444
+ambiguity	sims	even_r1041_1k_s05				species table	0.1780546713093626
+ambiguity	sims	even_r1041_1k_s05				strict table	0.1189305417684351
+ambiguity	sims	even_r1041_1k_s06				species table	0.1957328130769161
+ambiguity	sims	even_r1041_1k_s06				strict table	0.1219958341229801
+ambiguity	sims	even_r1041_1k_s07				species table	0.1852661507502419
+ambiguity	sims	even_r1041_1k_s07				strict table	0.10417746178608
+ambiguity	sims	even_r1041_1k_s08				species table	0.1781966075704102
+ambiguity	sims	even_r1041_1k_s08				strict table	0.1208868103070953
+ambiguity	sims	even_r1041_1k_s09				species table	0.1702436507985824
+ambiguity	sims	even_r1041_1k_s09				strict table	0.0971502482058776
+ambiguity	sims	even_r1041_1k_s10				species table	0.148833727057523
+ambiguity	sims	even_r1041_1k_s10				strict table	0.0935498192455977
+ambiguity	sims	even_r1041_50k_s01				species table	0.1903750833698082
+ambiguity	sims	even_r1041_50k_s01				strict table	0.1094030189226656
+ambiguity	sims	even_r1041_50k_s02				species table	0.1843270322496559
+ambiguity	sims	even_r1041_50k_s02				strict table	0.1057333851711311
+ambiguity	sims	even_r1041_50k_s03				species table	0.187765316631358
+ambiguity	sims	even_r1041_50k_s03				strict table	0.1072209834399974
+ambiguity	sims	even_r941_10k_s01				species table	0.2913485997385803
+ambiguity	sims	even_r941_10k_s01				strict table	0.1293175044879902
+ambiguity	sims	even_r941_10k_s02				species table	0.2727863947535186
+ambiguity	sims	even_r941_10k_s02				strict table	0.1127531389616071
+ambiguity	sims	even_r941_10k_s03				species table	0.2760722574949328
+ambiguity	sims	even_r941_10k_s03				strict table	0.1249772565718218
+ambiguity	sims	even_r941_10k_s04				species table	0.2759472348083385
+ambiguity	sims	even_r941_10k_s04				strict table	0.1143614482285698
+ambiguity	sims	even_r941_10k_s05				species table	0.2764236159799507
+ambiguity	sims	even_r941_10k_s05				strict table	0.1286693904234078
+ambiguity	sims	even_r941_10k_s06				species table	0.2811898019709186
+ambiguity	sims	even_r941_10k_s06				strict table	0.168894078012155
+ambiguity	sims	even_r941_10k_s07				species table	0.2687530396011252
+ambiguity	sims	even_r941_10k_s07				strict table	0.119076337515045
+ambiguity	sims	even_r941_10k_s08				species table	0.2768308825153074
+ambiguity	sims	even_r941_10k_s08				strict table	0.1195520467412363
+ambiguity	sims	even_r941_10k_s09				species table	0.2585477845791464
+ambiguity	sims	even_r941_10k_s09				strict table	0.1499396074349817
+ambiguity	sims	even_r941_10k_s10				species table	0.2754465833999228
+ambiguity	sims	even_r941_10k_s10				strict table	0.1216164995692644
+ambiguity	sims	even_r941_1k_s01				species table	0.3170771446924171
+ambiguity	sims	even_r941_1k_s01				strict table	0.2216228324118327
+ambiguity	sims	even_r941_1k_s02				species table	0.3265739319253106
+ambiguity	sims	even_r941_1k_s02				strict table	0.2850126958464254
+ambiguity	sims	even_r941_1k_s03				species table	0.2955411313698934
+ambiguity	sims	even_r941_1k_s03				strict table	0.1834134308142415
+ambiguity	sims	even_r941_1k_s04				species table	0.3013799306444424
+ambiguity	sims	even_r941_1k_s04				strict table	0.1801695897941979
+ambiguity	sims	even_r941_1k_s05				species table	0.2910034567243912
+ambiguity	sims	even_r941_1k_s05				strict table	0.246519589435203
+ambiguity	sims	even_r941_1k_s06				species table	0.3351154261770504
+ambiguity	sims	even_r941_1k_s06				strict table	0.2220753925258857
+ambiguity	sims	even_r941_1k_s07				species table	0.2923161358287452
+ambiguity	sims	even_r941_1k_s07				strict table	0.1862560052960165
+ambiguity	sims	even_r941_1k_s08				species table	0.2787304612489889
+ambiguity	sims	even_r941_1k_s08				strict table	0.11245736554554
+ambiguity	sims	even_r941_1k_s09				species table	0.3266356157040483
+ambiguity	sims	even_r941_1k_s09				strict table	0.1742051931585953
+ambiguity	sims	even_r941_1k_s10				species table	0.2906552362520209
+ambiguity	sims	even_r941_1k_s10				strict table	0.1247031590909057
+ambiguity	sims	even_r941_50k_s01				species table	0.2729803679775925
+ambiguity	sims	even_r941_50k_s01				strict table	0.1208166200594141
+ambiguity	sims	even_r941_50k_s02				species table	0.2770366897962265
+ambiguity	sims	even_r941_50k_s02				strict table	0.1210622375501012
+ambiguity	sims	even_r941_50k_s03				species table	0.283746937946692
+ambiguity	sims	even_r941_50k_s03				strict table	0.1281106654325584
+ambiguity	sims	log_r1041_10k_s01				species table	0.0327862865233412
+ambiguity	sims	log_r1041_10k_s01				strict table	0.0109581976027314
+ambiguity	sims	log_r1041_10k_s02				species table	0.0322518251894462
+ambiguity	sims	log_r1041_10k_s02				strict table	0.0102966241431562
+ambiguity	sims	log_r1041_10k_s03				species table	0.0326743240879359
+ambiguity	sims	log_r1041_10k_s03				strict table	0.0119823208351295
+ambiguity	sims	log_r1041_10k_s04				species table	0.0276405968824224
+ambiguity	sims	log_r1041_10k_s04				strict table	0.007238100993764
+ambiguity	sims	log_r1041_10k_s05				species table	0.0302334235437545
+ambiguity	sims	log_r1041_10k_s05				strict table	0.011007486695443
+ambiguity	sims	log_r1041_10k_s06				species table	0.0309746562080467
+ambiguity	sims	log_r1041_10k_s06				strict table	0.0099503189649819
+ambiguity	sims	log_r1041_10k_s07				species table	0.027509766646246
+ambiguity	sims	log_r1041_10k_s07				strict table	0.0093455085911803
+ambiguity	sims	log_r1041_10k_s08				species table	0.0267660046273916
+ambiguity	sims	log_r1041_10k_s08				strict table	0.0088221141600897
+ambiguity	sims	log_r1041_10k_s09				species table	0.0266064296796304
+ambiguity	sims	log_r1041_10k_s09				strict table	0.0081415188424438
+ambiguity	sims	log_r1041_10k_s10				species table	0.0292439059759586
+ambiguity	sims	log_r1041_10k_s10				strict table	0.0066255093943788
+ambiguity	sims	log_r1041_1k_s01				species table	0.0160993783559422
+ambiguity	sims	log_r1041_1k_s01				strict table	0.0149314716826488
+ambiguity	sims	log_r1041_1k_s02				species table	0.0397587026954549
+ambiguity	sims	log_r1041_1k_s02				strict table	0.0397587026954549
+ambiguity	sims	log_r1041_1k_s03				species table	0.0235277536067761
+ambiguity	sims	log_r1041_1k_s03				strict table	0.0106326489048862
+ambiguity	sims	log_r1041_1k_s04				species table	0.0187772824423869
+ambiguity	sims	log_r1041_1k_s04				strict table	0.0187772824423869
+ambiguity	sims	log_r1041_1k_s05				species table	0.0185681740669842
+ambiguity	sims	log_r1041_1k_s05				strict table	0.0185681740669842
+ambiguity	sims	log_r1041_1k_s06				species table	0.0173209450545611
+ambiguity	sims	log_r1041_1k_s06				strict table	0.0040849984159634
+ambiguity	sims	log_r1041_1k_s07				species table	0.0300807144238335
+ambiguity	sims	log_r1041_1k_s07				strict table	0.024315684315684
+ambiguity	sims	log_r1041_1k_s08				species table	0.0198144444183653
+ambiguity	sims	log_r1041_1k_s08				strict table	0.01499233127146
+ambiguity	sims	log_r1041_1k_s09				species table	0.0276673305930221
+ambiguity	sims	log_r1041_1k_s09				strict table	0.0052893597413143
+ambiguity	sims	log_r1041_1k_s10				species table	0.0212406622391377
+ambiguity	sims	log_r1041_1k_s10				strict table	0.0055980428652828
+ambiguity	sims	log_r1041_50k_s01				species table	0.0307433000577685
+ambiguity	sims	log_r1041_50k_s01				strict table	0.0102692743526931
+ambiguity	sims	log_r1041_50k_s02				species table	0.0279369271806915
+ambiguity	sims	log_r1041_50k_s02				strict table	0.0086520210761949
+ambiguity	sims	log_r1041_50k_s03				species table	0.0306274407531312
+ambiguity	sims	log_r1041_50k_s03				strict table	0.0115853232144966
+ambiguity	sims	log_r941_10k_s01				species table	0.0236703141262694
+ambiguity	sims	log_r941_10k_s01				strict table	0.0231975902008563
+ambiguity	sims	log_r941_10k_s02				species table	0.0313478832436554
+ambiguity	sims	log_r941_10k_s02				strict table	0.0149633995742851
+ambiguity	sims	log_r941_10k_s03				species table	0.0261520357258169
+ambiguity	sims	log_r941_10k_s03				strict table	0.0172046007756065
+ambiguity	sims	log_r941_10k_s04				species table	0.0252308371885781
+ambiguity	sims	log_r941_10k_s04				strict table	0.0154811322615957
+ambiguity	sims	log_r941_10k_s05				species table	0.0310946387427324
+ambiguity	sims	log_r941_10k_s05				strict table	0.015701173598715
+ambiguity	sims	log_r941_10k_s06				species table	0.0188748131206594
+ambiguity	sims	log_r941_10k_s06				strict table	0.0171432911918399
+ambiguity	sims	log_r941_10k_s07				species table	0.0249677845013537
+ambiguity	sims	log_r941_10k_s07				strict table	0.021829169714922
+ambiguity	sims	log_r941_10k_s08				species table	0.0285702295662989
+ambiguity	sims	log_r941_10k_s08				strict table	0.0212748109743039
+ambiguity	sims	log_r941_10k_s09				species table	0.0267771146788839
+ambiguity	sims	log_r941_10k_s09				strict table	0.025959219726563
+ambiguity	sims	log_r941_10k_s10				species table	0.0274159492177604
+ambiguity	sims	log_r941_10k_s10				strict table	0.0204255234340779
+ambiguity	sims	log_r941_1k_s01				species table	0.0334000176051615
+ambiguity	sims	log_r941_1k_s01				strict table	0.0334000176051615
+ambiguity	sims	log_r941_1k_s02				species table	0.0309719509464858
+ambiguity	sims	log_r941_1k_s02				strict table	0.0309719509464858
+ambiguity	sims	log_r941_1k_s03				species table	0.0361126050794858
+ambiguity	sims	log_r941_1k_s03				strict table	0.0361126050794858
+ambiguity	sims	log_r941_1k_s04				species table	0.041222574889841
+ambiguity	sims	log_r941_1k_s04				strict table	0.0331758337698617
+ambiguity	sims	log_r941_1k_s05				species table	0.0318081211214218
+ambiguity	sims	log_r941_1k_s05				strict table	0.0247759986586545
+ambiguity	sims	log_r941_1k_s06				species table	0.0225586929489619
+ambiguity	sims	log_r941_1k_s06				strict table	0.0225586929489619
+ambiguity	sims	log_r941_1k_s07				species table	0.034504974366027
+ambiguity	sims	log_r941_1k_s07				strict table	0.0195924443888714
+ambiguity	sims	log_r941_1k_s08				species table	0.0175361743388633
+ambiguity	sims	log_r941_1k_s08				strict table	0.0175361743388632
+ambiguity	sims	log_r941_1k_s09				species table	0.0268728919395735
+ambiguity	sims	log_r941_1k_s09				strict table	0.0268728919395735
+ambiguity	sims	log_r941_1k_s10				species table	0.0292549816259821
+ambiguity	sims	log_r941_1k_s10				strict table	0.0286379192303898
+ambiguity	sims	log_r941_50k_s01				species table	0.0279713480661723
+ambiguity	sims	log_r941_50k_s01				strict table	0.019385103846879
+ambiguity	sims	log_r941_50k_s02				species table	0.027869621678254
+ambiguity	sims	log_r941_50k_s02				strict table	0.0170801484153251
+ambiguity	sims	log_r941_50k_s03				species table	0.0268303929760324
+ambiguity	sims	log_r941_50k_s03				strict table	0.0157567790291137
+ambiguity	real	emu_gutmock_SRR14326315				species table	0.2775813152520844
+ambiguity	real	emu_gutmock_SRR14326315				strict table	0.1611173938808671
+ambiguity	real	emu_zymo_SRR10391201				species table	0.4278566611130296
+ambiguity	real	emu_zymo_SRR10391201				strict table	0.2460887506957847
+ambiguity	real	preprint_zymo_SRR23636353				species table	0.3529451296955386
+ambiguity	real	preprint_zymo_SRR23636353				strict table	0.3052223975224598
+ambiguity	real	zymo_GutMock_sup_rep1				species table	0.6226652763547599
+ambiguity	real	zymo_GutMock_sup_rep1				strict table	0.6226652763547599
+ambiguity	real	zymo_GutMock_sup_rep2				species table	0.6098194062365099
+ambiguity	real	zymo_GutMock_sup_rep2				strict table	0.6098194062365099
+ambiguity	real	zymo_GutMock_sup_rep3				species table	0.6166325545207526
+ambiguity	real	zymo_GutMock_sup_rep3				strict table	0.6166325545207526
+ambiguity	real	zymo_GutMock_sup_rep4				species table	0.5922573866586245
+ambiguity	real	zymo_GutMock_sup_rep4				strict table	0.5922573866586245
+ambiguity	real	zymo_MSPlus_sup_rep1				species table	0.1840393301251785
+ambiguity	real	zymo_MSPlus_sup_rep1				strict table	0.1840393301251785
+ambiguity	real	zymo_MSPlus_sup_rep2				species table	0.1763748669112121
+ambiguity	real	zymo_MSPlus_sup_rep2				strict table	0.1763748669112121
+ambiguity	real	zymo_MSPlus_sup_rep3				species table	0.1822598384813273
+ambiguity	real	zymo_MSPlus_sup_rep3				strict table	0.1822598384813273
+ambiguity	real	zymo_MSPlus_sup_rep4				species table	0.1926210944821278
+ambiguity	real	zymo_MSPlus_sup_rep4				strict table	0.1926210944821278
+ambiguity	real	zymo_MSPlus_sup_rep5				species table	0.1774968317177682
+ambiguity	real	zymo_MSPlus_sup_rep5				strict table	0.1774968317177682
+ambiguity	real	zymo_MSPlus_sup_rep6				species table	0.1676677146642363
+ambiguity	real	zymo_MSPlus_sup_rep6				strict table	0.1676677146642363
+copy_number	real	emu_zymo_SRR10391201				read-level table	0.4064656694585105
+copy_number	real	emu_zymo_SRR10391201				cell-level table	0.3881394401320884
+copy_number	real	preprint_zymo_SRR23636353				read-level table	0.3780868575368459
+copy_number	real	preprint_zymo_SRR23636353				cell-level table	0.3864016150250149
+copy_number	real	zymo_GutMock_sup_rep1				read-level table	0.6720512463155606
+copy_number	real	zymo_GutMock_sup_rep1				cell-level table	0.6507644351293042
+copy_number	real	zymo_GutMock_sup_rep2				read-level table	0.6719628748062765
+copy_number	real	zymo_GutMock_sup_rep2				cell-level table	0.6388447913940285
+copy_number	real	zymo_GutMock_sup_rep3				read-level table	0.6790362839601233
+copy_number	real	zymo_GutMock_sup_rep3				cell-level table	0.6469827626610023
+copy_number	real	zymo_GutMock_sup_rep4				read-level table	0.6576225982157273
+copy_number	real	zymo_GutMock_sup_rep4				cell-level table	0.6217009630161885
+copy_number	real	zymo_MSPlus_sup_rep1				read-level table	0.3122085958672765
+copy_number	real	zymo_MSPlus_sup_rep1				cell-level table	0.1794581579080483
+copy_number	real	zymo_MSPlus_sup_rep2				read-level table	0.2956627813426751
+copy_number	real	zymo_MSPlus_sup_rep2				cell-level table	0.173662689410202
+copy_number	real	zymo_MSPlus_sup_rep3				read-level table	0.2878754848650864
+copy_number	real	zymo_MSPlus_sup_rep3				cell-level table	0.1858468307072156
+copy_number	real	zymo_MSPlus_sup_rep4				read-level table	0.3151938179230951
+copy_number	real	zymo_MSPlus_sup_rep4				cell-level table	0.1904622447908452
+copy_number	real	zymo_MSPlus_sup_rep5				read-level table	0.2930509984040643
+copy_number	real	zymo_MSPlus_sup_rep5				cell-level table	0.1787017887370521
+copy_number	real	zymo_MSPlus_sup_rep6				read-level table	0.2875732255608874
+copy_number	real	zymo_MSPlus_sup_rep6				cell-level table	0.167062500741607
+copy_number	sims	cell_even_r941_1k_s01				read-level table	0.4903436429760756
+copy_number	sims	cell_even_r941_1k_s01				cell-level table	0.2670078328700411
+copy_number	sims	cell_even_r941_1k_s02				read-level table	0.5210674899596381
+copy_number	sims	cell_even_r941_1k_s02				cell-level table	0.3051592576397902
+copy_number	sims	cell_even_r941_1k_s03				read-level table	0.5236417630413974
+copy_number	sims	cell_even_r941_1k_s03				cell-level table	0.2989061915809048
+copy_number	sims	cell_even_r941_1k_s04				read-level table	0.491019640229569
+copy_number	sims	cell_even_r941_1k_s04				cell-level table	0.2927975515532674
+copy_number	sims	cell_even_r941_1k_s05				read-level table	0.5372705210358105
+copy_number	sims	cell_even_r941_1k_s05				cell-level table	0.3385831287198631
+copy_number	sims	cell_log_r941_1k_s01				read-level table	0.2262041564534218
+copy_number	sims	cell_log_r941_1k_s01				cell-level table	0.025220256382081
+copy_number	sims	cell_log_r941_1k_s02				read-level table	0.2323175541074905
+copy_number	sims	cell_log_r941_1k_s02				cell-level table	0.0290204762042882
+copy_number	sims	cell_log_r941_1k_s03				read-level table	0.2500006204889639
+copy_number	sims	cell_log_r941_1k_s03				cell-level table	0.0398924919110933
+copy_number	sims	cell_log_r941_1k_s04				read-level table	0.2316797486473978
+copy_number	sims	cell_log_r941_1k_s04				cell-level table	0.0228614497250423
+copy_number	sims	cell_log_r941_1k_s05				read-level table	0.2388288537205538
+copy_number	sims	cell_log_r941_1k_s05				cell-level table	0.0435989039131668
+copy_number	sims	cell_even_r1041_1k_s01				read-level table	0.4013738901742422
+copy_number	sims	cell_even_r1041_1k_s01				cell-level table	0.1852826344605714
+copy_number	sims	cell_even_r1041_1k_s02				read-level table	0.4336619011029635
+copy_number	sims	cell_even_r1041_1k_s02				cell-level table	0.204628791509863
+copy_number	sims	cell_even_r1041_1k_s03				read-level table	0.4165382011927912
+copy_number	sims	cell_even_r1041_1k_s03				cell-level table	0.1890286794715062
+copy_number	sims	cell_even_r1041_1k_s04				read-level table	0.4050710414130593
+copy_number	sims	cell_even_r1041_1k_s04				cell-level table	0.1835618721477297
+copy_number	sims	cell_even_r1041_1k_s05				read-level table	0.4060420617746321
+copy_number	sims	cell_even_r1041_1k_s05				cell-level table	0.180717115061265
+copy_number	sims	cell_log_r1041_1k_s01				read-level table	0.2244862801744387
+copy_number	sims	cell_log_r1041_1k_s01				cell-level table	0.0102954347452069
+copy_number	sims	cell_log_r1041_1k_s02				read-level table	0.2327527594812494
+copy_number	sims	cell_log_r1041_1k_s02				cell-level table	0.0065469274166771
+copy_number	sims	cell_log_r1041_1k_s03				read-level table	0.2206609886170451
+copy_number	sims	cell_log_r1041_1k_s03				cell-level table	0.0138359927936781
+copy_number	sims	cell_log_r1041_1k_s04				read-level table	0.2254155991744133
+copy_number	sims	cell_log_r1041_1k_s04				cell-level table	0.0164660382225968
+copy_number	sims	cell_log_r1041_1k_s05				read-level table	0.2278640584254305
+copy_number	sims	cell_log_r1041_1k_s05				cell-level table	0.0163995318208242
+copy_number	sims	cell_even_r941_10k_s01				read-level table	0.4991784033800909
+copy_number	sims	cell_even_r941_10k_s01				cell-level table	0.2793715037071093
+copy_number	sims	cell_even_r941_10k_s02				read-level table	0.4891004773794347
+copy_number	sims	cell_even_r941_10k_s02				cell-level table	0.2842329103182471
+copy_number	sims	cell_even_r941_10k_s03				read-level table	0.504458135004337
+copy_number	sims	cell_even_r941_10k_s03				cell-level table	0.2941134504323212
+copy_number	sims	cell_even_r941_10k_s04				read-level table	0.4849559381221674
+copy_number	sims	cell_even_r941_10k_s04				cell-level table	0.2732346603201877
+copy_number	sims	cell_even_r941_10k_s05				read-level table	0.5010600118392811
+copy_number	sims	cell_even_r941_10k_s05				cell-level table	0.2885498064505613
+copy_number	sims	cell_log_r941_10k_s01				read-level table	0.2291328063649778
+copy_number	sims	cell_log_r941_10k_s01				cell-level table	0.0259116136536648
+copy_number	sims	cell_log_r941_10k_s02				read-level table	0.2352425585788268
+copy_number	sims	cell_log_r941_10k_s02				cell-level table	0.0287920615565122
+copy_number	sims	cell_log_r941_10k_s03				read-level table	0.2367894283995652
+copy_number	sims	cell_log_r941_10k_s03				cell-level table	0.0290028659634261
+copy_number	sims	cell_log_r941_10k_s04				read-level table	0.2272312930290823
+copy_number	sims	cell_log_r941_10k_s04				cell-level table	0.0243013218440906
+copy_number	sims	cell_log_r941_10k_s05				read-level table	0.2272397519292577
+copy_number	sims	cell_log_r941_10k_s05				cell-level table	0.0279886019301775
+copy_number	sims	cell_even_r1041_10k_s01				read-level table	0.4048209600216659
+copy_number	sims	cell_even_r1041_10k_s01				cell-level table	0.1841309495096637
+copy_number	sims	cell_even_r1041_10k_s02				read-level table	0.4102759825818725
+copy_number	sims	cell_even_r1041_10k_s02				cell-level table	0.1905583276324986
+copy_number	sims	cell_even_r1041_10k_s03				read-level table	0.4045368278846851
+copy_number	sims	cell_even_r1041_10k_s03				cell-level table	0.1767309031991734
+copy_number	sims	cell_even_r1041_10k_s04				read-level table	0.4030961774766107
+copy_number	sims	cell_even_r1041_10k_s04				cell-level table	0.1773676512348183
+copy_number	sims	cell_even_r1041_10k_s05				read-level table	0.4058049670178449
+copy_number	sims	cell_even_r1041_10k_s05				cell-level table	0.1839152361368229
+copy_number	sims	cell_log_r1041_10k_s01				read-level table	0.2277287290206859
+copy_number	sims	cell_log_r1041_10k_s01				cell-level table	0.0108968952050902
+copy_number	sims	cell_log_r1041_10k_s02				read-level table	0.2280584166738024
+copy_number	sims	cell_log_r1041_10k_s02				cell-level table	0.0097880503732179
+copy_number	sims	cell_log_r1041_10k_s03				read-level table	0.2267868678340244
+copy_number	sims	cell_log_r1041_10k_s03				cell-level table	0.0113186127640049
+copy_number	sims	cell_log_r1041_10k_s04				read-level table	0.2258338153970178
+copy_number	sims	cell_log_r1041_10k_s04				cell-level table	0.0094502738394515
+copy_number	sims	cell_log_r1041_10k_s05				read-level table	0.2319392509534403
+copy_number	sims	cell_log_r1041_10k_s05				cell-level table	0.01215141581496
