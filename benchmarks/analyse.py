@@ -23,6 +23,12 @@
                  mocks and the clade-exclusion sets, against the database each rule was
                  applied to; the reproduction of the Phase 7a reference; index size and
                  alignment CPU (cross_genus_*.tsv, fig_cross_genus.png)
+  ambiguity      Phase 14 (F57): the species table and the group table (strict and
+                 lenient) at each threshold on the simulations and the real mocks, the
+                 groups formed, EM against VB and the group intervals (ambiguity_*.tsv,
+                 fig_ambiguity.png)
+  ambiguity_family  Phase 14: links limited to one family (ambiguity.py --family) against
+                 D39 as shipped (ambiguity_family_*.tsv)
 
 Every figure (docs/benchmarks/figures/*.png) has its source data in
 docs/benchmarks/data/ under the same name.
@@ -36,7 +42,7 @@ import numpy as np
 import pandas as pd
 import pysam
 
-from common import BENCH, CROSS_DBS, CROSS_RULES, DOCS_DATA, DOCS_FIG, PHASE13, cross_db_dir, write_tsv
+from common import BENCH, CROSS_DBS, CROSS_RULES, DOCS_DATA, DOCS_FIG, PHASE13, PHASE14, cross_db_dir, write_tsv
 from evaluate import UNKNOWN, load_estimate, load_real_truth, taxonomy
 from likelihood import score_reads
 from simulate import PAIRS
@@ -866,10 +872,165 @@ def cross():
     save_figure(fig, "fig_cross_genus", data.merge(c[["cpu_s_per_1000_reads"]].reset_index(), on="db", how="left"))
 
 
+# ─── Phase 14: ambiguity groups (F57) ───────────────────────────────────────
+
+AMBIGUITY_METRICS = ["l1", "precision", "recall", "fp_count", "fp_abundance"]
+AMBIGUITY_REAL_METRICS = ["l1_known", "precision", "recall", "fp_count", "fp_abundance"]
+AMBIGUITY_COUNTS = ["groups", "abundance_in_groups", "reads_in_groups", "species_right", "species_right_hidden",
+                    "groups_cross_genus"]
+
+
+def _ambiguity_paired(d, metrics, keys):
+    """Each group table against the species table of the same sample and arm."""
+    sp = d[d["table"] == "species"].set_index(["sample", "arm"])
+    rows = []
+    for (arm, table), x in d[d["table"] != "species"].groupby(["arm", "table"]):
+        x = x.set_index(["sample", "arm"])
+        for m in metrics:
+            diff = x[m] - sp.loc[x.index, m]
+            lower_better = "l1" in m or "fp" in m
+            groups = diff.groupby([x[k] for k in keys]) if keys else [("all", diff)]
+            for key, dd in groups:
+                rows.append({"arm": arm, "table": table, "metric": m,
+                             **(dict(zip(keys, key if isinstance(key, tuple) else (key,))) if keys else {}),
+                             "n": len(dd), "mean_diff": dd.mean(),
+                             "better": int((dd < 0).sum() if lower_better else (dd > 0).sum()),
+                             "worse": int((dd > 0).sum() if lower_better else (dd < 0).sum())})
+    return pd.DataFrame(rows)
+
+
+def ambiguity():
+    res = PHASE14 / "results"
+    d = pd.read_csv(res / "ambiguity.tsv", sep="\t")
+    sims = d[d["kind"] == "sim"].copy()
+    sims["shape"] = sims["sample"].str.split("_").str[0]
+    sims["chemistry"] = sims["sample"].str.split("_").str[1]
+    sims["depth"] = sims["sample"].str.extract(r"_(\d+)k_")[0].astype(int) * 1000
+    real = d[d["kind"] == "real"].copy()
+    real["group"] = real["sample"].str.replace(r"_sup_rep\d+$", "", regex=True)
+    vb = sims[sims["arm"].str.startswith("vb_")]
+
+    cols = AMBIGUITY_METRICS + AMBIGUITY_COUNTS
+    write_tsv(vb.groupby(["arm", "table"])[cols].mean().reset_index(), DOCS_DATA / "ambiguity_sims_overall.tsv")
+    write_tsv(vb.groupby(["arm", "table", "shape", "chemistry", "depth"])[cols].mean().reset_index(),
+              DOCS_DATA / "ambiguity_sims_summary.tsv")
+    write_tsv(pd.concat([_ambiguity_paired(vb, AMBIGUITY_METRICS, []),
+                         _ambiguity_paired(vb, ["l1"], ["shape", "chemistry", "depth"])]),
+              DOCS_DATA / "ambiguity_sims_paired.tsv")
+    rcols = AMBIGUITY_REAL_METRICS + AMBIGUITY_COUNTS
+    write_tsv(real.groupby(["arm", "table"])[rcols].mean().reset_index(), DOCS_DATA / "ambiguity_real_summary.tsv")
+    write_tsv(real[["sample", "group", "arm", "table"] + rcols], DOCS_DATA / "ambiguity_real_per_sample.tsv")
+    write_tsv(_ambiguity_paired(real, AMBIGUITY_REAL_METRICS, []), DOCS_DATA / "ambiguity_real_paired.tsv")
+
+    # EM against VB at the default threshold, on the 10k simulations
+    em = sims[(sims["depth"] == 10000) & sims["arm"].isin(["vb_tau0.25", "em_tau0.25"])]
+    write_tsv(em.groupby(["arm", "table", "shape", "chemistry"])[cols].mean().reset_index(),
+              DOCS_DATA / "ambiguity_em_vb.tsv")
+
+    # The groups formed (two or more rows) at the default threshold, by members
+    g = pd.read_csv(res / "ambiguity_groups.tsv", sep="\t", keep_default_na=False)
+    g = g[(g["arm"] == "vb_tau0.25") & (g["scoring"] == "strict")].copy()
+    g["truth"] = pd.to_numeric(g["truth"], errors="coerce")
+    g["set"] = np.where(g["kind"] == "sim", g["sample"].str.replace(r"_s\d+$", "", regex=True),
+                        g["sample"].str.replace(r"_sup_rep\d+$", "", regex=True))
+    lenient = pd.read_csv(res / "ambiguity_groups.tsv", sep="\t", keep_default_na=False)
+    lenient = lenient[(lenient["arm"] == "vb_tau0.25") & (lenient["scoring"] == "lenient")]
+    g = g.merge(lenient[["sample", "group", "truth", "right"]].rename(columns={"truth": "truth_lenient",
+                                                                              "right": "right_lenient"}),
+                on=["sample", "group"], how="left")
+    g["truth_lenient"] = pd.to_numeric(g["truth_lenient"], errors="coerce")
+    groups = (g.groupby(["kind", "members"])
+               .agg(samples=("sample", "size"), sets=("set", lambda x: ",".join(sorted(set(x)))),
+                    lowest_common_rank=("lowest_common_rank", "first"), mean_abundance=("abundance", "mean"),
+                    mean_truth=("truth", "mean"), right=("right", lambda x: (x.astype(str) == "True").mean()),
+                    right_lenient=("right_lenient", lambda x: (x.astype(str) == "True").mean()),
+                    members_right=("members_right", "mean"), mean_max_shared=("max_shared", "mean"))
+               .reset_index().sort_values(["kind", "samples"], ascending=[False, False]))
+    write_tsv(groups, DOCS_DATA / "ambiguity_groups_formed.tsv")
+
+    cov = pd.read_csv(res / "ambiguity_coverage.tsv", sep="\t")
+    cov = cov[cov["arm"] == "vb_tau0.25"]
+    write_tsv(cov.groupby("level")["covers"].agg(["mean", "size"]).rename(columns={"mean": "coverage", "size": "n"})
+              .reset_index(), DOCS_DATA / "ambiguity_coverage.tsv")
+
+    # Figure: L1 by threshold, species and group tables, for the simulations (even, log) and the real mocks
+    plt = _plt()
+    taus = sorted({float(a.split("tau")[1]) for a in d["arm"] if a.startswith("vb_")})
+    data = []
+    for panel, x, m in [("sims even", vb[vb["shape"] == "even"], "l1"), ("sims log", vb[vb["shape"] == "log"], "l1"),
+                        ("real mocks", real, "l1_known")]:
+        for tau in taus:
+            for table in ("species", "strict", "lenient"):
+                v = x[(x["arm"] == f"vb_tau{tau}") & (x["table"] == table)][m].mean()
+                data.append({"panel": panel, "tau": tau, "table": table, "l1": v})
+    data = pd.DataFrame(data)
+    fig, axes = plt.subplots(1, 3, figsize=(9, 2.6))
+    for ax, panel in zip(axes, data["panel"].unique()):
+        for table in ("species", "strict", "lenient"):
+            v = data[(data["panel"] == panel) & (data["table"] == table)]
+            ax.plot(v["tau"], v["l1"], marker="o", ms=3, label=table)
+        ax.set_title(panel)
+        ax.set_xlabel("threshold τ")
+        ax.set_ylim(bottom=0)
+    axes[0].set_ylabel("L1 (mean)")
+    axes[0].legend(frameon=False, fontsize=6)
+    fig.tight_layout()
+    save_figure(fig, "fig_ambiguity", data)
+
+
+ABOVE_FAMILY = {"order", "class", "phylum", "superkingdom"}
+
+
+def ambiguity_family():
+    """The family-restricted links (ambiguity.py --family) against D39 as shipped, both at the default threshold."""
+    res = PHASE14 / "results"
+    default, family = "vb_tau0.25", "family_tau0.25"
+    d = pd.concat([pd.read_csv(res / "ambiguity.tsv", sep="\t"), pd.read_csv(res / "ambiguity_family.tsv", sep="\t")])
+    d = d[d["arm"].isin([default, family])].copy()
+    d["l1"] = d["l1"].fillna(d["l1_known"])
+    g = pd.concat([pd.read_csv(res / "ambiguity_groups.tsv", sep="\t", keep_default_na=False),
+                   pd.read_csv(res / "ambiguity_family_groups.tsv", sep="\t", keep_default_na=False)])
+    g = g[g["arm"].isin([default, family]) & (g["scoring"] == "strict")]
+    above = g[g["lowest_common_rank"].isin(ABOVE_FAMILY)]
+    d = d.merge(above.groupby(["sample", "arm"]).size().rename("groups_above_family").reset_index(),
+                on=["sample", "arm"], how="left")
+    d["groups_above_family"] = d["groups_above_family"].fillna(0).astype(int)
+
+    cols = AMBIGUITY_METRICS + AMBIGUITY_COUNTS + ["groups_above_family"]
+    write_tsv(d.groupby(["kind", "table", "arm"])[cols].mean().reset_index(), DOCS_DATA / "ambiguity_family_summary.tsv")
+
+    # Per sample and table, the family arm against the default; the samples whose groups changed
+    w = d.pivot_table(index=["kind", "sample", "table"], columns="arm", values=["l1", "fp_count", "groups"])
+    w.columns = [f"{m}_{'family' if a == family else 'default'}" for m, a in w.columns]
+    w = w.reset_index()
+    # The scores sum over sets, so the same tables can differ in the last bits between runs
+    w["l1_diff"] = (w["l1_family"] - w["l1_default"]).where(lambda x: x.abs() > 1e-12, 0.0)
+    w["fp_diff"] = w["fp_count_family"] - w["fp_count_default"]
+    changed = w[(w["l1_diff"] != 0) | (w["fp_diff"] != 0) | (w["groups_family"] != w["groups_default"])]
+    split = (above[above["arm"] == default].groupby("sample")["members"].agg(" | ".join)
+             .rename("default_groups_above_family"))
+    changed = changed.merge(split, left_on="sample", right_index=True, how="left")
+    write_tsv(changed[changed["table"] != "species"], DOCS_DATA / "ambiguity_family_changed.tsv")
+    rows = []
+    for (kind, table), x in w[w["table"] != "species"].groupby(["kind", "table"]):
+        for m in ("l1", "fp"):
+            dd = x[f"{m}_diff"]
+            rows.append({"kind": kind, "table": table, "metric": m if m == "l1" else "fp_count", "n": len(dd),
+                         "mean_diff": dd.mean(), "better": int((dd < 0).sum()), "worse": int((dd > 0).sum())})
+    write_tsv(pd.DataFrame(rows), DOCS_DATA / "ambiguity_family_paired.tsv")
+
+    cov = pd.concat([pd.read_csv(res / "ambiguity_coverage.tsv", sep="\t"),
+                     pd.read_csv(res / "ambiguity_family_coverage.tsv", sep="\t")])
+    cov = cov[cov["arm"].isin([default, family])]
+    write_tsv(cov.groupby(["arm", "level"])["covers"].agg(["mean", "size"])
+              .rename(columns={"mean": "coverage", "size": "n"}).reset_index(), DOCS_DATA / "ambiguity_family_coverage.tsv")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("what", nargs="+", choices=["ablation", "contamination", "pairs", "lod", "clade", "real", "intervals",
-                                                 "comparators", "timing", "cross"])
+                                                 "comparators", "timing", "cross", "ambiguity",
+                                                 "ambiguity_family"])
     ap.add_argument("--samples", help="comma-separated (default: per analysis)")
     args = ap.parse_args()
     ofat = sorted(pd.read_csv(RESULTS / "grid_ofat.tsv", sep="\t")["sample"].unique())
@@ -894,6 +1055,10 @@ def main():
             timing()
         elif what == "cross":
             cross()
+        elif what == "ambiguity":
+            ambiguity()
+        elif what == "ambiguity_family":
+            ambiguity_family()
         else:
             real()
         print("done", what, flush=True)

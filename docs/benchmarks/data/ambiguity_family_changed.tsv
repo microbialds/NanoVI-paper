@@ -1,0 +1,21 @@
+kind	sample	table	fp_count_family	fp_count_default	groups_family	groups_default	l1_family	l1_default	l1_diff	fp_diff	default_groups_above_family
+real	emu_gutmock_SRR14326315	lenient	6.0	4.0	3.0	4.0	0.1611173938808671	0.1634824471596085	-0.002365053278741397	2.0	Romboutsia hominis; Parabacteroides merdae; Faecalicatena contorta
+real	emu_gutmock_SRR14326315	strict	6.0	4.0	3.0	4.0	0.1611173938808671	0.1634824471596085	-0.002365053278741397	2.0	Romboutsia hominis; Parabacteroides merdae; Faecalicatena contorta
+real	zymo_GutMock_sup_rep1	lenient	2.0	2.0	0.0	1.0	0.6235236771410615	0.6146706444413428	0.00885303269971871	0.0	Akkermansia muciniphila; Faecalibacterium taiwanense
+real	zymo_GutMock_sup_rep1	strict	3.0	2.0	0.0	1.0	0.6226652763547599	0.6187079014776968	0.003957374877063047	1.0	Akkermansia muciniphila; Faecalibacterium taiwanense
+real	zymo_GutMock_sup_rep3	lenient	2.0	2.0	0.0	1.0	0.6175075523665032	0.6124046898716705	0.005102862494832716	0.0	Akkermansia muciniphila; Faecalibacterium taiwanense
+real	zymo_GutMock_sup_rep3	strict	3.0	2.0	0.0	1.0	0.6166325545207526	0.6126803517008684	0.003952202819884176	1.0	Akkermansia muciniphila; Faecalibacterium taiwanense
+real	zymo_GutMock_sup_rep4	lenient	3.0	2.0	0.0	1.0	0.5931061894993771	0.5849252383386176	0.008180951160759453	1.0	Akkermansia muciniphila; Faecalibacterium taiwanense; Collinsella sp959026725
+real	zymo_GutMock_sup_rep4	strict	4.0	2.0	0.0	1.0	0.5922573866586245	0.5869676791849295	0.005289707473694949	2.0	Akkermansia muciniphila; Faecalibacterium taiwanense; Collinsella sp959026725
+real	zymo_MSPlus_sup_rep3	lenient	2.0	2.0	1.0	2.0	0.1974440531279817	0.1974440531279817	0.0	0.0	Enterococcus faecalis; Staphylococcus hominis
+real	zymo_MSPlus_sup_rep3	strict	4.0	3.0	1.0	2.0	0.1822598384813273	0.1834808353158233	-0.001220996834496002	1.0	Enterococcus faecalis; Staphylococcus hominis
+real	zymo_MSPlus_sup_rep4	lenient	2.0	2.0	1.0	2.0	0.2057176157943709	0.2057176157943709	0.0	0.0	Enterococcus faecalis; Staphylococcus hominis
+real	zymo_MSPlus_sup_rep4	strict	4.0	3.0	1.0	2.0	0.1926210944821278	0.1939291610899257	-0.001308066607797892	1.0	Enterococcus faecalis; Staphylococcus hominis
+real	zymo_MSPlus_sup_rep5	lenient	2.0	2.0	1.0	2.0	0.1908916251941828	0.1908916251941828	0.0	0.0	Enterococcus faecalis; Staphylococcus hominis
+real	zymo_MSPlus_sup_rep5	strict	4.0	3.0	1.0	2.0	0.1774968317177682	0.178465203032331	-0.0009683713145627881	1.0	Enterococcus faecalis; Staphylococcus hominis
+sim	even_r941_1k_s02	lenient	6.0	5.0	2.0	3.0	0.0262545928590594	0.0211646144671826	0.0050899783918768	1.0	Akkermansia muciniphila; Lepagella sp009775355
+sim	even_r941_1k_s02	strict	9.0	8.0	2.0	3.0	0.2850126958464254	0.2799227174545486	0.005089978391876804	1.0	Akkermansia muciniphila; Lepagella sp009775355
+sim	even_r941_1k_s05	lenient	6.0	5.0	2.0	3.0	0.0216299599435483	0.0216299599435483	0.0	1.0	Collinsella sp938045065; Lactobacillus delbrueckii
+sim	even_r941_1k_s05	strict	6.0	5.0	2.0	3.0	0.246519589435203	0.246519589435203	0.0	1.0	Collinsella sp938045065; Lactobacillus delbrueckii
+sim	even_r941_1k_s09	lenient	6.0	5.0	3.0	4.0	0.0242254639098723	0.0203004620035669	0.003925001906305403	1.0	Akkermansia muciniphila; Lepagella sp009775355
+sim	even_r941_1k_s09	strict	8.0	7.0	3.0	4.0	0.1742051931585953	0.1702801912522899	0.003925001906305403	1.0	Akkermansia muciniphila; Lepagella sp009775355

@@ -1,0 +1,7 @@
+arm	level	coverage	n
+family_tau0.25	group	0.6875	64
+family_tau0.25	group_member	0.2578125	128
+family_tau0.25	species	0.6067415730337079	623
+vb_tau0.25	group	0.6875	64
+vb_tau0.25	group_member	0.2578125	128
+vb_tau0.25	species	0.6067415730337079	623

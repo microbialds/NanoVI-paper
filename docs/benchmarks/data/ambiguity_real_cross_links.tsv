@@ -1,0 +1,11 @@
+sample	group	a	b	f	expected_reads_a	expected_reads_b	a_in_mock	b_in_mock	a_cross_genus_carrier	b_cross_genus_carrier
+emu_gutmock_SRR14326315	Romboutsia hominis; Parabacteroides merdae; Faecalicatena contorta	Parabacteroides merdae	Romboutsia hominis	0.26945191931159534	13.821979204232152	1273.0529555093506	False	True	True	True
+emu_gutmock_SRR14326315	Romboutsia hominis; Parabacteroides merdae; Faecalicatena contorta	Faecalicatena contorta	Romboutsia hominis	0.3496742129979646	12.290461512264852	1273.0529555093506	False	True	False	True
+zymo_GutMock_sup_rep1	Akkermansia muciniphila; Faecalibacterium taiwanense	Akkermansia muciniphila	Faecalibacterium taiwanense	0.7797294879393584	50.41706514316563	22.977125116432944	True	False	True	True
+zymo_GutMock_sup_rep3	Akkermansia muciniphila; Faecalibacterium taiwanense	Akkermansia muciniphila	Faecalibacterium taiwanense	0.7460904707632863	68.42853923576565	23.0516318280137	True	False	True	True
+zymo_GutMock_sup_rep4	Akkermansia muciniphila; Faecalibacterium taiwanense; Collinsella sp959026725	Akkermansia muciniphila	Faecalibacterium taiwanense	0.7667765237603406	51.776284209531795	20.96989616659744	True	False	True	True
+zymo_GutMock_sup_rep4	Akkermansia muciniphila; Faecalibacterium taiwanense; Collinsella sp959026725	Akkermansia muciniphila	Collinsella sp959026725	0.8556873825475423	51.776284209531795	10.372885731169537	True	False	True	True
+zymo_GutMock_sup_rep4	Akkermansia muciniphila; Faecalibacterium taiwanense; Collinsella sp959026725	Faecalibacterium taiwanense	Collinsella sp959026725	0.8029891452419001	20.96989616659744	10.372885731169537	False	False	True	True
+zymo_MSPlus_sup_rep3	Enterococcus faecalis; Staphylococcus hominis	Enterococcus faecalis	Staphylococcus hominis	0.49764439268634136	914.6665624719072	13.795960140328983	True	False	True	True
+zymo_MSPlus_sup_rep4	Enterococcus faecalis; Staphylococcus hominis	Enterococcus faecalis	Staphylococcus hominis	0.6023120780732011	853.3959742958285	15.087207001233503	True	False	True	True
+zymo_MSPlus_sup_rep5	Enterococcus faecalis; Staphylococcus hominis	Enterococcus faecalis	Staphylococcus hominis	0.35366098961616865	874.9179363759275	10.830229396204832	True	False	True	True

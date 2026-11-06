@@ -1,0 +1,9 @@
+kind	table	metric	n	mean_diff	better	worse
+real	lenient	l1	13	0.001520907159736114	1	3
+real	lenient	fp_count	13	0.23076923076923078	0	2
+real	strict	l1	13	0.0005643690103880072	4	3
+real	strict	fp_count	13	0.6923076923076923	0	7
+sim	lenient	l1	92	9.798891628458916e-05	0	2
+sim	lenient	fp_count	92	0.03260869565217391	0	3
+sim	strict	l1	92	9.79889162845892e-05	0	2
+sim	strict	fp_count	92	0.03260869565217391	0	3
